@@ -26,6 +26,12 @@ CRUD (`notes`) shows the pattern to copy for your own domain.
 - **CI/release** — GitHub Actions (lint/test/typecheck, scheduled a11y, PR visual
   regression) + release-please + a user-facing `/changelog`.
 
+## Direction
+
+This is the **G Stack**. What it is and why: [`docs/g-stack.md`](docs/g-stack.md).
+What's built and what's next: [`docs/roadmap.md`](docs/roadmap.md). Key decisions
+(payments, data layer, Redis, distribution): [`docs/adr/`](docs/adr/).
+
 ## Setup
 
 ```bash
