@@ -21,6 +21,18 @@ async function submit() {
     loading.value = false
   }
 }
+
+const oauthLoading = ref('')
+async function oauth(provider: 'github' | 'google') {
+  oauthLoading.value = provider
+  error.value = ''
+  try {
+    await auth.loginWithOAuth(provider) // redirects away on success
+  } catch {
+    error.value = t('login.oauthError')
+    oauthLoading.value = ''
+  }
+}
 </script>
 
 <template>
@@ -33,7 +45,40 @@ async function submit() {
     <h2 class="text-lg font-bold">{{ $t('login.title') }}</h2>
     <p class="text-sm text-muted">{{ $t('login.subtitle') }}</p>
 
-    <form class="mt-6 flex flex-col gap-4" @submit.prevent="submit">
+    <div class="mt-6 flex flex-col gap-2">
+      <UButton
+        block
+        size="lg"
+        color="neutral"
+        variant="outline"
+        icon="i-simple-icons-github"
+        :loading="oauthLoading === 'github'"
+        :disabled="!!oauthLoading"
+        @click="oauth('github')"
+      >
+        {{ $t('login.continueWithGithub') }}
+      </UButton>
+      <UButton
+        block
+        size="lg"
+        color="neutral"
+        variant="outline"
+        icon="i-simple-icons-google"
+        :loading="oauthLoading === 'google'"
+        :disabled="!!oauthLoading"
+        @click="oauth('google')"
+      >
+        {{ $t('login.continueWithGoogle') }}
+      </UButton>
+    </div>
+
+    <div class="my-6 flex items-center gap-3 text-xs text-muted">
+      <span class="h-px flex-1 bg-default" />
+      {{ $t('login.orContinueWith') }}
+      <span class="h-px flex-1 bg-default" />
+    </div>
+
+    <form class="flex flex-col gap-4" @submit.prevent="submit">
       <UFormField :label="$t('login.email')">
         <UInput v-model="email" type="email" autocomplete="email" class="w-full" required />
       </UFormField>

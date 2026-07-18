@@ -89,7 +89,13 @@ begin
   values (
     new.id,
     new_tenant_id,
-    coalesce(nullif(new.raw_user_meta_data ->> 'full_name', ''), split_part(new.email, '@', 1)),
+    -- full_name from email signup metadata; OAuth providers use 'name'; else the
+    -- email local-part.
+    coalesce(
+      nullif(new.raw_user_meta_data ->> 'full_name', ''),
+      nullif(new.raw_user_meta_data ->> 'name', ''),
+      split_part(new.email, '@', 1)
+    ),
     new.email,
     'admin'
   );

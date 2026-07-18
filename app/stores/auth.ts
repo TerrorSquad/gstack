@@ -79,6 +79,17 @@ export const useAuthStore = defineStore('auth', () => {
     if (error) throw error
   }
 
+  // Social sign-in. Redirects to the provider, then back to /dashboard where the
+  // Supabase client exchanges the code and handle_new_user provisions the
+  // tenant + profile. Providers must be enabled in supabase/config.toml.
+  async function loginWithOAuth(provider: 'github' | 'google') {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider,
+      options: { redirectTo: `${window.location.origin}/dashboard` },
+    })
+    if (error) throw error
+  }
+
   async function logout() {
     await supabase.auth.signOut()
     profile.value = null
@@ -91,6 +102,7 @@ export const useAuthStore = defineStore('auth', () => {
     isAuthenticated,
     ensureProfile,
     login,
+    loginWithOAuth,
     register,
     resendConfirmation,
     logout,

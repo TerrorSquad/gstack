@@ -7,8 +7,9 @@ CRUD (`notes`) shows the pattern to copy for your own domain.
 
 ## What's included
 
-- **Auth** — email/password login, registration, password reset, email confirmation.
-  Global role-aware middleware (`app/middleware/auth.global.ts`), not the module redirect.
+- **Auth** — email/password + social login (GitHub, Google via Supabase OAuth),
+  registration, password reset, email confirmation. Global role-aware middleware
+  (`app/middleware/auth.global.ts`), not the module redirect.
 - **Multi-tenancy** — every table is tenant-scoped by RLS via a `current_tenant_id()`
   helper. Self-service registration creates a tenant with the registrant as admin.
 - **Roles** — `member` / `admin`, enforced by RLS (the real gate) + page meta (UX).
@@ -68,6 +69,9 @@ update public.profiles set role = 'admin' where email = 'you@example.com';
 - **Notifications email**: set `NUXT_PUBLIC_NOTIFICATIONS_ENABLED=true`, `NUXT_RESEND_KEY`,
   and `NUXT_NOTIFICATION_WEBHOOK_SECRET`, then add a Supabase DB webhook on
   `notifications` INSERT → POST `/api/hooks/notification-email` with the secret header.
+- **Social login**: enable `[auth.external.github]` / `[auth.external.google]` in
+  `supabase/config.toml`, set the client id/secret env vars (see `.env.example`),
+  and restart local Supabase. The login-page buttons are already wired.
 - **Sentry**: set `NUXT_PUBLIC_SENTRY_DSN` (+ org/project in `nuxt.config.ts`).
 
 ## Notes
