@@ -1,0 +1,59 @@
+{
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+
+  // .agents = vendored skill reference (not our TODOs); docs = feature specs/ADRs
+  // tracked as specs, business planning lives in Linear. Keeps TODOTree to real code TODOs.
+  "todo-tree.filtering.excludeGlobs": ["**/.agents/**", "**/docs/**"],
+
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "never",
+    "source.fixAll.eslint": "explicit"
+  },
+  "tailwindCSS.classAttributes": ["class", "ui"],
+  "tailwindCSS.classFunctions": ["defineAppConfig"],
+  "i18n-ally.localesPaths": ["i18n", "i18n/locales"],
+  "i18n-ally.sourceLanguage": "sr",
+  "i18n-ally.displayLanguage": "sr",
+  "i18n-ally.keystyle": "flat",
+  "i18n-ally.sortKeys": true,
+  "i18n-ally.translate.parallels": 50,
+  "i18n-ally.enabledParsers": ["json"],
+  "i18n-ally.dirStructure": "auto",
+  "i18n-ally.enabledFrameworks": ["vue"],
+  "i18n-ally.autoDetection": true,
+
+  "oxc.fmt.configPath": ".oxfmtrc.json",
+  "editor.defaultFormatter": "oxc.oxc-vscode",
+  "editor.formatOnSave": true,
+
+  "editor.quickSuggestions": {
+    "other": "offWhenInlineCompletions",
+    "comments": "off",
+    "strings": "on"
+  },
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "*.ts": "${capture}.js",
+    "*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts",
+    "*.jsx": "${capture}.js",
+    "*.tsx": "${capture}.ts",
+    "tsconfig.json": "tsconfig.*.json",
+    "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml, bun.lockb, bun.lock"
+  },
+
+  "[javascript]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.formatOnSave": true
+  },
+  "[json]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.formatOnSave": true
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.formatOnSave": true
+  },
+  "todo-tree.ripgrep.ripgrep": "/home/linuxbrew/.linuxbrew/bin/rg"
+}

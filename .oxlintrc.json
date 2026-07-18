@@ -1,0 +1,32 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "unicorn", "oxc", "vue", "import", "promise", "vitest"],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "error",
+    "perf": "error"
+  },
+  "env": {
+    "builtin": true
+  },
+  "ignorePatterns": ["designs/**"],
+  "rules": {
+    "no-console": "warn",
+    "typescript/no-explicit-any": "warn",
+    "unicorn/prefer-node-protocol": "error"
+  },
+  "overrides": [
+    {
+      "files": ["scripts/**", "tools/**"],
+      "rules": {
+        "no-console": "off",
+        "no-await-in-loop": "off",
+        "no-underscore-dangle": "off",
+        "no-unmodified-loop-condition": "off",
+        "no-unused-vars": "off",
+        "typescript/no-explicit-any": "off",
+        "unicorn/prefer-node-protocol": "off"
+      }
+    }
+  ]
+}

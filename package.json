@@ -1,0 +1,50 @@
+{
+  "name": "nuxt-supabase-starter",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "db:reset": "supabase db reset",
+    "db:types": "supabase gen types typescript --local --schema public > app/types/database.types.ts",
+    "dev": "nuxt dev",
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check",
+    "generate": "nuxt generate",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "lint:i18n": "node --experimental-strip-types --no-warnings scripts/check-i18n.ts",
+    "lint:i18n-keys": "node --experimental-strip-types --no-warnings scripts/check-i18n.ts --keys",
+    "postinstall": "nuxt prepare",
+    "preview": "nuxt preview",
+    "supabase": "supabase",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "typecheck": "nuxt typecheck"
+  },
+  "dependencies": {
+    "@nuxt/ui": "^4.9.0",
+    "@nuxtjs/i18n": "^10.4.1",
+    "@nuxtjs/supabase": "^2.0.9",
+    "@pinia/nuxt": "^0.11.3",
+    "consola": "^3.4.2",
+    "nuxt": "^4.4.8",
+    "pinia": "^3.0.4",
+    "vue": "^3.5.39",
+    "vue-router": "^5.1.0"
+  },
+  "devDependencies": {
+    "@iconify-json/lucide": "^1.2.116",
+    "@playwright/test": "1.61.1",
+    "@supabase/supabase-js": "^2.110.2",
+    "@types/node": "^26.1.1",
+    "oxfmt": "^0.58.0",
+    "oxlint": "^1.73.0",
+    "supabase": "^2.109.1",
+    "tsx": "^4.23.0",
+    "typescript": "~5.9.3",
+    "vitest": "^4.1.10",
+    "vue-i18n-extract": "^2.0.7",
+    "vue-tsc": "^3.3.7"
+  }
+}

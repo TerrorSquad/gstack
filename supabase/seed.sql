@@ -1,0 +1,3 @@
+-- Runs after migrations on `pnpm db:reset`. Add demo rows here if you want them.
+-- Profiles are created by the handle_new_user trigger on signup, so seeding a
+-- usable account means inserting into auth.users too — left out of the starter.

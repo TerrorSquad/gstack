@@ -1,0 +1,32 @@
+# Nuxt dev/build outputs
+.output
+.data
+.nuxt
+.nitro
+.cache
+dist
+
+# Node dependencies
+node_modules
+.pnpm-store
+
+# Logs
+logs
+*.log
+
+# Misc
+.DS_Store
+.idea
+
+# Local env files
+.env
+.env.*
+!.env.example
+
+# Playwright
+e2e/.auth.json
+playwright-report/
+test-results/
+.playwright-browsers/
+
+supabase/.temp

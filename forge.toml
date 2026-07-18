@@ -1,0 +1,53 @@
+[hooks.pre-commit]
+enabled = true
+
+[hooks.pre-commit.tools.oxfmt]
+command = "oxfmt"
+args = ["--no-error-on-unmatched-pattern"]
+type = "node"
+restage = true
+group = "format"
+
+[hooks.pre-commit.tools.oxlint]
+command = "oxlint"
+args = ["--no-error-on-unmatched-pattern"]
+extensions = [".js", ".mjs", ".cjs", ".ts", ".vue"]
+type = "node"
+restage = true
+group = "format"
+
+[hooks.pre-commit.tools.flatten-json]
+command = "node"
+args = ["--experimental-strip-types", "--no-warnings", "scripts/flatten-json.ts"]
+type = "system"
+extensions = [".json"]
+include_patterns = ["i18n/locales/**"]
+pass_files = true
+restage = true
+group = "format"
+
+[hooks.pre-commit.tools.lint-i18n]
+command = "node"
+args = ["--experimental-strip-types", "--no-warnings", "scripts/check-i18n.ts"]
+type = "system"
+group = "lint"
+
+[hooks.commit-msg]
+enabled = true
+
+[hooks.commit-msg.policy]
+conventional_commits = true
+require_ticket = false
+
+[hooks.pre-push]
+enabled = true
+
+[hooks.pre-push.tools.test]
+command = "vitest"
+args = ["run"]
+type = "node"
+
+[hooks.pre-push.tools.typecheck]
+command = "nuxt"
+args = ["typecheck"]
+type = "node"

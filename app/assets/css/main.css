@@ -1,0 +1,214 @@
+@import 'tailwindcss';
+@import '@nuxt/ui';
+
+@theme {
+  /* Single typeface across the system (DESIGN.md). font-heading kept as an
+     alias so existing component classes don't need touching. */
+  --font-sans: 'Hanken Grotesk', sans-serif;
+  --font-heading: 'Hanken Grotesk', sans-serif;
+}
+
+/* Brand palette (DESIGN.md "Vibrant Emerald") — 500 is the brand action
+   color #00C887; darker steps walk toward the #006c47 primary. */
+@theme static {
+  --color-brand-50: oklch(0.97 0.03 162);
+  --color-brand-100: oklch(0.94 0.06 162);
+  --color-brand-200: oklch(0.89 0.1 162);
+  --color-brand-300: oklch(0.83 0.14 162);
+  --color-brand-400: oklch(0.78 0.16 162);
+  --color-brand-500: #00c887;
+  --color-brand-600: oklch(0.63 0.16 162);
+  --color-brand-700: #006c47;
+  --color-brand-800: oklch(0.42 0.11 162);
+  --color-brand-900: oklch(0.35 0.085 162);
+  --color-brand-950: oklch(0.27 0.06 162);
+}
+
+h1,
+h2,
+h3,
+.font-heading {
+  font-family: var(--font-heading);
+}
+
+/* prettier-ignore */
+@source inline("{bg,text,border}-{green,blue,violet,rose,orange,cyan}-{50,100,200,300,400,500,600,700,800,900,950}");
+
+/* Single design language — soft, low-contrast surfaces with a thin border
+   and a gentle shadow that lifts slightly on hover. See DESIGN.md. */
+:root {
+  --ui-radius: 0.25rem;
+  --ui-bg: #fbfaf6;
+  --ui-bg-elevated: #ffffff;
+  --ui-bg-muted: #f3f4f6;
+  --ui-border: #e5e7eb;
+  /* DESIGN.md pins warning to amber-400 (#FBBF24), not Nuxt UI's default amber-500. */
+  --ui-color-warning-500: #fbbf24;
+  --surface-border-color: var(--ui-border);
+  /* DESIGN.md: one diffused ambient shadow; hover lifts it slightly. */
+  --surface-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  --surface-shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+
+  /* Leave-type & status semantic tokens — alias into Nuxt UI pallete */
+  --accent: var(--ui-color-primary-500);
+  --accent-soft: var(--ui-color-primary-50);
+  --accent-strong: var(--ui-color-primary-700);
+  --sick: var(--ui-color-error-500);
+  --sick-soft: var(--ui-color-error-50);
+  --paid: var(--ui-color-warning-500);
+  --paid-soft: var(--ui-color-warning-50);
+  --pending: var(--ui-color-warning-500);
+  --pending-soft: var(--ui-color-warning-50);
+  --approved: var(--ui-color-success-500);
+  --approved-soft: var(--ui-color-success-50);
+  --success-soft: var(--ui-color-success-50);
+  --success-strong: var(--ui-color-success-700);
+  --warning-soft: var(--ui-color-warning-50);
+  --warning-strong: var(--ui-color-warning-700);
+  --error-soft: var(--ui-color-error-50);
+  --error-strong: var(--ui-color-error-700);
+  --unpaid: var(--ui-color-neutral-400);
+  --unpaid-soft: var(--ui-color-neutral-100);
+  /* -strong text variants for leave-type tokens whose -500 hue on a -soft tint
+     fails AA (used for avatar initials, see RequestsView). Light mode only. */
+  --sick-strong: var(--ui-color-error-700);
+  --paid-strong: var(--ui-color-warning-700);
+  --unpaid-strong: var(--ui-color-neutral-700);
+}
+
+/* Colored TEXT (badge/label/status text) uses the semantic -500 hue, which is
+   too light on white or a /10 tint to pass WCAG AA (~1.5–3.6:1). Redirect the
+   text utilities to the -700 step in light mode only; the solid brand-green
+   FILL (bg-primary buttons) is untouched — text and fill share --ui-{color},
+   so we override the text utility directly instead of the shared var.
+   Scoped to light mode: -700 would be too dark on dark surfaces. */
+:root:not(.dark) {
+  /* Secondary text: Nuxt UI's light-mode defaults (neutral-400/-500) sit at
+     ~2.6:1 on white — below WCAG AA (4.5:1). Bump to a darker neutral so
+     dimmed/muted labels pass. Dark mode keeps Nuxt UI's defaults. */
+  --ui-text-dimmed: var(--ui-color-neutral-600);
+  --ui-text-muted: var(--ui-color-neutral-600);
+
+  .text-primary,
+  [data-state='active'].data-\[state\=active\]\:text-primary {
+    color: var(--ui-color-primary-800);
+  }
+  .text-success {
+    color: var(--ui-color-success-800);
+  }
+  .text-warning {
+    color: var(--ui-color-warning-800);
+  }
+  .text-error {
+    color: var(--ui-color-error-700);
+  }
+
+  /* Solid buttons render white text on the -500 fill, which fails AA for
+     white text (2.1–2.2:1). Darken the fill to the -700 step in light mode so
+     the label passes; this keeps the brand hue and matches the darker primary
+     (#006c47) already used for the FAB. Buttons only; soft badges use a
+     tinted bg-{color} at low opacity and are handled separately. */
+  :is(button, a).bg-primary {
+    background-color: var(--ui-color-primary-700);
+  }
+  :is(button, a).bg-success {
+    background-color: var(--ui-color-success-700);
+  }
+  :is(button, a).bg-error {
+    background-color: var(--ui-color-error-700);
+  }
+  :is(button, a).bg-warning {
+    background-color: var(--ui-color-warning-700);
+  }
+}
+
+.dark {
+  /* Nuxt UI's default dark-mode --ui-border is neutral-800 — the same
+     shade as --ui-bg-elevated/--ui-bg-muted, so structural dividers
+     (sidebar/panel border, navbar bottom border, table row borders)
+     are nearly invisible against the (now color-tinted) dark
+     background. Bump it to a lighter neutral so default borders keep
+     real contrast in dark mode; light mode's neutral-200 already
+     contrasts fine against white. */
+  /* Neutral (untinted) dark surfaces to match the design's near-black canvas
+     instead of a blue cast. */
+  --ui-bg: #15171d;
+  --ui-bg-elevated: #1e2127;
+  --ui-bg-muted: oklch(0.27 0 0);
+  --ui-border: var(--ui-color-neutral-600);
+  --surface-shadow: 0 1px 2px rgb(0 0 0 / 0.3);
+  --surface-shadow-hover: 0 12px 34px rgb(0 0 0 / 0.5);
+
+  /* Secondary text: Nuxt UI's dark defaults (dimmed=neutral-500,
+     muted=neutral-400) sit at ~3.4–3.8:1 on the near-black canvas — below AA.
+     Lift both to neutral-300 so dimmed/muted labels pass in dark mode. */
+  --ui-text-dimmed: var(--ui-color-neutral-300);
+  --ui-text-muted: var(--ui-color-neutral-300);
+
+  /* Soft tokens shift to darker shades in dark mode */
+  --accent-soft: var(--ui-color-primary-900);
+  --sick-soft: var(--ui-color-error-900);
+  --paid-soft: var(--ui-color-warning-900);
+  --pending-soft: var(--ui-color-warning-900);
+  --approved-soft: var(--ui-color-success-900);
+  --unpaid-soft: var(--ui-color-neutral-800);
+  --success-soft: var(--ui-color-success-900);
+  --warning-soft: var(--ui-color-warning-900);
+  --error-soft: var(--ui-color-error-900);
+
+  /* -strong text tokens are the readable text color ON a -soft tint. In light
+     mode -soft is a pale tint so -strong is a dark hue (-700); in dark mode
+     -soft is a -900 (dark) tint, so -strong must be a LIGHT hue (-300) to pass
+     contrast — otherwise dark-on-dark avatar initials/badges fail AA. */
+  --accent-strong: var(--ui-color-primary-300);
+  --sick-strong: var(--ui-color-error-300);
+  --paid-strong: var(--ui-color-warning-300);
+  --unpaid-strong: var(--ui-color-neutral-300);
+  --success-strong: var(--ui-color-success-300);
+  --warning-strong: var(--ui-color-warning-300);
+  --error-strong: var(--ui-color-error-300);
+}
+
+.surface-border {
+  border-width: 1px;
+  border-color: var(--surface-border-color);
+}
+
+.surface-shadow {
+  box-shadow: var(--surface-shadow);
+  transition:
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
+}
+
+.surface-shadow:hover {
+  box-shadow: var(--surface-shadow-hover);
+}
+
+/* DESIGN.md: interactive surfaces lift with a subtle 1.01x scale on hover. */
+button.surface-shadow:hover,
+a.surface-shadow:hover,
+[role='button'].surface-shadow:hover {
+  transform: scale(1.01);
+}
+
+/* Remove 300ms tap delay on touch devices */
+a,
+button,
+[role='button'],
+input,
+label,
+select,
+summary,
+textarea {
+  touch-action: manipulation;
+}
+
+/* Prevent iOS from auto-zooming focused inputs (requires font-size ≥ 16px) */
+@media screen and (max-width: 639px) {
+  input:not([type='checkbox']):not([type='radio']):not([type='range']),
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
