@@ -20,11 +20,8 @@ const fix = (text: string): ChangelogHighlight => ({ kind: 'fix', text })
 // user language, not commit-speak. See the `changelog` skill.
 export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
   {
-    date: '2026-07-18',
-    title: 'Welcome to the starter',
-    highlights: [
-      feature('Sign in, register your organisation, and manage notes.'),
-      feature('Switch between light and dark themes and English or Serbian.'),
-    ],
+    date: '2026-07-19',
+    title: 'Initial release',
+    highlights: [feature('First release.')],
   },
 ]

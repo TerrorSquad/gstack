@@ -5,6 +5,9 @@ Nuxt 4, Supabase (Postgres + Auth), Nuxt UI v4, i18n (English + Serbian), plus
 observability, notifications, seeding, and release tooling wired up. One example
 CRUD (`notes`) shows the pattern to copy for your own domain.
 
+> **Using this as a template?** Click **"Use this template"** on GitHub, then
+> follow [`SETUP.md`](SETUP.md) — one rename command and env setup and it's yours.
+
 ## What's included
 
 - **Auth** — email/password + social login (GitHub, Google via Supabase OAuth),

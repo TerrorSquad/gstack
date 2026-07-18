@@ -15,21 +15,23 @@ schema, notes example CRUD, in-app + email notifications, observability
 (Sentry/BetterStack/Vercel), faker seeding, i18n (en/sr), Vitest + Playwright +
 axe, release-please + user changelog, security headers, in-memory rate limiter.
 
-## Phase 1 — Template-ready 🔜
+## Phase 1 — Template-ready ✅
 
 Make the repo a clean GitHub template (see [ADR-0004](./adr/0004-distribution-github-template.md)).
 
-- [ ] `LICENSE` (MIT), `CONTRIBUTING.md`, issue/PR templates in `.github/`.
-- [ ] `SETUP.md` + a one-shot rename script (`Starter` → app name, favicon,
-      brand palette, `siteUrl`) so a fresh clone is yours in minutes.
-- [ ] Verify a from-template bootstrap: `pnpm i && supabase start && db:reset && dev`.
-- [ ] Reset `.release-please-manifest.json`/version and empty the user changelog
-      to a single "Initial release" entry.
-- [ ] Mark the GitHub repo as a template; document "Use this template".
+- [x] `LICENSE` (MIT), `CONTRIBUTING.md`, issue/PR templates in `.github/`.
+- [x] `SETUP.md` + a one-shot rename script (`scripts/rename.mjs`: name,
+      package, `siteUrl`; palette/favicon left as documented manual steps).
+- [x] Verify a from-template bootstrap: `pnpm i && supabase start && db:reset && dev`.
+- [x] Reset version (`0.1.0`) + manifest and reduce the user changelog to a
+      single "Initial release" entry.
+- [x] Document "Use this template" (README + `SETUP.md`). *Flipping the GitHub
+      "Template repository" setting happens once the repo is pushed to GitHub —
+      no remote yet.*
 
-**Acceptance:** a new repo from the template runs locally with only env setup.
+**Acceptance:** a new repo from the template runs locally with only env setup. ✅
 
-## Phase 2 — Marketing surface ⬜
+## Phase 2 — Marketing surface 🔜
 
 A SaaS needs a front door; today `/` redirects to login.
 
