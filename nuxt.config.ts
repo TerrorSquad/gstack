@@ -4,22 +4,23 @@ const { version } = JSON.parse(readFileSync('./package.json', 'utf-8'))
 
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
-  // DevTools injects an on-page timing badge (closed shadow root) that pollutes
-  // screenshot baselines. Off for the SCREENSHOTS=1 capture build.
-  devtools: { enabled: process.env.SCREENSHOTS !== '1' },
+  devtools: { enabled: true },
   modules: [
     '@nuxt/ui',
     '@pinia/nuxt',
     '@nuxtjs/supabase',
     '@nuxtjs/i18n',
     '@sentry/nuxt/module',
-    // Vercel telemetry: no-op off Vercel, and Speed Insights paints a debug
-    // badge + 404s on /_vercel/*.js that pollute screenshot baselines.
-    ...(process.env.SCREENSHOTS === '1' ? [] : ['@vercel/speed-insights', '@vercel/analytics']),
+    // Vercel telemetry: no-op off Vercel.
+    '@vercel/speed-insights',
+    '@vercel/analytics',
   ],
   css: ['~/assets/css/main.css'],
   fonts: {
-    families: [{ name: 'Hanken Grotesk', provider: 'google' }],
+    families: [
+      { name: 'Inter', provider: 'google' },
+      { name: 'Space Grotesk', provider: 'google' },
+    ],
   },
   supabase: {
     redirect: false,
@@ -30,7 +31,7 @@ export default defineNuxtConfig({
       { code: 'sr', language: 'sr-Latn', name: 'Srpski', file: 'sr.json' },
       { code: 'en', language: 'en', name: 'English', file: 'en.json' },
     ],
-    defaultLocale: 'sr',
+    defaultLocale: 'en',
     strategy: 'no_prefix',
     detectBrowserLanguage: false,
   },

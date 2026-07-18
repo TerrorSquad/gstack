@@ -1,7 +1,7 @@
 # Nuxt + Supabase Starter
 
 A batteries-included starting point for a multi-tenant, role-aware SSR app:
-Nuxt 4, Supabase (Postgres + Auth), Nuxt UI v4, i18n (Serbian + English), plus
+Nuxt 4, Supabase (Postgres + Auth), Nuxt UI v4, i18n (English + Serbian), plus
 observability, notifications, seeding, and release tooling wired up. One example
 CRUD (`notes`) shows the pattern to copy for your own domain.
 
@@ -21,7 +21,7 @@ CRUD (`notes`) shows the pattern to copy for your own domain.
 - **Seeding** — `pnpm seed` builds a demo tenant (admin + members + notes) with
   `@faker-js/faker`. Idempotent; wipes the `@example.com` demo domain first.
 - **i18n** — `sr` (default) + `en`, parity-checked in CI.
-- **Testing** — vitest (pure logic) + Playwright (e2e, a11y via axe, visual regression).
+- **Testing** — vitest (pure logic) + Playwright (e2e + a11y via axe, both themes).
 - **CI/release** — GitHub Actions (lint/test/typecheck, scheduled a11y, PR visual
   regression) + release-please + a user-facing `/changelog`.
 
@@ -47,9 +47,7 @@ and typecheck work before Supabase is up. Run `pnpm db:types` to regenerate it.
 ```bash
 pnpm dev / build / preview
 pnpm test              # vitest unit tests
-pnpm test:e2e          # Playwright (needs seeded local Supabase)
-pnpm screenshots       # visual regression (baselines are Linux-only)
-pnpm screenshots:update  # regenerate baselines via Docker
+pnpm test:e2e          # Playwright e2e + a11y (needs seeded local Supabase)
 pnpm lint / fmt
 pnpm lint:i18n / lint:i18n-keys
 pnpm db:reset          # reset local DB + migrate + seed
@@ -71,12 +69,12 @@ update public.profiles set role = 'admin' where email = 'you@example.com';
   and `NUXT_NOTIFICATION_WEBHOOK_SECRET`, then add a Supabase DB webhook on
   `notifications` INSERT → POST `/api/hooks/notification-email` with the secret header.
 - **Sentry**: set `NUXT_PUBLIC_SENTRY_DSN` (+ org/project in `nuxt.config.ts`).
-- **Screenshots**: no baselines are committed yet — run `pnpm screenshots:update`
-  once (needs Docker + seeded Supabase) and commit the `*-linux.png` files.
 
 ## Notes
 
-- Auth email templates (`supabase/templates/*.html`) are Serbian with placeholder
-  branding — swap them for yours before shipping.
+- Everything is generic ("Starter" branding, indigo theme) — rename in `AppLogo.vue`,
+  `app.vue`, `app/assets/css/main.css` (brand palette), and `supabase/templates/*.html`.
+- Auth email templates (`supabase/templates/*.html`) carry placeholder branding —
+  swap them for yours before shipping.
 - `CHANGELOG.md` is release-please's (never hand-edit). The user-facing changelog
   is `app/utils/changelog.ts` → `/changelog`; see the `changelog` skill.

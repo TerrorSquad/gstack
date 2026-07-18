@@ -249,17 +249,17 @@ otp_expiry = 3600
 # sender_name = "Admin"
 
 [auth.email.template.confirmation]
-subject = "Potvrdite email adresu — moj·GO"
+subject = "Confirm your email"
 content_path = "./supabase/templates/confirmation.html"
 
 # Password reset. The template is ready, but no mail is sent until the app calls
 # resetPasswordForEmail — the forgot/reset-password flow isn't built yet.
 [auth.email.template.recovery]
-subject = "Resetovanje lozinke — moj·GO"
+subject = "Reset your password"
 content_path = "./supabase/templates/recovery.html"
 
 [auth.email.template.invite]
-subject = "Pozvani ste u moj·GO"
+subject = "You've been invited to Starter"
 content_path = "./supabase/templates/invite.html"
 
 # Uncomment to customize notification email template

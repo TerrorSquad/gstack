@@ -1,153 +1,35 @@
 <!doctype html>
-<html lang="sr">
+<html lang="en">
   <body
-    style="
-      margin: 0;
-      padding: 0;
-      background: #f3f4f6;
-      font-family:
-        -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      color: #111827;
-    "
+    style="margin: 0; padding: 0; background: #f1f5f9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #0f172a"
   >
-    <!-- ponytail: table layout + inline styles because email clients (Outlook/Gmail) ignore <style> and flexbox -->
-    <table
-      role="presentation"
-      width="100%"
-      cellpadding="0"
-      cellspacing="0"
-      style="background: #f3f4f6; padding: 24px 0"
-    >
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background: #f1f5f9; padding: 24px 0">
       <tr>
         <td align="center">
-          <table
-            role="presentation"
-            width="520"
-            cellpadding="0"
-            cellspacing="0"
-            style="max-width: 520px; width: 100%"
-          >
-            <!-- brand -->
+          <table role="presentation" width="520" cellpadding="0" cellspacing="0" style="max-width: 520px; width: 100%; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px">
             <tr>
-              <td
-                align="center"
-                style="
-                  padding: 8px 0 20px;
-                  font-size: 20px;
-                  font-weight: 800;
-                  letter-spacing: -0.02em;
-                  color: #059669;
-                "
-              >
-                moj·GO
+              <td style="padding: 24px 32px; text-align: center">
+                <span style="color: #4f46e5; font-weight: 700; font-size: 18px">Starter</span>
               </td>
             </tr>
-            <!-- hero badge -->
             <tr>
-              <td align="center" style="padding: 8px 0 20px">
-                <table role="presentation" cellpadding="0" cellspacing="0">
-                  <tr>
-                    <td
-                      style="
-                        width: 72px;
-                        height: 72px;
-                        background: #ffffff;
-                        border: 1px solid #e5e7eb;
-                        border-radius: 50%;
-                        text-align: center;
-                        vertical-align: middle;
-                        font-size: 32px;
-                        line-height: 72px;
-                        color: #059669;
-                      "
-                    >
-                      &#9993;
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-            <!-- card -->
-            <tr>
-              <td
-                style="
-                  background: #ffffff;
-                  border-radius: 16px;
-                  border: 1px solid #e5e7eb;
-                  padding: 36px 32px;
-                "
-              >
-                <h1 style="margin: 0 0 12px; font-size: 24px; font-weight: 700; color: #111827">
-                  Pozvani ste u moj·GO
-                </h1>
-                <p style="margin: 0 0 28px; font-size: 15px; line-height: 1.6; color: #4b5563">
-                  Vaša firma vas je dodala u <strong style="color: #059669">moj·GO</strong> —
-                  aplikaciju za upravljanje odsustvima i godišnjim odmorima. Kliknite ispod da
-                  postavite lozinku i aktivirate svoj nalog.
-                </p>
-                <!-- action button -->
-                <table role="presentation" cellpadding="0" cellspacing="0">
-                  <tr>
-                    <td style="border-radius: 10px; background: #059669">
-                      <a
-                        href="{{ .ConfirmationURL }}"
-                        style="
-                          display: inline-block;
-                          padding: 15px 36px;
-                          font-size: 16px;
-                          font-weight: 600;
-                          color: #ffffff;
-                          text-decoration: none;
-                          border-radius: 10px;
-                        "
-                      >
-                        Aktiviraj nalog &#8594;
-                      </a>
-                    </td>
-                  </tr>
-                </table>
-                <!-- divider -->
-                <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-                  <tr>
-                    <td
-                      style="border-top: 1px solid #f3f4f6; padding-top: 24px; margin-top: 28px"
-                    ></td>
-                  </tr>
-                </table>
-                <p
-                  style="
-                    margin: 0 0 12px;
-                    font-size: 13px;
-                    line-height: 1.6;
-                    color: #6b7280;
-                    font-style: italic;
-                  "
-                >
-                  Ako ne očekujete ovaj poziv, slobodno zanemarite ovaj email.
-                </p>
-                <p style="margin: 0 0 8px; font-size: 13px; color: #6b7280">
-                  Ako dugme ne radi, kopirajte ovaj link u pregledač:
-                </p>
-                <p style="margin: 0; font-size: 13px; word-break: break-all">
-                  <a href="{{ .ConfirmationURL }}" style="color: #059669">{{ .ConfirmationURL }}</a>
+              <td style="padding: 0 32px; text-align: center">
+                <div style="display: inline-block; width: 56px; height: 56px; line-height: 56px; border-radius: 50%; background: #eef2ff; color: #4f46e5; font-size: 26px">✉</div>
+                <h1 style="margin: 16px 0 8px; font-size: 20px; color: #0f172a">You've been invited</h1>
+                <p style="margin: 0 0 8px; color: #475569; font-size: 14px">
+                  You've been invited to join Starter. Accept the invitation below to set your password and get started.
                 </p>
               </td>
             </tr>
-            <!-- security note -->
             <tr>
-              <td align="center" style="padding: 20px 0 8px; font-size: 12px; color: #9ca3af">
-                &#128737; Bezbedna enkripcija aktivna
+              <td style="padding: 24px 32px; text-align: center">
+                <a href="{{ .ConfirmationURL }}" style="display: inline-block; background: #4f46e5; color: #ffffff; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; font-size: 14px">Accept invitation</a>
               </td>
             </tr>
-            <!-- footer -->
             <tr>
-              <td align="center" style="padding: 16px">
-                <div style="font-size: 16px; font-weight: 800; color: #059669; margin-bottom: 10px">
-                  moj·GO
-                </div>
-                <div style="font-size: 12px; line-height: 1.6; color: #9ca3af">
-                  © 2026 moj·GO. Upravljanje odsustvima zaposlenih.
-                </div>
+              <td style="padding: 0 32px 24px; text-align: center">
+                <span style="color: #4f46e5; font-weight: 700; font-size: 14px">Starter</span>
+                <p style="margin: 6px 0 0; color: #94a3b8; font-size: 11px">If you weren't expecting this invitation, you can ignore this email.</p>
               </td>
             </tr>
           </table>

@@ -7,17 +7,10 @@ export default defineConfig({
   workers: process.env.CI ? 2 : 1,
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? [['list'], ['html', { open: 'never' }]] : 'list',
-  expect: {
-    timeout: 15_000,
-    // Renders are byte-deterministic in the Docker capture image; keep the floor
-    // tight so a small overlay can't hide a real regression.
-    toHaveScreenshot: { maxDiffPixelRatio: 0.001 },
-  },
+  expect: { timeout: 15_000 },
   use: {
     baseURL: 'http://localhost:3010',
     trace: 'retain-on-failure',
-    // Specs assert against the default (Serbian) UI.
-    locale: 'sr',
   },
   projects: [
     { name: 'setup', testMatch: /global\.setup\.ts/ },
@@ -31,19 +24,6 @@ export default defineConfig({
       name: 'a11y',
       testMatch: /a11y\.spec\.ts/,
       use: { ...devices['Desktop Chrome'], storageState: 'e2e/.auth.json' },
-      dependencies: ['setup'],
-    },
-    {
-      // Visual regression — run via `pnpm screenshots`, not the normal suite.
-      name: 'screenshots-desktop',
-      testMatch: /screenshots\.spec\.ts/,
-      use: { ...devices['Desktop Chrome'], storageState: 'e2e/.auth.json' },
-      dependencies: ['setup'],
-    },
-    {
-      name: 'screenshots-mobile',
-      testMatch: /screenshots\.spec\.ts/,
-      use: { ...devices['Pixel 7'], storageState: 'e2e/.auth.json' },
       dependencies: ['setup'],
     },
   ],

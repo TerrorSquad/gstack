@@ -63,16 +63,15 @@ live in `scripts/seed/fixtures.ts` (shared with e2e). `SEED_FAST=1` = minimal se
 
 - `**/*.test.ts` (vitest) — pure logic only, no DOM/Supabase.
 - `e2e/*.spec.ts` (Playwright) — full flows against seeded local Supabase.
-  Projects: `chromium` (public smoke), `a11y` (axe), `screenshots-*` (visual
-  regression). A new spec runs only once added to a project's `testMatch`.
-- Screenshot baselines are Linux-only — generate via `pnpm screenshots:update`
-  (Docker) and commit the `*-linux.png` files. None are committed yet.
+  Projects: `chromium` (public smoke) and `a11y` (axe, both themes). A new spec
+  runs only once added to a project's `testMatch`.
 
 ## i18n
 
-Add every new key to **both** `i18n/locales/{sr,en}.json` (flat dot-keys), then
-`pnpm lint:i18n`. Serbian is source of truth. Build dynamic keys with template
-literals (`` `common.role.${x}` ``) so the key-usage checker resolves them.
+`en` is the default locale, `sr` the alternate. Add every new key to **both**
+`i18n/locales/{en,sr}.json` (flat dot-keys), then `pnpm lint:i18n`. Build dynamic
+keys with template literals (`` `common.role.${x}` ``) so the key-usage checker
+resolves them.
 
 ## Changelog
 
