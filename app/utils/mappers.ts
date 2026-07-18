@@ -6,7 +6,7 @@ import type { Tables } from '~/types/database.types'
 type TenantRow = Pick<Tables<'tenants'>, 'id' | 'name'>
 type ProfileRow = Pick<
   Tables<'profiles'>,
-  'id' | 'tenant_id' | 'full_name' | 'email' | 'role' | 'created_at'
+  'id' | 'tenant_id' | 'full_name' | 'email' | 'role' | 'avatar_url' | 'created_at'
 >
 type NoteRow = Pick<
   Tables<'notes'>,
@@ -28,6 +28,7 @@ export function mapProfile(row: ProfileRow): Profile {
     fullName: row.full_name,
     email: row.email,
     role: row.role,
+    avatarUrl: row.avatar_url,
     createdAt: row.created_at,
   }
 }

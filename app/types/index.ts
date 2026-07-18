@@ -13,6 +13,7 @@ export interface Profile {
   fullName: string
   email: string
   role: Role
+  avatarUrl: string | null
   createdAt: string
 }
 

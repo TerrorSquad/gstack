@@ -101,7 +101,12 @@ const pageTitle = computed(() => {
             :class="collapsed ? 'justify-center' : 'justify-between'"
           >
             <div class="flex min-w-0 flex-1 items-center gap-2.5">
-              <UAvatar :alt="auth.profile?.fullName" size="sm" class="shrink-0" />
+              <UAvatar
+                :src="auth.profile?.avatarUrl ?? undefined"
+                :alt="auth.profile?.fullName"
+                size="sm"
+                class="shrink-0"
+              />
               <div v-if="!collapsed" class="flex min-w-0 flex-col text-left leading-none">
                 <span class="truncate text-sm font-semibold">{{ auth.profile?.fullName }}</span>
                 <ULink to="/changelog" class="mt-1 truncate text-[11px] text-muted hover:text-default">

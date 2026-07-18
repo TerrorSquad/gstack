@@ -48,18 +48,28 @@ landing page instead of a redirect.
 **Acceptance:** unauthenticated visitors get a real marketing site. ✅ (Run
 Lighthouse in CI to confirm SEO ≥ 95 on your deploy URL.)
 
-## Phase 3 — Account & admin 🔜
+## Phase 3 — Account & admin ✅
 
 Close the operational gaps vs. commercial kits.
 
-- [ ] Account: avatar upload (Supabase Storage), change email/password,
-      **delete account** (GDPR self-service).
-- [ ] Admin: user management table, role changes, **impersonation**, ban/unban.
-- [ ] Waitlist: capture + invite flow (reuses the invite pattern).
+- [x] Account: avatar upload (Supabase Storage bucket + RLS), change email +
+      password, **delete account** (GDPR, service-role route).
+- [x] Admin: member table with role changes, ban/unban (native Supabase ban),
+      **impersonation** (magic link), and remove-member — all admin-gated,
+      same-tenant-checked server routes with self-mutation guards.
+- [x] **Team invites** instead of a global waitlist: an admin invites by email;
+      `handle_new_user` reads the `tenant_id` metadata so the invitee joins the
+      inviting tenant as a member (a global waitlist doesn't fit the tenant model).
 
-**Acceptance:** an admin can manage members; a user can fully self-serve their account.
+**Acceptance:** an admin can manage members; a user can fully self-serve their
+account. ✅ (Actions verified end-to-end incl. self-guards.)
 
-## Phase 4 — Billing ⬜ (unblocked; see [ADR-0001](./adr/0001-payments-provider.md))
+> Auth note: `serverSupabaseUser()` returns null in this module version — server
+> routes resolve the user via `serverSupabaseClient(event).auth.getUser()`, and
+> client→internal-API data loads use `useFetch` (not `useAsyncData`+`$fetch`) so
+> the auth cookie is forwarded on SSR.
+
+## Phase 4 — Billing 🔜 (unblocked; see [ADR-0001](./adr/0001-payments-provider.md))
 
 Provider-agnostic billing; **Polar** as the first (Serbia-compatible) implementation.
 
