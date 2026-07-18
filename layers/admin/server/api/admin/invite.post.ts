@@ -1,4 +1,3 @@
-import { requireAdmin } from '../../utils/requireAdmin'
 
 // Invite someone to the admin's tenant. inviteUserByEmail emails a link (via
 // GoTrue) and stamps tenant_id into user metadata; handle_new_user reads it and

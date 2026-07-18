@@ -32,6 +32,14 @@ pnpm lint:i18n       # locale key parity
 pnpm typecheck
 ```
 
+## Project structure
+
+Organized with **Nuxt Layers** (see [ADR-0005](docs/adr/0005-nuxt-layers.md)): the
+root is the shared base; features live in `layers/<name>/`. To add a feature,
+create `layers/<name>/` with a `nuxt.config.ts` and its `app/`/`server/` subtree,
+then add it to `extends` in the root `nuxt.config.ts`. From a layer, use
+auto-imports (not `~/…`) for shared code, and `#shared/types` for types.
+
 ## Conventions
 
 - **Commits: [Conventional Commits](https://www.conventionalcommits.org/)**

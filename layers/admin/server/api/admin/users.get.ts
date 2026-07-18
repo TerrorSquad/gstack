@@ -1,4 +1,3 @@
-import { requireAdmin } from '../../utils/requireAdmin'
 
 // Lists the admin's tenant members with their ban status (from auth.users, only
 // reachable via the service role — hence a server route, not a client query).

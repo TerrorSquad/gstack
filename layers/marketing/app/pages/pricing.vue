@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { PLANS } from '~/utils/plans'
-import { formatPrice } from '~/utils/formatNumber'
+// PLANS (this layer) and formatPrice (root) are both auto-imported.
 
 definePageMeta({ public: true, layout: 'marketing' })
 

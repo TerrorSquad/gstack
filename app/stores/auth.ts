@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-import type { Profile } from '~/types'
+import type { Profile } from '#shared/types'
 
 import { mapProfile } from '~/utils/mappers'
 

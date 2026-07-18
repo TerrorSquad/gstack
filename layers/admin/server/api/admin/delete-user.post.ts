@@ -1,4 +1,3 @@
-import { assertSameTenant, requireAdmin } from '../../utils/requireAdmin'
 
 // Remove a tenant member. Deleting the auth user cascades their profile + notes.
 export default defineEventHandler(async (event) => {

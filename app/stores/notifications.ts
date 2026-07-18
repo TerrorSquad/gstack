@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-import type { Notification } from '~/types'
+import type { Notification } from '#shared/types'
 
 import { mapNotification } from '~/utils/mappers'
 

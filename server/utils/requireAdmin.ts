@@ -1,6 +1,6 @@
 import type { H3Event } from 'h3'
 
-import type { Database } from '~/types/database.types'
+import type { Database } from '#shared/types/database.types'
 
 import { serverSupabaseClient, serverSupabaseServiceRole } from '#supabase/server'
 

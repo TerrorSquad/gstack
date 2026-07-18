@@ -1,4 +1,3 @@
-import { assertSameTenant, requireAdmin } from '../../utils/requireAdmin'
 
 // Support impersonation: returns a one-time magic link that signs the caller in
 // AS the target member. Opening it replaces the current session, so open it in a

@@ -47,7 +47,9 @@ choices are recorded as [ADRs](./adr/).
 - **Drizzle ORM** — generated types already give end-to-end safety; adopt only
   when server-side query complexity demands it ([ADR-0002](./adr/0002-data-layer.md)).
 - **Direct Stripe** — not available to Serbian sellers; Polar (MoR) is used instead.
-- **Monorepo / Nuxt layers** — single app until a second deployable exists (YAGNI).
+- **Monorepo** — a single deployable for now; a monorepo waits until a second app
+  exists (YAGNI). Note: in-repo **Nuxt Layers** ARE used for feature organization
+  ([ADR-0005](./adr/0005-nuxt-layers.md)) — that's not a monorepo.
 
 ## How it compares
 

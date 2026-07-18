@@ -1,6 +1,5 @@
-import type { Note } from '~/types'
+import type { Note } from '#shared/types'
 
-import { mapNote } from '~/utils/mappers'
 
 // Notes CRUD, RLS-scoped to the current user by the DB (see the notes_owner_all
 // policy). This is the pattern to copy for your own resources: a composable with

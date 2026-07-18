@@ -1,5 +1,5 @@
-import type { Note, Notification, Profile, Tenant } from '~/types'
-import type { Tables } from '~/types/database.types'
+import type { Note, Notification, Profile, Tenant } from '#shared/types'
+import type { Tables } from '#shared/types/database.types'
 
 // Each mapper accepts a Pick of exactly the columns it reads, so a query that
 // under-selects fails at typecheck instead of silently producing undefined.

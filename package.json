@@ -6,7 +6,7 @@
   "scripts": {
     "build": "nuxt build",
     "db:reset": "supabase db reset && pnpm seed",
-    "db:types": "supabase gen types typescript --local --schema public > app/types/database.types.ts",
+    "db:types": "supabase gen types typescript --local --schema public > shared/types/database.types.ts",
     "dev": "nuxt dev",
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",

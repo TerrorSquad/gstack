@@ -1,4 +1,3 @@
-import { assertSameTenant, requireAdmin } from '../../utils/requireAdmin'
 
 // Change a tenant member's role. Guards: same tenant, not yourself (avoid
 // self-lockout), valid role.

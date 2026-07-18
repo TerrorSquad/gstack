@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { formatDistanceToNow, parseISO } from 'date-fns'
 
-import type { Notification } from '~/types'
+import type { Notification } from '#shared/types'
 
 const store = useNotificationsStore()
 const supabase = useSupabaseClient()

@@ -1,4 +1,3 @@
-import { assertSameTenant, requireAdmin } from '../../utils/requireAdmin'
 
 // Ban or unban a tenant member via Supabase's native ban (blocks login).
 // ban_duration 'none' lifts it; a long duration is an effective permanent ban.

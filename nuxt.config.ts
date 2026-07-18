@@ -5,6 +5,10 @@ const { version } = JSON.parse(readFileSync('./package.json', 'utf-8'))
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
+  // Feature layers — each owns its pages/components/composables/server routes.
+  // Shared foundation (auth, UI, layouts, stores, utils) lives in this root
+  // project; types live in shared/ (#shared). See docs/adr/0005-nuxt-layers.md.
+  extends: ['./layers/marketing', './layers/notes', './layers/admin', './layers/account'],
   modules: [
     '@nuxt/ui',
     '@pinia/nuxt',
@@ -37,7 +41,7 @@ export default defineNuxtConfig({
   },
   supabase: {
     redirect: false,
-    types: '~/types/database.types.ts',
+    types: '~~/shared/types/database.types.ts',
   },
   i18n: {
     locales: [

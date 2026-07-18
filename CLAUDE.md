@@ -8,7 +8,22 @@ Uses **pnpm** (`pnpm-lock.yaml`). Never `npm` or `yarn`.
 
 ## Stack
 
-Nuxt 4 SSR + Supabase (Postgres + Auth) + Nuxt UI v4 + i18n (`sr` default, `en`).
+Nuxt 4 SSR + Supabase (Postgres + Auth) + Nuxt UI v4 + i18n (`en` default, `sr`).
+
+## Structure (Nuxt Layers — ADR-0005)
+
+Root project = base/shell (app.vue, layouts, auth pages, stores, base components,
+composables, shared utils, core `server/`). Features are layers the root
+`extends`: `layers/{marketing,notes,admin,account}`. Add a feature = new
+`layers/<name>/` (with a `nuxt.config.ts`) + list it in the root `extends`.
+
+- **`~`/`@` always resolve to the ROOT app**, never the current layer. From a
+  layer, don't `import from '~/…'` — rely on **auto-imports** (components,
+  composables, utils, stores, Nitro `server/utils` all auto-import across layers).
+- **Shared types** live in `shared/types/`, imported via **`#shared`**
+  (`import type { Note } from '#shared/types'`). `pnpm db:types` +
+  `supabase.types` target `shared/types/database.types.ts`.
+- **i18n stays centralized** in the root `i18n/locales/*`.
 
 ## Auth
 
