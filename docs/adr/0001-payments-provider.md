@@ -18,14 +18,16 @@ countries Stripe-direct can't.
 
 | Provider | Serbia payout | Model | Notes |
 |---|---|---|---|
-| **Polar** | ✅ Yes (via Stripe Connect Express) | MoR | Developer-first, open-source, low fees; used by comparable Nuxt kits |
+| **Polar** | ✅ Yes (via Stripe Connect Express) | MoR | Developer-first, open-source, ~4% + fees; used by comparable Nuxt kits |
 | **Paddle** | ✅ Yes (Payoneer / wire) | MoR | Established, strong tax handling; stricter manual seller vetting |
+| **Freemius** | ✅ Yes (Wire / Wise / Payoneer / PayPal, "sellers worldwide") | MoR | SaaS + software-licensing focus; 4.7% + gateway fees; strong licensing/renewal/cart-recovery; WordPress heritage |
 | **Lemon Squeezy** | ~ (PayPal/Wise; being folded into "Stripe Managed Payments") | MoR | Future uncertain post-Stripe acquisition |
 | Stripe direct | ❌ No | PSP | Not available to Serbian sellers; also not a MoR |
 
 Sources: [Polar supported countries](https://polar.sh/docs/merchant-of-record/supported-countries)
 (Serbia explicitly listed), [Paddle payouts](https://www.paddle.com/help/manage/get-paid/when-and-how-do-i-get-paid)
-(wire/Payoneer, non-sanctioned countries), [Lemon Squeezy 2026 update](https://www.lemonsqueezy.com/blog/2026-update).
+(wire/Payoneer, non-sanctioned countries), [Freemius pricing](https://freemius.com/pricing/)
+(MoR, sellers worldwide, Payoneer/Wise/PayPal), [Lemon Squeezy 2026 update](https://www.lemonsqueezy.com/blog/2026-update).
 
 ## Decision
 
@@ -37,8 +39,15 @@ customer portal, webhook parsing, subscription sync) and implement **Polar first
 - Developer-first API and webhooks that fit our existing idempotent-webhook
   pattern (`/api/hooks/*` + service-role sync, as used by notifications).
 
-**Paddle is the documented fallback** if Polar onboarding is rejected — the
-adapter boundary makes swapping a contained change.
+**Fallbacks** (the adapter boundary makes swapping a contained change):
+
+- **Paddle** — if Polar onboarding is rejected; comparable MoR, established.
+- **Freemius** — a strong alternative when advanced **software-licensing,
+  renewal recovery, and cart abandonment** matter out of the box. Not chosen as
+  the default: higher fee (4.7% + gateway vs Polar's ~4%) and a
+  WordPress/licensing-first integration model that's less idiomatic than Polar's
+  developer-first API + webhooks for a code-first Nuxt SaaS. Revisit if
+  license-key delivery or recovery flows become a core requirement.
 
 ## Consequences
 
