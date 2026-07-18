@@ -5,7 +5,7 @@ const auth = useAuthStore()
 const role = computed(() => auth.role)
 const { t, locale, setLocale } = useI18n()
 const route = useRoute()
-const { version } = useRuntimeConfig().public
+const { version, notificationsEnabled } = useRuntimeConfig().public
 
 async function logout() {
   await auth.logout()
@@ -104,7 +104,9 @@ const pageTitle = computed(() => {
               <UAvatar :alt="auth.profile?.fullName" size="sm" class="shrink-0" />
               <div v-if="!collapsed" class="flex min-w-0 flex-col text-left leading-none">
                 <span class="truncate text-sm font-semibold">{{ auth.profile?.fullName }}</span>
-                <span class="mt-1 truncate text-[11px] text-muted">v{{ version }}</span>
+                <ULink to="/changelog" class="mt-1 truncate text-[11px] text-muted hover:text-default">
+                  v{{ version }}
+                </ULink>
               </div>
             </div>
             <UTooltip v-if="!collapsed" :text="t('nav.logout')">
@@ -123,7 +125,11 @@ const pageTitle = computed(() => {
 
     <UDashboardPanel>
       <template #header>
-        <UDashboardNavbar :title="pageTitle" />
+        <UDashboardNavbar :title="pageTitle">
+          <template #right>
+            <NotificationBell v-if="notificationsEnabled" />
+          </template>
+        </UDashboardNavbar>
       </template>
       <template #body>
         <main>

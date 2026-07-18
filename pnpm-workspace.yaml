@@ -1,5 +1,14 @@
 allowBuilds:
   '@parcel/watcher': true
+  '@sentry/cli': true
   core-js: false
   esbuild: true
   vue-demi: true
+
+# axe-playwright's peer dep ("playwright: >1.0.0") is loose enough that pnpm
+# otherwise resolves it to a version independent of @playwright/test's pinned
+# 1.61.1 — producing a second playwright/playwright-core pair that breaks every
+# spec at runtime ("did not expect test() to be called here"). Scoped to
+# axe-playwright only — @playwright/mcp deliberately pins its own newer playwright.
+overrides:
+  axe-playwright>playwright: 1.61.1

@@ -1,23 +1,29 @@
 # Nuxt + Supabase Starter
 
-A minimal, opinionated starting point for a role-aware SSR app: Nuxt 4, Supabase
-(Postgres + Auth), Nuxt UI v4, i18n (Serbian + English), and one example CRUD
-(`notes`) to copy for your own domain.
-
-Extracted from a production app, stripped to the reusable skeleton.
+A batteries-included starting point for a multi-tenant, role-aware SSR app:
+Nuxt 4, Supabase (Postgres + Auth), Nuxt UI v4, i18n (Serbian + English), plus
+observability, notifications, seeding, and release tooling wired up. One example
+CRUD (`notes`) shows the pattern to copy for your own domain.
 
 ## What's included
 
 - **Auth** — email/password login, registration, password reset, email confirmation.
-  Custom global middleware (`app/middleware/auth.global.ts`) with role gates, not
-  the Supabase module's built-in redirect.
-- **Roles** — `member` / `admin`, enforced by RLS (the real gate) and page meta
-  (`definePageMeta({ roles: ['admin'] })`, UX only). See `/admin` for the pattern.
-- **Example CRUD** — `notes`, owner-scoped by RLS. The composable + pages
-  (`app/composables/useNotes.ts`, `app/pages/notes/*`) are the pattern to copy.
-- **i18n** — `sr` (default) + `en`, flat dot-keys, parity-checked in CI.
-- **Tooling** — oxlint, oxfmt, vitest, Playwright, GitHub Actions CI, pre-commit
-  hooks via forge.
+  Global role-aware middleware (`app/middleware/auth.global.ts`), not the module redirect.
+- **Multi-tenancy** — every table is tenant-scoped by RLS via a `current_tenant_id()`
+  helper. Self-service registration creates a tenant with the registrant as admin.
+- **Roles** — `member` / `admin`, enforced by RLS (the real gate) + page meta (UX).
+- **Example CRUD** — `notes`, RLS-scoped. `app/composables/useNotes.ts` + `app/pages/notes/*`.
+- **Notifications** — in-app feed + bell + transactional email (Resend). A DB trigger
+  fans a new note out to tenant admins; a DB webhook mirrors it to email. Off by
+  default — flip `NUXT_PUBLIC_NOTIFICATIONS_ENABLED=true`.
+- **Observability** — Sentry (client + server + 5xx forwarding + tunnel), BetterStack
+  log forwarding, Vercel Analytics + Speed Insights. All no-op until configured.
+- **Seeding** — `pnpm seed` builds a demo tenant (admin + members + notes) with
+  `@faker-js/faker`. Idempotent; wipes the `@example.com` demo domain first.
+- **i18n** — `sr` (default) + `en`, parity-checked in CI.
+- **Testing** — vitest (pure logic) + Playwright (e2e, a11y via axe, visual regression).
+- **CI/release** — GitHub Actions (lint/test/typecheck, scheduled a11y, PR visual
+  regression) + release-please + a user-facing `/changelog`.
 
 ## Setup
 
@@ -25,39 +31,52 @@ Extracted from a production app, stripped to the reusable skeleton.
 pnpm install
 cp .env.example .env          # fill in after `pnpm supabase start`
 pnpm supabase start           # local Postgres + Auth (needs Docker)
-pnpm db:reset                 # apply the migration
+pnpm db:reset                 # apply the migration + seed
 pnpm db:types                 # regenerate the typed client from the live schema
 pnpm dev                      # http://localhost:3000
 ```
 
+Demo logins after `pnpm db:reset`: `admin@example.com` / `member@example.com`,
+password `Demo123!Demo123`.
+
 The typed client (`app/types/database.types.ts`) ships hand-written so `pnpm dev`
-and typecheck work before you start Supabase. Run `pnpm db:types` once your stack
-is up to regenerate the authoritative version.
+and typecheck work before Supabase is up. Run `pnpm db:types` to regenerate it.
 
 ## Commands
 
 ```bash
 pnpm dev / build / preview
-pnpm test            # vitest unit tests
-pnpm test:e2e        # Playwright (spins up its own dev server on :3010)
+pnpm test              # vitest unit tests
+pnpm test:e2e          # Playwright (needs seeded local Supabase)
+pnpm screenshots       # visual regression (baselines are Linux-only)
+pnpm screenshots:update  # regenerate baselines via Docker
 pnpm lint / fmt
-pnpm lint:i18n       # locale key parity (sr vs en)
-pnpm lint:i18n-keys  # every $t() key exists in the locales
-pnpm db:reset        # reset local DB + re-run migrations
-pnpm db:types        # regenerate app/types/database.types.ts
+pnpm lint:i18n / lint:i18n-keys
+pnpm db:reset          # reset local DB + migrate + seed
+pnpm db:types          # regenerate app/types/database.types.ts
+pnpm seed              # reseed (SEED_FAST=1 for the minimal set)
 ```
 
 ## Making yourself an admin
 
-Roles default to `member`. Promote a user by hand:
+Registration makes you your tenant's admin automatically. To promote a member:
 
 ```sql
 update public.profiles set role = 'admin' where email = 'you@example.com';
 ```
 
+## Configuring the extras
+
+- **Notifications email**: set `NUXT_PUBLIC_NOTIFICATIONS_ENABLED=true`, `NUXT_RESEND_KEY`,
+  and `NUXT_NOTIFICATION_WEBHOOK_SECRET`, then add a Supabase DB webhook on
+  `notifications` INSERT → POST `/api/hooks/notification-email` with the secret header.
+- **Sentry**: set `NUXT_PUBLIC_SENTRY_DSN` (+ org/project in `nuxt.config.ts`).
+- **Screenshots**: no baselines are committed yet — run `pnpm screenshots:update`
+  once (needs Docker + seeded Supabase) and commit the `*-linux.png` files.
+
 ## Notes
 
-- Auth email templates (`supabase/templates/*.html`) are Serbian and carry
-  placeholder branding — swap them for yours before shipping.
-- The auth flow relies on an explicit `getClaims()` sync in `auth.login()`; if
-  login bounces back to `/login`, that step is why. See the store comments.
+- Auth email templates (`supabase/templates/*.html`) are Serbian with placeholder
+  branding — swap them for yours before shipping.
+- `CHANGELOG.md` is release-please's (never hand-edit). The user-facing changelog
+  is `app/utils/changelog.ts` → `/changelog`; see the `changelog` skill.

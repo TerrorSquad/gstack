@@ -51,13 +51,20 @@ export const useAuthStore = defineStore('auth', () => {
     await ensureProfile()
   }
 
+  // Self-service tenant registration: signUp fires the handle_new_user trigger,
+  // which creates a tenant from company_name and makes the registrant its admin.
   // Returns true if a session was issued (email confirmation off → logged in
   // now), false if the user must confirm their email before logging in.
-  async function register(fullName: string, email: string, password: string) {
+  async function register(
+    fullName: string,
+    companyName: string,
+    email: string,
+    password: string,
+  ) {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      options: { data: { full_name: fullName } },
+      options: { data: { full_name: fullName, company_name: companyName } },
     })
     if (error) throw error
     if (!data.session) return false

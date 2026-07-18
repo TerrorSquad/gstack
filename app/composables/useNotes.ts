@@ -28,10 +28,12 @@ export function useNotes() {
   }
 
   async function createNote(title: string, body: string) {
-    const user = useSupabaseUser()
+    const auth = useAuthStore()
+    const profile = await auth.ensureProfile()
+    if (!profile) throw new Error('No profile')
     const { error } = await supabase
       .from('notes')
-      .insert({ title, body, user_id: user.value!.sub })
+      .insert({ title, body, user_id: profile.id, tenant_id: profile.tenantId })
     if (error) throw error
     await refresh()
   }
