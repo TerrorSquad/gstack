@@ -10,11 +10,24 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@nuxtjs/supabase',
     '@nuxtjs/i18n',
+    '@nuxtjs/sitemap',
     '@sentry/nuxt/module',
     // Vercel telemetry: no-op off Vercel.
     '@vercel/speed-insights',
     '@vercel/analytics',
   ],
+  // Public site identity for SEO/sitemap/canonical. Override in prod with
+  // NUXT_PUBLIC_SITE_URL (nuxt-site-config reads it automatically).
+  site: {
+    url: process.env.NUXT_PUBLIC_SITE_URL || 'https://example.com',
+    name: 'Starter',
+  },
+  // Advertise exactly the public marketing pages — authenticated app routes stay
+  // out. Explicit list (auto-discovery off) so the sitemap is predictable.
+  sitemap: {
+    excludeAppSources: true,
+    urls: ['/', '/pricing', '/terms', '/privacy', '/changelog'],
+  },
   css: ['~/assets/css/main.css'],
   fonts: {
     families: [

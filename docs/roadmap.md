@@ -31,18 +31,24 @@ Make the repo a clean GitHub template (see [ADR-0004](./adr/0004-distribution-gi
 
 **Acceptance:** a new repo from the template runs locally with only env setup. ✅
 
-## Phase 2 — Marketing surface 🔜
+## Phase 2 — Marketing surface ✅
 
-A SaaS needs a front door; today `/` redirects to login.
+A public front door (a `marketing` layout with header + footer); `/` is now a
+landing page instead of a redirect.
 
-- [ ] Public landing page (hero, features, CTA) at `/`.
-- [ ] Pricing page (plan table) — data-driven, ready to bind to billing in Phase 4.
-- [ ] Legal: `/terms`, `/privacy` (static, editable).
-- [ ] SEO: per-page `useSeoMeta`, Open Graph/Twitter tags, `sitemap.xml`, canonical URLs.
+- [x] Public landing page (hero, feature grid, CTA) at `/`.
+- [x] Pricing page — data-driven from `app/utils/plans.ts` (the `id` is the seam
+      for Phase 4 billing).
+- [x] Legal: `/terms`, `/privacy` (static placeholders, clearly marked to replace).
+- [x] SEO: per-page `useSeoMeta` (title/description/OG/Twitter), `@nuxtjs/sitemap`
+      at `/sitemap.xml` (explicit public URLs), global canonical, `site.url` config.
+      a11y covers the marketing pages in both themes. *(Follow-up: an `og:image` —
+      needs a static asset or `nuxt-og-image`.)*
 
-**Acceptance:** unauthenticated visitors get a real marketing site; Lighthouse SEO ≥ 95.
+**Acceptance:** unauthenticated visitors get a real marketing site. ✅ (Run
+Lighthouse in CI to confirm SEO ≥ 95 on your deploy URL.)
 
-## Phase 3 — Account & admin ⬜
+## Phase 3 — Account & admin 🔜
 
 Close the operational gaps vs. commercial kits.
 

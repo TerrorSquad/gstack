@@ -2,8 +2,8 @@ import { test } from '@playwright/test'
 import { checkA11y, injectAxe } from 'axe-playwright'
 
 // Runs as the seeded admin (storageState set at the project level). Scans the
-// core authenticated pages for WCAG violations.
-const PAGES = ['/dashboard', '/notes', '/admin', '/account']
+// public marketing pages + core authenticated pages for WCAG violations.
+const PAGES = ['/', '/pricing', '/terms', '/privacy', '/dashboard', '/notes', '/admin', '/account']
 
 // Disabled because they fire only on Nuxt UI's dashboard chrome (which we don't
 // own), not on app content:
