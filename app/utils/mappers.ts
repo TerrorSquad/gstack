@@ -1,4 +1,4 @@
-import type { Note, Notification, Profile, Tenant } from '#shared/types'
+import type { Note, Notification, Profile, Subscription, Tenant } from '#shared/types'
 import type { Tables } from '#shared/types/database.types'
 
 // Each mapper accepts a Pick of exactly the columns it reads, so a query that
@@ -19,6 +19,21 @@ type NotificationRow = Pick<
 
 export function mapTenant(row: TenantRow): Tenant {
   return { id: row.id, name: row.name }
+}
+
+type SubscriptionRow = Pick<
+  Tables<'subscriptions'>,
+  'tenant_id' | 'provider' | 'plan' | 'status' | 'current_period_end'
+>
+
+export function mapSubscription(row: SubscriptionRow): Subscription {
+  return {
+    tenantId: row.tenant_id,
+    provider: row.provider,
+    plan: row.plan,
+    status: row.status,
+    currentPeriodEnd: row.current_period_end,
+  }
 }
 
 export function mapProfile(row: ProfileRow): Profile {

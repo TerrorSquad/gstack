@@ -69,19 +69,25 @@ account. ✅ (Actions verified end-to-end incl. self-guards.)
 > client→internal-API data loads use `useFetch` (not `useAsyncData`+`$fetch`) so
 > the auth cookie is forwarded on SSR.
 
-## Phase 4 — Billing 🔜 (unblocked; see [ADR-0001](./adr/0001-payments-provider.md))
+## Phase 4 — Billing ✅ (see [ADR-0001](./adr/0001-payments-provider.md)) — `layers/billing`
 
 Provider-agnostic billing; **Polar** as the first (Serbia-compatible) implementation.
 
-- [ ] `subscriptions` table (tenant-scoped) + RLS + generated types.
-- [ ] `BillingProvider` adapter interface (checkout, portal, webhook parse, sync).
-- [ ] Polar adapter: checkout link, customer portal, `/api/hooks/billing` webhook
-      (idempotent, reuses the notifications webhook pattern).
-- [ ] `useEntitlements()` / plan gate; bind the Phase 2 pricing page to real plans.
+- [x] `subscriptions` table (one row per tenant) + RLS (members read own tenant;
+      only the service role writes) + generated types.
+- [x] `BillingProvider` adapter interface (checkout, portal, `parseWebhook`) with a
+      Polar implementation over the REST API.
+- [x] Polar: checkout + customer-portal routes (auth-gated), `/api/hooks/billing`
+      webhook — Standard-Webhooks signature verified, idempotent upsert keyed on
+      tenant_id. **Verified end-to-end**: valid sig → row synced, bad sig → 401.
+- [x] `useSubscription()` (effective plan + `isAtLeast(tier)` gate); pricing-page
+      CTAs start checkout when signed in; a `/billing` page (upgrade + manage).
 
-**Acceptance:** a tenant can subscribe, a webhook flips its plan, gated features unlock.
+**Acceptance:** a tenant can subscribe, the webhook flips its plan, gated features
+unlock. ✅ (Live Polar checkout/portal need real credentials — env-gated, no-op
+until set; webhook + sync + entitlements verified locally.)
 
-## Phase 5 — Infra hardening ⬜
+## Phase 5 — Infra hardening 🔜
 
 - [ ] Upstash Redis: distributed rate limiting + KV cache, env-gated with
       in-memory fallback ([ADR-0003](./adr/0003-upstash-redis.md)).

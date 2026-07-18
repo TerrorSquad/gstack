@@ -20,7 +20,10 @@ const links = computed<NavigationMenuItem[]>(() => {
     { label: t('nav.notes'), icon: 'i-lucide-notebook-pen', to: '/notes' },
   ]
   if (role.value === 'admin') {
-    items.push({ label: t('nav.admin'), icon: 'i-lucide-shield', to: '/admin' })
+    items.push(
+      { label: t('nav.admin'), icon: 'i-lucide-shield', to: '/admin' },
+      { label: t('nav.billing'), icon: 'i-lucide-credit-card', to: '/billing' },
+    )
   }
   return items
 })

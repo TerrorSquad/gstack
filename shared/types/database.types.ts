@@ -154,6 +154,47 @@ export type Database = {
           },
         ]
       }
+      subscriptions: {
+        Row: {
+          current_period_end: string | null
+          external_customer_id: string | null
+          external_id: string | null
+          plan: string
+          provider: string
+          status: Database["public"]["Enums"]["subscription_status"]
+          tenant_id: string
+          updated_at: string
+        }
+        Insert: {
+          current_period_end?: string | null
+          external_customer_id?: string | null
+          external_id?: string | null
+          plan?: string
+          provider?: string
+          status?: Database["public"]["Enums"]["subscription_status"]
+          tenant_id: string
+          updated_at?: string
+        }
+        Update: {
+          current_period_end?: string | null
+          external_customer_id?: string | null
+          external_id?: string | null
+          plan?: string
+          provider?: string
+          status?: Database["public"]["Enums"]["subscription_status"]
+          tenant_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscriptions_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: true
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       tenants: {
         Row: {
           created_at: string
@@ -185,6 +226,12 @@ export type Database = {
     }
     Enums: {
       notification_type: "note_created"
+      subscription_status:
+        | "trialing"
+        | "active"
+        | "past_due"
+        | "canceled"
+        | "incomplete"
       user_role: "member" | "admin"
     }
     CompositeTypes: {
@@ -314,6 +361,13 @@ export const Constants = {
   public: {
     Enums: {
       notification_type: ["note_created"],
+      subscription_status: [
+        "trialing",
+        "active",
+        "past_due",
+        "canceled",
+        "incomplete",
+      ],
       user_role: ["member", "admin"],
     },
   },

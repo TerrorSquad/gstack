@@ -8,7 +8,13 @@ export default defineNuxtConfig({
   // Feature layers — each owns its pages/components/composables/server routes.
   // Shared foundation (auth, UI, layouts, stores, utils) lives in this root
   // project; types live in shared/ (#shared). See docs/adr/0005-nuxt-layers.md.
-  extends: ['./layers/marketing', './layers/notes', './layers/admin', './layers/account'],
+  extends: [
+    './layers/marketing',
+    './layers/notes',
+    './layers/admin',
+    './layers/account',
+    './layers/billing',
+  ],
   modules: [
     '@nuxt/ui',
     '@pinia/nuxt',
@@ -78,8 +84,19 @@ export default defineNuxtConfig({
     siteUrl: '',
     // Shared secret the Supabase DB webhook must send to the notification hook.
     notificationWebhookSecret: '',
+    // Billing (Polar). Empty = billing off. See layers/billing + ADR-0001.
+    polar: {
+      accessToken: '',
+      webhookSecret: '',
+      server: 'sandbox', // 'sandbox' | 'production'
+      // Provider price ids per plan id (from your Polar dashboard).
+      pricePro: '',
+      priceEnterprise: '',
+    },
     public: {
       version,
+      // Show billing UI + wire pricing CTAs to checkout. Off until Polar is set.
+      billingEnabled: false,
       // Notifications (in-app feed + bell + transactional emails) off by default —
       // flip NUXT_PUBLIC_NOTIFICATIONS_ENABLED=true to enable the whole subsystem.
       notificationsEnabled: false,

@@ -4,6 +4,30 @@
 definePageMeta({ public: true, layout: 'marketing' })
 
 const { t, locale } = useI18n()
+const auth = useAuthStore()
+const { billingEnabled } = useRuntimeConfig().public
+const toast = useToast()
+
+const busy = ref('')
+// Logged-in + billing on + a paid plan → start checkout; otherwise send to signup.
+async function choose(planId: string, priceMonthly: number) {
+  if (!auth.isAuthenticated || !billingEnabled || priceMonthly === 0) {
+    await navigateTo(auth.isAuthenticated ? '/billing' : '/register')
+    return
+  }
+  busy.value = planId
+  try {
+    const { url } = await $fetch<{ url: string }>('/api/billing/checkout', {
+      method: 'POST',
+      body: { plan: planId },
+    })
+    window.location.assign(url)
+  } catch {
+    await navigateTo('/billing')
+  } finally {
+    busy.value = ''
+  }
+}
 
 useSeoMeta({
   title: () => t('pricing.seoTitle'),
@@ -46,12 +70,13 @@ function price(p: (typeof PLANS)[number]) {
         </div>
 
         <UButton
-          to="/register"
           block
           size="lg"
           class="mt-6"
+          :loading="busy === plan.id"
           :variant="plan.highlighted ? 'solid' : 'outline'"
           :color="plan.highlighted ? 'primary' : 'neutral'"
+          @click="choose(plan.id, plan.priceMonthly)"
         >
           {{ $t('pricing.cta') }}
         </UButton>

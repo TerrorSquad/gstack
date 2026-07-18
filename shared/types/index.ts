@@ -27,6 +27,16 @@ export interface Note {
   updatedAt: string
 }
 
+export type SubscriptionStatus = 'trialing' | 'active' | 'past_due' | 'canceled' | 'incomplete'
+
+export interface Subscription {
+  tenantId: string
+  provider: string
+  plan: string
+  status: SubscriptionStatus
+  currentPeriodEnd: string | null
+}
+
 export interface Notification {
   id: string
   recipientId: string
