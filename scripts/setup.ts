@@ -1,3 +1,7 @@
+import { existsSync, readFileSync, writeFileSync } from 'node:fs'
+
+import { consola } from 'consola'
+
 import { integrations } from './integrations'
 
 // Pure .env rewriter. `picks` = set of enabled integration ids.
@@ -46,4 +50,47 @@ export function rewriteEnv(envText: string, picks: Set<string>): string {
 
   const body = rewritten.join('\n')
   return additions.length ? `${body}${body.endsWith('\n') ? '' : '\n'}${additions.join('\n')}\n` : body
+}
+
+const ENV_PATH = '.env'
+
+async function main() {
+  const envText = existsSync(ENV_PATH) ? readFileSync(ENV_PATH, 'utf8') : ''
+
+  const flagged = integrations.filter((it) => it.flag)
+  const enabled = new Set(
+    flagged.filter((it) => new RegExp(`^${it.flag}\\s*=\\s*true`, 'm').test(envText)).map((it) => it.id),
+  )
+
+  consola.info('Pick the subsystems to enable. Supabase core is always on.')
+  const picks = (await consola.prompt('Enable which subsystems?', {
+    type: 'multiselect',
+    required: false,
+    options: flagged.map((it) => ({
+      label: `${it.label}  (${it.category})`,
+      value: it.id,
+      selected: enabled.has(it.id),
+    })),
+  })) as string[]
+
+  // consola returns undefined on Ctrl-C — bail without writing.
+  if (!Array.isArray(picks)) {
+    consola.warn('Cancelled — .env not modified.')
+    return
+  }
+
+  const next = rewriteEnv(envText, new Set(picks))
+  writeFileSync(ENV_PATH, next)
+
+  consola.success(`Wrote ${ENV_PATH}. Enabled: ${picks.length ? picks.join(', ') : '(none)'}.`)
+  consola.info('Fill in the stubbed blanks, then run `pnpm doctor` to verify.')
+}
+
+// Only run the CLI when executed directly (`pnpm setup`), not when imported by
+// the test. import.meta.main is set by tsx/Node for the entry module.
+if (import.meta.main) {
+  main().catch((e) => {
+    consola.error(e)
+    process.exit(1)
+  })
 }
