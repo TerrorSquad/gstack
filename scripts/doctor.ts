@@ -3,8 +3,8 @@
 // keys it needs to work). Pure env inspection, no network calls. Loads .env if
 // present (local); in CI/prod it reads the real process env. Exits non-zero when a
 // required var is missing or an enabled subsystem is misconfigured, so it can gate
-// a deploy step.
-import 'dotenv/config'
+// a deploy step. The npm script passes --env-file-if-exists=.env so it loads
+// local env without erroring in CI/prod where there's no .env file.
 import process from 'node:process'
 
 import { consola } from 'consola'
@@ -25,17 +25,16 @@ const fail = (m: string) => {
 consola.log('')
 consola.info('Core (required)')
 for (const k of ['SUPABASE_URL', 'SUPABASE_KEY', 'SUPABASE_SERVICE_ROLE_KEY', 'NUXT_SUPABASE_SECRET_KEY']) {
-  has(k) ? ok(k) : fail(`${k} is not set`)
+  if (has(k)) ok(k)
+  else fail(`${k} is not set`)
 }
 
 consola.log('')
 consola.info('Security')
-has('NUXT_CSURF_ENCRYPT_SECRET')
-  ? ok('CSRF secret pinned')
-  : warn('NUXT_CSURF_ENCRYPT_SECRET unset — fine locally, but in prod tokens reset every deploy (openssl rand -hex 32)')
-has('UPSTASH_REDIS_REST_URL') && has('UPSTASH_REDIS_REST_TOKEN')
-  ? ok('Rate limiting: Upstash (distributed)')
-  : info('Rate limiting: in-memory fallback — set Upstash for serverless/multi-instance')
+if (has('NUXT_CSURF_ENCRYPT_SECRET')) ok('CSRF secret pinned')
+else warn('NUXT_CSURF_ENCRYPT_SECRET unset — fine locally, but in prod tokens reset every deploy (openssl rand -hex 32)')
+if (has('UPSTASH_REDIS_REST_URL') && has('UPSTASH_REDIS_REST_TOKEN')) ok('Rate limiting: Upstash (distributed)')
+else info('Rate limiting: in-memory fallback — set Upstash for serverless/multi-instance')
 
 consola.log('')
 consola.info('Auth providers')
@@ -49,11 +48,9 @@ for (const p of ['GITHUB', 'GOOGLE']) {
 
 consola.log('')
 consola.info('Observability')
-has('NUXT_PUBLIC_SENTRY_DSN')
-  ? has('SENTRY_AUTH_TOKEN')
-    ? ok('Sentry: DSN + source-map upload')
-    : warn('Sentry: DSN set but SENTRY_AUTH_TOKEN missing — no source maps uploaded')
-  : info('Sentry off')
+if (!has('NUXT_PUBLIC_SENTRY_DSN')) info('Sentry off')
+else if (has('SENTRY_AUTH_TOKEN')) ok('Sentry: DSN + source-map upload')
+else warn('Sentry: DSN set but SENTRY_AUTH_TOKEN missing — no source maps uploaded')
 const bsToken = has('NUXT_BETTERSTACK_SOURCE_TOKEN')
 const bsUrl = has('NUXT_BETTERSTACK_INGEST_URL')
 if (bsToken && bsUrl) ok('BetterStack log forwarding on')
@@ -63,27 +60,27 @@ else info('BetterStack off')
 consola.log('')
 consola.info('Notifications')
 if (on('NUXT_PUBLIC_NOTIFICATIONS_ENABLED')) {
-  has('NUXT_RESEND_KEY') ? ok('Resend key set') : fail('Notifications ENABLED but NUXT_RESEND_KEY missing')
-  has('NUXT_NOTIFICATION_WEBHOOK_SECRET')
-    ? ok('Webhook secret set')
-    : fail('Notifications ENABLED but NUXT_NOTIFICATION_WEBHOOK_SECRET missing')
+  if (has('NUXT_RESEND_KEY')) ok('Resend key set')
+  else fail('Notifications ENABLED but NUXT_RESEND_KEY missing')
+  if (has('NUXT_NOTIFICATION_WEBHOOK_SECRET')) ok('Webhook secret set')
+  else fail('Notifications ENABLED but NUXT_NOTIFICATION_WEBHOOK_SECRET missing')
 } else info('Notifications off')
 
 consola.log('')
 consola.info('Billing')
 if (on('NUXT_PUBLIC_BILLING_ENABLED')) {
-  has('NUXT_POLAR_ACCESS_TOKEN') ? ok('Polar access token set') : fail('Billing ENABLED but NUXT_POLAR_ACCESS_TOKEN missing')
-  has('NUXT_POLAR_WEBHOOK_SECRET') ? ok('Polar webhook secret set') : fail('Billing ENABLED but NUXT_POLAR_WEBHOOK_SECRET missing')
-  has('NUXT_POLAR_PRICE_PRO') || has('NUXT_POLAR_PRICE_ENTERPRISE')
-    ? ok('At least one Polar price id set')
-    : warn('Billing ENABLED but no price ids — checkout CTAs have nothing to sell')
+  if (has('NUXT_POLAR_ACCESS_TOKEN')) ok('Polar access token set')
+  else fail('Billing ENABLED but NUXT_POLAR_ACCESS_TOKEN missing')
+  if (has('NUXT_POLAR_WEBHOOK_SECRET')) ok('Polar webhook secret set')
+  else fail('Billing ENABLED but NUXT_POLAR_WEBHOOK_SECRET missing')
+  if (has('NUXT_POLAR_PRICE_PRO') || has('NUXT_POLAR_PRICE_ENTERPRISE')) ok('At least one Polar price id set')
+  else warn('Billing ENABLED but no price ids — checkout CTAs have nothing to sell')
 } else info('Billing off')
 
 consola.log('')
 consola.info('Prod')
-has('NUXT_SITE_URL')
-  ? ok('NUXT_SITE_URL set (canonical email/OG links)')
-  : warn('NUXT_SITE_URL unset — email/OG links fall back to request origin')
+if (has('NUXT_SITE_URL')) ok('NUXT_SITE_URL set (canonical email/OG links)')
+else warn('NUXT_SITE_URL unset — email/OG links fall back to request origin')
 
 consola.log('')
 if (errors) {
