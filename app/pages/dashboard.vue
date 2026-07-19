@@ -6,6 +6,7 @@ useHead({ title: () => t('nav.dashboard') })
 
 // Example authenticated data read, RLS-scoped to the current user.
 const { notes, pending } = useNotes()
+const recentNotes = computed(() => notes.value.slice(0, 5))
 </script>
 
 <template>
@@ -46,5 +47,24 @@ const { notes, pending } = useNotes()
         </template>
       </UCard>
     </div>
+
+    <UCard v-if="recentNotes.length" class="mt-4">
+      <template #header>
+        <h2 class="font-semibold">{{ $t('dashboard.recentNotes') }}</h2>
+      </template>
+      <ul class="flex flex-col divide-y divide-default">
+        <li v-for="note in recentNotes" :key="note.id">
+          <NuxtLink
+            :to="`/notes/${note.id}`"
+            class="flex items-center justify-between gap-4 py-2.5 hover:text-primary"
+          >
+            <span class="truncate font-medium">{{ note.title }}</span>
+            <span class="shrink-0 text-xs text-muted">
+              {{ formatDate(note.updatedAt.slice(0, 10)) }}
+            </span>
+          </NuxtLink>
+        </li>
+      </ul>
+    </UCard>
   </UContainer>
 </template>

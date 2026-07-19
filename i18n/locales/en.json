@@ -98,6 +98,7 @@
   "dashboard.subtitle": "An overview of your account.",
   "dashboard.noteCount": "Notes",
   "dashboard.openNotes": "Open notes",
+  "dashboard.recentNotes": "Recent notes",
   "notes.title": "Notes",
   "notes.new": "New note",
   "notes.edit": "Edit note",
