@@ -24,6 +24,9 @@ const links = computed<NavigationMenuItem[]>(() => {
       { label: t('nav.admin'), icon: 'i-lucide-shield', to: '/admin' },
       { label: t('nav.billing'), icon: 'i-lucide-credit-card', to: '/billing' },
     )
+    if (useRuntimeConfig().public.feedbackEnabled) {
+      items.push({ label: t('nav.feedback'), icon: 'i-lucide-message-square', to: '/feedback/admin' })
+    }
   }
   return items
 })

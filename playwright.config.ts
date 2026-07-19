@@ -26,6 +26,13 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'], storageState: 'e2e/.auth.json' },
       dependencies: ['setup'],
     },
+    {
+      // Authenticated feature flows (feedback submit → admin list).
+      name: 'app',
+      testMatch: /feedback\.spec\.ts/,
+      use: { ...devices['Desktop Chrome'], storageState: 'e2e/.auth.json' },
+      dependencies: ['setup'],
+    },
   ],
   webServer: {
     command: process.env.CI ? 'node .output/server/index.mjs' : 'pnpm dev --port 3010',
@@ -33,6 +40,7 @@ export default defineConfig({
     url: 'http://localhost:3010/login',
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
-    env: { NUXT_IGNORE_LOCK: '1', PORT: '3010', NITRO_PORT: '3010' },
+    // Enable feedback so the widget + admin page render in the app project.
+    env: { NUXT_IGNORE_LOCK: '1', PORT: '3010', NITRO_PORT: '3010', NUXT_PUBLIC_FEEDBACK_ENABLED: 'true' },
   },
 })
