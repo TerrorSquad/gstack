@@ -22,6 +22,6 @@ export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-07-19',
     title: 'Initial release',
-    highlights: [feature('First release.')],
+    highlights: [feature('First release.'), feature('Public roadmap at /roadmap.')],
   },
 ]

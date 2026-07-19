@@ -7,20 +7,21 @@
   --font-heading: 'Space Grotesk', sans-serif;
 }
 
-/* Brand palette — indigo/violet. 500 is the action color; darker steps carry
-   text/fills that need AA contrast. */
+/* Brand palette — violet. 500 is the action color; darker steps carry text/fills
+   that need AA contrast (the -600/-700 override in this file relies on those being
+   dark enough for white text — see DESIGN.md before rebranding to a lighter hue). */
 @theme static {
-  --color-brand-50: #eef2ff;
-  --color-brand-100: #e0e7ff;
-  --color-brand-200: #c7d2fe;
-  --color-brand-300: #a5b4fc;
-  --color-brand-400: #818cf8;
-  --color-brand-500: #6366f1;
-  --color-brand-600: #4f46e5;
-  --color-brand-700: #4338ca;
-  --color-brand-800: #3730a3;
-  --color-brand-900: #312e81;
-  --color-brand-950: #1e1b4b;
+  --color-brand-50: #f5f3ff;
+  --color-brand-100: #ede9fe;
+  --color-brand-200: #ddd6fe;
+  --color-brand-300: #c4b5fd;
+  --color-brand-400: #a78bfa;
+  --color-brand-500: #8b5cf6;
+  --color-brand-600: #7c3aed;
+  --color-brand-700: #6d28d9;
+  --color-brand-800: #5b21b6;
+  --color-brand-900: #4c1d95;
+  --color-brand-950: #2e1065;
 }
 
 h1,
@@ -34,14 +35,14 @@ h3,
 /* Design language: cool slate surfaces, generous rounding, a crisp low shadow
    and a border that brightens toward the brand on hover — no scale transform. */
 :root {
-  --ui-radius: 0.625rem;
+  --ui-radius: 0.75rem;
   --ui-bg: #f8fafc;
   --ui-bg-elevated: #ffffff;
   --ui-bg-muted: #f1f5f9;
   --ui-border: #e2e8f0;
   --surface-border-color: var(--ui-border);
   --surface-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 4px 12px rgba(15, 23, 42, 0.05);
-  --surface-shadow-hover: 0 2px 4px rgba(15, 23, 42, 0.06), 0 12px 24px rgba(79, 70, 229, 0.1);
+  --surface-shadow-hover: 0 2px 4px rgba(15, 23, 42, 0.06), 0 12px 24px rgba(124, 58, 237, 0.1);
 }
 
 /* Colored text uses the semantic -500 hue, too light on white to pass WCAG AA.

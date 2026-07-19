@@ -9,6 +9,10 @@ export default defineNuxtConfig({
   // Shared foundation (auth, UI, layouts, stores, utils) lives in this root
   // project; types live in shared/ (#shared). See docs/adr/0005-nuxt-layers.md.
   extends: [
+    // Design-system layer — theme tokens, fonts, brand chrome. The single source
+    // of truth every app (this one, plus any future marketing/docs deploy) shares
+    // so the UI can't drift. See DESIGN.md.
+    './layers/ui',
     './layers/marketing',
     './layers/notes',
     './layers/admin',
@@ -21,6 +25,7 @@ export default defineNuxtConfig({
     '@nuxtjs/supabase',
     '@nuxtjs/i18n',
     '@nuxtjs/sitemap',
+    'nuxt-og-image',
     'nuxt-security',
     '@sentry/nuxt/module',
     // Vercel telemetry: no-op off Vercel.
@@ -74,14 +79,7 @@ export default defineNuxtConfig({
   // out. Explicit list (auto-discovery off) so the sitemap is predictable.
   sitemap: {
     excludeAppSources: true,
-    urls: ['/', '/pricing', '/terms', '/privacy', '/changelog'],
-  },
-  css: ['~/assets/css/main.css'],
-  fonts: {
-    families: [
-      { name: 'Inter', provider: 'google' },
-      { name: 'Space Grotesk', provider: 'google' },
-    ],
+    urls: ['/', '/pricing', '/terms', '/privacy', '/changelog', '/roadmap'],
   },
   supabase: {
     redirect: false,

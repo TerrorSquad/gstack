@@ -14,8 +14,15 @@ Nuxt 4 SSR + Supabase (Postgres + Auth) + Nuxt UI v4 + i18n (`en` default, `sr`)
 
 Root project = base/shell (app.vue, layouts, auth pages, stores, base components,
 composables, shared utils, core `server/`). Features are layers the root
-`extends`: `layers/{marketing,notes,admin,account}`. Add a feature = new
-`layers/<name>/` (with a `nuxt.config.ts`) + list it in the root `extends`.
+`extends`: `layers/{marketing,notes,admin,account,billing}`. Add a feature = new
+`layers/<name>/` (with a `nuxt.config.ts`) + list it in the root `extends` — or run
+`pnpm gen:layer <name>` (see the `add-layer` skill).
+
+- **`layers/ui`** is the design-system layer — theme tokens + AA overrides
+  (`main.css`), Nuxt UI defaults (`app.config.ts`), fonts, and brand chrome
+  (`AppLogo`, `ThemeSwitcher`). It's the single source of truth every app extends,
+  so a future marketing/app/docs split can't drift. See **DESIGN.md**. Don't put
+  theme values anywhere else.
 
 - **`~`/`@` always resolve to the ROOT app**, never the current layer. From a
   layer, don't `import from '~/…'` — rely on **auto-imports** (components,

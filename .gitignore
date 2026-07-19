@@ -18,6 +18,10 @@ logs
 .DS_Store
 .idea
 
+# Tool scratch (headroom, tokensave)
+.tokensave
+.claude/.headroom*
+
 # Local env files
 .env
 .env.*

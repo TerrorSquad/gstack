@@ -14,6 +14,7 @@ const productLinks = [
   { label: () => t('nav.features'), to: '/#features' },
   { label: () => t('nav.pricing'), to: '/pricing' },
   { label: () => t('footer.changelog'), to: '/changelog' },
+  { label: () => t('footer.roadmap'), to: '/roadmap' },
 ]
 const legalLinks = [
   { label: () => t('footer.terms'), to: '/terms' },
