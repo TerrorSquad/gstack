@@ -37,6 +37,8 @@
     "@upstash/redis": "^1.38.0",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
+    "@vue-email/components": "^0.0.21",
+    "@vue-email/render": "^0.0.9",
     "consola": "^3.4.2",
     "date-fns": "^4.4.0",
     "nuxt": "^4.4.8",
