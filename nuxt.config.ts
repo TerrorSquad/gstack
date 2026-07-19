@@ -21,11 +21,40 @@ export default defineNuxtConfig({
     '@nuxtjs/supabase',
     '@nuxtjs/i18n',
     '@nuxtjs/sitemap',
+    'nuxt-security',
     '@sentry/nuxt/module',
     // Vercel telemetry: no-op off Vercel.
     '@vercel/speed-insights',
     '@vercel/analytics',
   ],
+  // Security headers + CSP (nuxt-security). CSP is nonce-based for scripts; the
+  // external hosts our stack talks to are allowlisted per-directive. Its own
+  // rate limiter is off — we use server/utils/rateLimit (Upstash/in-memory).
+  // CSRF: Supabase auth cookies are SameSite=Lax (baseline protection); enabling
+  // nuxt-security's token CSRF also means wiring the token into $fetch and
+  // excluding the webhook routes — left as a documented follow-up (see roadmap).
+  security: {
+    rateLimiter: false,
+    headers: {
+      crossOriginEmbedderPolicy: false, // would block cross-origin fonts/images
+      contentSecurityPolicy: {
+        'script-src': ["'self'", "'nonce-{{nonce}}'", "'strict-dynamic'"],
+        'connect-src': [
+          "'self'",
+          'https://*.supabase.co',
+          'wss://*.supabase.co',
+          'http://127.0.0.1:54321',
+          'ws://127.0.0.1:54321',
+          'https://vitals.vercel-insights.com',
+        ],
+        'img-src': ["'self'", 'data:', 'blob:', 'https://*.supabase.co'],
+        'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+        'font-src': ["'self'", 'https://fonts.gstatic.com', 'data:'],
+        'frame-ancestors': ["'none'"],
+        'base-uri': ["'self'"],
+      },
+    },
+  },
   // Public site identity for SEO/sitemap/canonical. Override in prod with
   // NUXT_PUBLIC_SITE_URL (nuxt-site-config reads it automatically).
   site: {
@@ -57,16 +86,6 @@ export default defineNuxtConfig({
     defaultLocale: 'en',
     strategy: 'no_prefix',
     detectBrowserLanguage: false,
-  },
-  routeRules: {
-    '/**': {
-      headers: {
-        'X-Frame-Options': 'DENY',
-        'X-Content-Type-Options': 'nosniff',
-        'Referrer-Policy': 'strict-origin-when-cross-origin',
-        'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
-      },
-    },
   },
   nitro: {
     compressPublicAssets: true,

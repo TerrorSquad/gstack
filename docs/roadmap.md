@@ -87,14 +87,23 @@ Provider-agnostic billing; **Polar** as the first (Serbia-compatible) implementa
 unlock. ✅ (Live Polar checkout/portal need real credentials — env-gated, no-op
 until set; webhook + sync + entitlements verified locally.)
 
-## Phase 5 — Infra hardening 🔜
+## Phase 5 — Infra hardening ✅
 
-- [ ] Upstash Redis: distributed rate limiting + KV cache, env-gated with
-      in-memory fallback ([ADR-0003](./adr/0003-upstash-redis.md)).
-- [ ] `nuxt-security`: real CSP (nonces), CSRF, tightened headers over the baseline.
-- [ ] Passkeys / WebAuthn via Supabase.
+- [x] Upstash Redis: distributed rate limiting, env-gated with in-memory
+      fallback ([ADR-0003](./adr/0003-upstash-redis.md)). (KV cache deferred —
+      the seam is the same `getRedis()`; add a memoize helper when a hot server
+      read needs it.)
+- [x] `nuxt-security`: nonce-based CSP + tightened headers, per-directive
+      allowlist for the hosts the stack talks to (Supabase, Vercel, fonts).
+      Verified against the real login flow — zero violations.
+- [ ] **CSRF (token) — deferred.** Supabase auth cookies are `SameSite=Lax`
+      (baseline CSRF protection); full token-CSRF needs the token wired into
+      `$fetch` and the webhook routes excluded. Documented in `nuxt.config.ts`.
+- [ ] **Passkeys / WebAuthn — deferred.** Needs a real authenticator device to
+      verify; can't be validated headless. Wire when there's a device to test on.
 
-**Acceptance:** rate limits hold across instances; CSP passes; passkey login works.
+**Acceptance:** rate limits hold across instances (Upstash); nonce CSP passes on
+the real login flow. ✅ Token-CSRF and passkeys are documented follow-ups.
 
 ## Phase 6 — Data-layer option 💤
 

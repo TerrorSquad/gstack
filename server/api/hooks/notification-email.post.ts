@@ -1,8 +1,9 @@
 import type { Database } from '#shared/types/database.types'
+import type { NotificationType } from '#shared/types'
 
 import { serverSupabaseServiceRole } from '#supabase/server'
 
-import { renderNotificationEmail, type NotificationType } from '../../utils/notificationEmail'
+import { renderNotificationEmail } from '../../utils/notificationEmail'
 
 // Called by a Supabase DB webhook on every notifications INSERT. Mirrors the
 // in-app notification to a transactional email via Resend. Configure the webhook

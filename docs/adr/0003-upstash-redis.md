@@ -1,6 +1,6 @@
 # ADR-0003: Upstash Redis for distributed rate limiting + cache
 
-**Status:** Proposed (recommend adopt) · **Date:** 2026-07-19
+**Status:** Accepted (implemented — `server/utils/rateLimit.ts`) · **Date:** 2026-07-19
 
 ## Context
 

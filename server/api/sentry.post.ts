@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
 
   // Public tunnel: lenient cap so a normal error burst still reports but a flood
   // from one IP can't be used to pump traffic through us.
-  rateLimit(event, { limit: 120, windowMs: 60_000 })
+  await rateLimit(event, { limit: 120, windowMs: 60_000 })
 
   const rawBody = await readRawBody(event)
   if (!rawBody) return { status: 'empty_body' }

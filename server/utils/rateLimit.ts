@@ -1,19 +1,18 @@
+import { Ratelimit } from '@upstash/ratelimit'
+import { Redis } from '@upstash/redis'
 import type { H3Event } from 'h3'
 
-// Tiny in-memory fixed-window rate limiter for the unauthenticated public
-// routes (check-email, check-pib, klaviyo-subscribe, sentry). State lives on the
-// warm serverless instance, so limits are per-instance and reset on cold start —
-// enough of a brake against enumeration/abuse, not a billing-grade global quota.
-// ponytail: per-instance counters; move to Upstash/Redis if a limit that holds
-// across Vercel instances ever matters.
+// Rate limiter for unauthenticated/public routes. Uses Upstash Redis when
+// UPSTASH_REDIS_REST_URL/_TOKEN are set (limits hold across serverless
+// instances); otherwise falls back to an in-memory fixed window (per warm
+// instance, resets on cold start) so the zero-config template still runs.
+// See docs/adr/0003-upstash-redis.md.
 
 type Decision = { ok: true } | { ok: false; retryAfter: number }
 
 const windows = new Map<string, { count: number; resetAt: number }>()
 
-// Pure core: record one hit against `key` and decide if it's over the limit.
-// Exposed (and unit-tested) separately from the event plumbing so the counting
-// logic can be checked without an H3 event.
+// Pure in-memory core, unit-tested without an H3 event.
 export function hit(
   key: string,
   opts: { limit: number; windowMs: number },
@@ -35,11 +34,53 @@ export function hit(
   return { ok: true }
 }
 
+// Lazily create the Redis client (null when unconfigured) and memoize a
+// Ratelimit per (limit, window) — Ratelimit bakes in a fixed limiter.
+let redis: Redis | null | undefined
+function getRedis(): Redis | null {
+  if (redis === undefined) {
+    redis =
+      process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN
+        ? Redis.fromEnv()
+        : null
+  }
+  return redis
+}
+
+const limiters = new Map<string, Ratelimit>()
+function getLimiter(limit: number, windowMs: number): Ratelimit {
+  const cacheKey = `${limit}:${windowMs}`
+  let limiter = limiters.get(cacheKey)
+  if (!limiter) {
+    limiter = new Ratelimit({
+      redis: getRedis()!,
+      limiter: Ratelimit.slidingWindow(limit, `${windowMs} ms`),
+      prefix: 'rl',
+    })
+    limiters.set(cacheKey, limiter)
+  }
+  return limiter
+}
+
 // Throws a 429 (with Retry-After) once an IP exceeds `limit` requests per
 // `windowMs` on this route. Call at the top of a public event handler.
-export function rateLimit(event: H3Event, opts: { limit: number; windowMs: number }): void {
+export async function rateLimit(
+  event: H3Event,
+  opts: { limit: number; windowMs: number },
+): Promise<void> {
   const ip = getRequestIP(event, { xForwardedFor: true }) ?? 'unknown'
-  const decision = hit(`${event.path}:${ip}`, opts)
+  const key = `${event.path}:${ip}`
+
+  if (getRedis()) {
+    const { success, reset } = await getLimiter(opts.limit, opts.windowMs).limit(key)
+    if (!success) {
+      setResponseHeader(event, 'Retry-After', Math.ceil((reset - Date.now()) / 1000))
+      throw createError({ statusCode: 429, message: 'Too many requests' })
+    }
+    return
+  }
+
+  const decision = hit(key, opts)
   if (!decision.ok) {
     setResponseHeader(event, 'Retry-After', decision.retryAfter)
     throw createError({ statusCode: 429, message: 'Too many requests' })

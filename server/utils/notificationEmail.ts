@@ -1,4 +1,4 @@
-export type NotificationType = 'note_created'
+import type { NotificationType } from '#shared/types'
 
 export interface EmailData {
   recipientName: string
