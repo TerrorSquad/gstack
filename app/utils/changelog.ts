@@ -25,6 +25,10 @@ export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
       feature('The changelog is now a cleaner, easier-to-scan timeline.'),
       feature('Refreshed look with a new accent colour and softer, rounder UI.'),
       feature('Send us feedback right from the app with the new feedback button.'),
+      feature('Search your notes right from the notes list.'),
+      feature('The dashboard now shows your most recent notes.'),
+      feature('Notifications are clickable — jump straight to the note.'),
+      fix('Leaving a note you were editing now asks before discarding your changes.'),
     ],
   },
   {
