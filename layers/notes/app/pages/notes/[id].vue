@@ -15,6 +15,15 @@ const body = ref(note.body)
 const loading = ref(false)
 const error = ref('')
 
+const { confirm } = useConfirm()
+const saved = ref(false)
+
+onBeforeRouteLeave(async () => {
+  if (saved.value) return true
+  if (title.value === note.title && body.value === note.body) return true
+  return await confirm(t('notes.unsavedConfirm'))
+})
+
 async function submit() {
   error.value = ''
   if (!title.value.trim()) {
@@ -24,6 +33,7 @@ async function submit() {
   loading.value = true
   try {
     await updateNote(id, title.value.trim(), body.value)
+    saved.value = true
     await navigateTo('/notes')
   } catch {
     error.value = t('common.saveError')

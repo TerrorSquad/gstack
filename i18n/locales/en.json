@@ -109,6 +109,7 @@
   "notes.confirmDelete": "Delete this note?",
   "notes.search": "Search notes…",
   "notes.noResults": "No notes match your search.",
+  "notes.unsavedConfirm": "Discard unsaved changes?",
   "account.title": "Account settings",
   "account.fullName": "Full name",
   "account.email": "Email",

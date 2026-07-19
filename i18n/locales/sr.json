@@ -109,6 +109,7 @@
   "notes.confirmDelete": "Obrisati ovu belešku?",
   "notes.search": "Pretraži beleške…",
   "notes.noResults": "Nijedna beleška ne odgovara pretrazi.",
+  "notes.unsavedConfirm": "Odbaciti nesačuvane izmene?",
   "account.title": "Podešavanja naloga",
   "account.fullName": "Ime i prezime",
   "account.email": "Email",
