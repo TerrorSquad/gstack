@@ -17,7 +17,12 @@ async function remove(id: string) {
       <UButton to="/notes/new" icon="i-lucide-plus">{{ $t('notes.new') }}</UButton>
     </div>
 
-    <div v-if="pending" class="mt-8 text-muted">{{ $t('common.loading') }}</div>
+    <div v-if="pending" class="mt-8 flex flex-col gap-3">
+      <div v-for="i in 3" :key="i" class="surface-border rounded-(--ui-radius) p-4">
+        <USkeleton class="h-5 w-1/3" />
+        <USkeleton class="mt-2 h-4 w-2/3" />
+      </div>
+    </div>
 
     <div
       v-else-if="!notes.length"
@@ -25,6 +30,9 @@ async function remove(id: string) {
     >
       <UIcon name="i-lucide-notebook-pen" class="size-10" />
       <p>{{ $t('notes.empty') }}</p>
+      <UButton to="/notes/new" icon="i-lucide-plus" variant="subtle" class="mt-2">
+        {{ $t('notes.new') }}
+      </UButton>
     </div>
 
     <div v-else v-auto-animate class="mt-8 flex flex-col gap-3">

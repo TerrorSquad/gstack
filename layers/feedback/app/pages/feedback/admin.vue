@@ -23,8 +23,19 @@ const { data: items, pending } = await useAsyncData<Feedback[]>('admin-feedback'
     <h1 class="text-2xl font-bold">{{ t('feedback.adminTitle') }}</h1>
     <p class="mt-1 text-sm text-muted">{{ t('feedback.adminSubtitle') }}</p>
 
-    <div v-if="pending" class="mt-8 text-muted">{{ t('common.loading') }}</div>
-    <div v-else-if="!items?.length" class="mt-8 text-muted">{{ t('feedback.adminEmpty') }}</div>
+    <div v-if="pending" class="mt-8 flex flex-col gap-3">
+      <div v-for="i in 3" :key="i" class="surface-border rounded-(--ui-radius) p-4">
+        <USkeleton class="h-4 w-full" />
+        <USkeleton class="mt-2 h-3 w-1/4" />
+      </div>
+    </div>
+    <div
+      v-else-if="!items?.length"
+      class="mt-8 flex flex-col items-center gap-3 py-16 text-center text-muted"
+    >
+      <UIcon name="i-lucide-message-square" class="size-10" />
+      <p>{{ t('feedback.adminEmpty') }}</p>
+    </div>
     <div v-else v-auto-animate class="mt-8 flex flex-col gap-3">
       <div
         v-for="f in items"

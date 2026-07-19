@@ -87,7 +87,17 @@ function actionsFor(u: AdminUser): DropdownMenuItem[] {
 
     <!-- Members -->
     <div class="mt-8 flex flex-col gap-2">
-      <div v-if="pending" class="text-muted">{{ $t('common.loading') }}</div>
+      <div
+        v-for="i in pending ? 3 : 0"
+        :key="`s-${i}`"
+        class="surface-border flex items-center gap-3 rounded-(--ui-radius) p-4"
+      >
+        <USkeleton class="size-8 rounded-full" />
+        <div class="flex-1">
+          <USkeleton class="h-4 w-1/4" />
+          <USkeleton class="mt-2 h-3 w-1/3" />
+        </div>
+      </div>
       <div
         v-for="u in users"
         :key="u.id"
