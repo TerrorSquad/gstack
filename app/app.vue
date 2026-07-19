@@ -31,5 +31,6 @@ defineOgImageComponent('NuxtSeo')
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
+    <FeedbackWidget />
   </UApp>
 </template>

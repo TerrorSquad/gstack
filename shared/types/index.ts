@@ -27,6 +27,15 @@ export interface Note {
   updatedAt: string
 }
 
+export interface Feedback {
+  id: string
+  tenantId: string
+  userId: string
+  message: string
+  page: string
+  createdAt: string
+}
+
 export type SubscriptionStatus = 'trialing' | 'active' | 'past_due' | 'canceled' | 'incomplete'
 
 export interface Subscription {

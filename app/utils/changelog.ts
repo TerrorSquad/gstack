@@ -24,6 +24,7 @@ export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
       feature('A public roadmap so you can see what we’re building next.'),
       feature('The changelog is now a cleaner, easier-to-scan timeline.'),
       feature('Refreshed look with a new accent colour and softer, rounder UI.'),
+      feature('Send us feedback right from the app with the new feedback button.'),
     ],
   },
   {
