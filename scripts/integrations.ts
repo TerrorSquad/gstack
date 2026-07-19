@@ -82,6 +82,14 @@ export const integrations: Integration[] = [
     required: [],
   },
   {
+    id: 'tour',
+    label: 'Onboarding tour (driver.js)',
+    category: 'growth',
+    flag: 'NUXT_PUBLIC_TOUR_ENABLED',
+    // No external keys — a client-side first-run product tour.
+    required: [],
+  },
+  {
     id: 'posthog',
     label: 'PostHog product analytics + feature flags',
     category: 'growth',

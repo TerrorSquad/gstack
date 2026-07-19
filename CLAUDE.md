@@ -76,6 +76,15 @@ only) that submits to the `feedback` table via `useFeedback().submit()`, RLS-
 scoped like notes. Append-only — users read their own, admins read the tenant's
 (`list()`). No external keys; it's all Supabase.
 
+## Onboarding tour
+
+Off by default (`NUXT_PUBLIC_TOUR_ENABLED`). `layers/tour` wraps driver.js in
+`useOnboardingTour()` (named to avoid Nuxt UI's own `useTour`) and auto-starts a
+first-run product tour once per browser on the
+first authenticated `/dashboard` visit (`tour.client.ts`). Steps target nav
+links by `href`, so restyling nav doesn't break it. Completion is remembered in
+localStorage (`tour:onboarding:seen`).
+
 ## Analytics (PostHog)
 
 Off by default (`NUXT_PUBLIC_POSTHOG_ENABLED` + a key). `layers/analytics` inits

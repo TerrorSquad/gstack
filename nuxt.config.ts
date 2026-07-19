@@ -21,6 +21,7 @@ export default defineNuxtConfig({
     './layers/email',
     './layers/analytics',
     './layers/feedback',
+    './layers/tour',
   ],
   modules: [
     '@nuxt/ui',
@@ -135,6 +136,8 @@ export default defineNuxtConfig({
       notificationsEnabled: false,
       // Self-hosted feedback widget (submits to the feedback table). Off by default.
       feedbackEnabled: false,
+      // First-run onboarding tour (driver.js). Off by default. See layers/tour.
+      tourEnabled: false,
       // Sentry DSN is public-safe by design (write-only ingest key). Replace with
       // your own project's DSN.
       sentryDsn: '',
