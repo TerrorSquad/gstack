@@ -19,11 +19,13 @@ useHead({
 })
 
 // Site-wide default OG image: nuxt-og-image renders one per page from its <title>
-// + site.name, so social/link previews work with zero art. Override per page with
-// defineOgImageComponent('NuxtSeo', { title, description }), or point at a static
-// (e.g. AI-generated) image via defineOgImage({ url: '/og/home.png' }) — drop the
-// file in public/og/.
-defineOgImageComponent('NuxtSeo')
+// + site.name, so social/link previews work with zero art. Uses the ejected
+// template at app/components/OgImage/NuxtSeo.satori.vue (community templates must
+// be ejected to render in production). Override per page with
+// defineOgImageComponent('NuxtSeoSatori', { title, description }), or point at a
+// static (e.g. AI-generated) image via defineOgImage({ url: '/og/home.png' }) —
+// drop the file in public/og/.
+defineOgImageComponent('NuxtSeoSatori')
 </script>
 
 <template>
