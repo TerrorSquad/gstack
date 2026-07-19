@@ -25,7 +25,7 @@ jobs:
         uses: jdx/mise-action@v2
 
       - name: Cache pnpm store
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.local/share/pnpm/store
           key: pnpm-store-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
@@ -36,7 +36,7 @@ jobs:
 
       - name: Cache Playwright browsers
         id: pw-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
@@ -59,7 +59,7 @@ jobs:
       # of "supabase start" was a cold `docker pull`. Keyed on the CLI version so
       # a CLI bump (which can change pinned image tags) busts the cache.
       - name: Cache Supabase Docker images
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/supabase-images.tar
           key: supabase-images-${{ runner.os }}-${{ hashFiles('supabase/config.toml') }}
