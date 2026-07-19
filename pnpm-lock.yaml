@@ -87,6 +87,9 @@ importers:
       dotenv:
         specifier: ^17.4.2
         version: 17.4.2
+      nuxt-csurf:
+        specifier: ^1.6.6
+        version: 1.6.6(magicast@0.5.3)
       oxfmt:
         specifier: ^0.58.0
         version: 0.58.0

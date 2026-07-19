@@ -96,14 +96,18 @@ until set; webhook + sync + entitlements verified locally.)
 - [x] `nuxt-security`: nonce-based CSP + tightened headers, per-directive
       allowlist for the hosts the stack talks to (Supabase, Vercel, fonts).
       Verified against the real login flow — zero violations.
-- [ ] **CSRF (token) — deferred.** Supabase auth cookies are `SameSite=Lax`
-      (baseline CSRF protection); full token-CSRF needs the token wired into
-      `$fetch` and the webhook routes excluded. Documented in `nuxt.config.ts`.
+- [x] **CSRF (token)** via nuxt-csurf on POST/PUT/PATCH (double-submit, httpOnly
+      `__Host-` secret cookie), layered over the SameSite=Lax auth cookies. A
+      client plugin (`plugins/csrf.client.ts`) echoes the token on same-origin
+      mutations so no call site changes; machine callers (webhooks, Sentry
+      tunnel) are excluded via `routeRules`. Verified: no-token POST → 403,
+      valid token → passes, excluded routes reach their handler.
 - [ ] **Passkeys / WebAuthn — deferred.** Needs a real authenticator device to
       verify; can't be validated headless. Wire when there's a device to test on.
 
 **Acceptance:** rate limits hold across instances (Upstash); nonce CSP passes on
-the real login flow. ✅ Token-CSRF and passkeys are documented follow-ups.
+the real login flow; CSRF token enforced on mutations. ✅ Passkeys remain a
+documented follow-up.
 
 ## Phase 6 — Data-layer option 💤
 

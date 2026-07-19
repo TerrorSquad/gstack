@@ -30,11 +30,13 @@ export default defineNuxtConfig({
   // Security headers + CSP (nuxt-security). CSP is nonce-based for scripts; the
   // external hosts our stack talks to are allowlisted per-directive. Its own
   // rate limiter is off — we use server/utils/rateLimit (Upstash/in-memory).
-  // CSRF: Supabase auth cookies are SameSite=Lax (baseline protection); enabling
-  // nuxt-security's token CSRF also means wiring the token into $fetch and
-  // excluding the webhook routes — left as a documented follow-up (see roadmap).
+  // CSRF: token protection (double-submit, httpOnly secret cookie) via nuxt-csurf
+  // on POST/PUT/PATCH — layered over the SameSite=Lax auth cookies. All app calls
+  // carry the token automatically (plugins/csrf.client.ts); machine callers that
+  // can't send it (webhooks, Sentry tunnel) are excluded via routeRules below.
   security: {
     rateLimiter: false,
+    csrf: { methodsToProtect: ['POST', 'PUT', 'PATCH'] },
     headers: {
       crossOriginEmbedderPolicy: false, // would block cross-origin fonts/images
       contentSecurityPolicy: {
@@ -54,6 +56,13 @@ export default defineNuxtConfig({
         'base-uri': ["'self'"],
       },
     },
+  },
+  // CSRF-exempt the machine callers: external webhooks (HMAC/secret-verified in
+  // the handler) and the browser Sentry tunnel (Sentry's SDK uses its own
+  // transport and can't send our token). Everything else stays protected.
+  routeRules: {
+    '/api/hooks/**': { csurf: false },
+    '/api/sentry': { csurf: false },
   },
   // Public site identity for SEO/sitemap/canonical. Override in prod with
   // NUXT_PUBLIC_SITE_URL (nuxt-site-config reads it automatically).

@@ -51,6 +51,7 @@
     "@types/node": "^26.1.1",
     "axe-playwright": "^2.2.2",
     "dotenv": "^17.4.2",
+    "nuxt-csurf": "^1.6.6",
     "oxfmt": "^0.58.0",
     "oxlint": "^1.73.0",
     "supabase": "^2.109.1",
