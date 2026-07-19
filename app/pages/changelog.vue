@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { ChangelogEntry } from '~/utils/changelog'
 
-definePageMeta({ public: true, layout: false })
+// Public page in the site chrome — a centered timeline feed, not a standalone hero.
+definePageMeta({ public: true, layout: 'marketing' })
 
 const { t } = useI18n()
 useHead({ title: () => t('changelog.title') })
@@ -12,54 +13,48 @@ function bucket(entry: ChangelogEntry, kind: 'feature' | 'fix') {
 </script>
 
 <template>
-  <div class="lg:flex">
-    <div
-      class="relative flex flex-col justify-between overflow-hidden bg-linear-to-br from-primary-600 to-primary-800 text-white lg:sticky lg:top-0 lg:h-screen lg:w-1/2"
-    >
-      <div class="flex items-center justify-between p-8">
-        <AppLogo />
-        <ThemeSwitcher />
-      </div>
-      <div class="flex flex-1 flex-col justify-center px-8 py-12">
-        <h1 class="font-heading text-4xl font-extrabold drop-shadow-md">
-          {{ $t('changelog.title') }}
-        </h1>
-        <p class="mt-3 max-w-sm text-white/85">{{ $t('changelog.subtitle') }}</p>
-      </div>
-      <div class="p-8">
-        <ULink to="/" class="text-sm font-medium text-white/90 hover:text-white">
-          &larr; {{ $t('changelog.back') }}
-        </ULink>
-      </div>
-    </div>
+  <UContainer class="max-w-3xl py-12 sm:py-16">
+    <header class="max-w-2xl">
+      <h1 class="font-heading text-3xl font-extrabold sm:text-4xl">{{ $t('changelog.title') }}</h1>
+      <p class="mt-3 text-lg text-muted">{{ $t('changelog.subtitle') }}</p>
+    </header>
 
-    <div class="p-8 lg:w-1/2 lg:overflow-y-auto lg:p-16">
-      <UChangelogVersions :indicator="false" :versions="CHANGELOG_ENTRIES">
-        <!-- Feed the component the raw ISO date and format it ourselves; its
-             `new Date(props.date)` misparses pre-formatted dates. -->
-        <template #date="{ version }">
-          {{ formatDate(version.date) }}
-        </template>
-        <template #body="{ version }">
-          <div class="mt-5 space-y-6">
-            <div
-              v-for="group in [
-                { kind: 'feature', icon: '✨', items: bucket(version, 'feature') },
-                { kind: 'fix', icon: '🐞', items: bucket(version, 'fix') },
-              ].filter((g) => g.items.length)"
-              :key="group.kind"
+    <ol class="relative mt-12 ms-3 space-y-14 border-s border-default sm:ms-4">
+      <li v-for="entry in CHANGELOG_ENTRIES" :key="entry.date" class="relative ps-8 sm:ps-10">
+        <span
+          class="absolute top-1.5 -start-[7px] size-3.5 rounded-full bg-primary ring-4 ring-(--ui-bg)"
+          aria-hidden="true"
+        />
+        <time class="text-sm font-medium text-muted">{{ formatDate(entry.date) }}</time>
+        <h2 class="mt-1 font-heading text-2xl font-bold text-highlighted">{{ entry.title }}</h2>
+
+        <div class="mt-5 space-y-6">
+          <div
+            v-for="group in [
+              { kind: 'feature', icon: 'i-lucide-sparkles', items: bucket(entry, 'feature') },
+              { kind: 'fix', icon: 'i-lucide-bug', items: bucket(entry, 'fix') },
+            ].filter((g) => g.items.length)"
+            :key="group.kind"
+          >
+            <h3
+              class="mb-2 flex items-center gap-2 text-sm font-semibold tracking-wide text-toned uppercase"
             >
-              <h3 class="mb-2 flex items-center gap-2 text-lg font-semibold text-highlighted">
-                <span aria-hidden="true">{{ group.icon }}</span>
-                {{ $t(`changelog.${group.kind}`) }}
-              </h3>
-              <ul class="list-outside list-disc space-y-1.5 pl-5 text-base/relaxed text-toned">
-                <li v-for="text in group.items" :key="text">{{ text }}</li>
-              </ul>
-            </div>
+              <UIcon :name="group.icon" class="size-4 text-primary" />
+              {{ $t(`changelog.${group.kind}`) }}
+            </h3>
+            <ul class="space-y-2">
+              <li
+                v-for="text in group.items"
+                :key="text"
+                class="flex gap-2.5 text-base/relaxed text-toned"
+              >
+                <UIcon name="i-lucide-check" class="mt-1.5 size-3.5 shrink-0 text-muted" />
+                <span>{{ text }}</span>
+              </li>
+            </ul>
           </div>
-        </template>
-      </UChangelogVersions>
-    </div>
-  </div>
+        </div>
+      </li>
+    </ol>
+  </UContainer>
 </template>

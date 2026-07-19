@@ -21,14 +21,31 @@ const headingText = computed(() => props.heading ?? t('auth.tagline'))
 const bodyText = computed(() => props.body ?? t('auth.subtitle'))
 const iconName = computed(() => props.icon)
 const showDots = computed(() => props.step != null && props.steps != null)
+
+// Static selling points that fill the brand panel — same across auth steps.
+const features = computed(() => [
+  t('auth.featureAuth'),
+  t('auth.featureBatteries'),
+  t('auth.featureShip'),
+])
 </script>
 
 <template>
   <div class="flex min-h-screen">
-    <!-- Brand panel (desktop only): deep indigo with a dot-grid overlay -->
+    <!-- Brand panel (desktop only): brand gradient in light, deep slate in dark,
+         with soft glow orbs + a dot-grid overlay for depth. -->
     <aside
-      class="dot-grid relative hidden w-1/2 flex-col justify-between overflow-hidden bg-linear-to-br from-primary-600 via-primary-700 to-primary-900 p-12 text-white lg:flex"
+      class="dot-grid relative hidden w-1/2 flex-col justify-between overflow-hidden bg-linear-to-br from-primary-600 via-primary-700 to-primary-800 p-12 text-white lg:flex dark:from-primary-950 dark:via-slate-950 dark:to-slate-950"
     >
+      <div
+        class="pointer-events-none absolute -top-20 -right-16 size-72 rounded-full bg-primary-400/30 blur-3xl dark:bg-primary-600/25"
+        aria-hidden="true"
+      />
+      <div
+        class="pointer-events-none absolute -bottom-10 -left-20 size-80 rounded-full bg-primary-300/20 blur-3xl dark:bg-primary-700/20"
+        aria-hidden="true"
+      />
+
       <ULink
         :to="SITE_URL"
         external
@@ -40,32 +57,47 @@ const showDots = computed(() => props.step != null && props.steps != null)
         Starter
       </ULink>
 
-      <Transition name="auth-fade" mode="out-in">
-        <div :key="step ?? 'static'" class="relative z-10 flex flex-col">
-          <span
-            class="mb-8 flex size-16 items-center justify-center rounded-2xl bg-white/10 ring-1 ring-white/20 backdrop-blur-sm"
-          >
-            <UIcon :name="iconName" class="size-8 text-white" />
-          </span>
-          <p class="text-xs font-bold tracking-[0.2em] text-white/60 uppercase">
-            {{ eyebrowText }}
-          </p>
-          <h1 class="mt-3 font-heading text-4xl font-bold tracking-tight">
-            {{ headingText }}
-          </h1>
-          <p class="mt-4 max-w-md text-white/75">
-            {{ bodyText }}
-          </p>
-          <div v-if="showDots" class="mt-10 flex gap-2" aria-hidden="true">
+      <div class="relative z-10">
+        <Transition name="auth-fade" mode="out-in">
+          <div :key="step ?? 'static'" class="flex flex-col">
             <span
-              v-for="i in steps"
-              :key="i"
-              class="h-1.5 rounded-full transition-all duration-300"
-              :class="i === step ? 'w-8 bg-white' : 'w-1.5 bg-white/30'"
-            />
+              class="mb-8 flex size-16 items-center justify-center rounded-2xl bg-white/10 ring-1 ring-white/20 backdrop-blur-sm"
+            >
+              <UIcon :name="iconName" class="size-8 text-white" />
+            </span>
+            <p class="text-xs font-bold tracking-[0.2em] text-white/60 uppercase">
+              {{ eyebrowText }}
+            </p>
+            <h1 class="mt-3 font-heading text-4xl font-bold tracking-tight">
+              {{ headingText }}
+            </h1>
+            <p class="mt-4 max-w-md text-white/75">
+              {{ bodyText }}
+            </p>
+            <div v-if="showDots" class="mt-10 flex gap-2" aria-hidden="true">
+              <span
+                v-for="i in steps"
+                :key="i"
+                class="h-1.5 rounded-full transition-all duration-300"
+                :class="i === step ? 'w-8 bg-white' : 'w-1.5 bg-white/30'"
+              />
+            </div>
           </div>
-        </div>
-      </Transition>
+        </Transition>
+
+        <ul class="mt-12 space-y-3.5">
+          <li
+            v-for="feature in features"
+            :key="feature"
+            class="flex items-center gap-3 text-sm text-white/85"
+          >
+            <span class="flex size-5 shrink-0 items-center justify-center rounded-full bg-white/15">
+              <UIcon name="i-lucide-check" class="size-3 text-white" />
+            </span>
+            {{ feature }}
+          </li>
+        </ul>
+      </div>
 
       <ULink
         :to="SITE_URL"
