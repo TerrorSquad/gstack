@@ -74,6 +74,17 @@ export const integrations: Integration[] = [
     ],
   },
   {
+    id: 'posthog',
+    label: 'PostHog product analytics + feature flags',
+    category: 'growth',
+    flag: 'NUXT_PUBLIC_POSTHOG_ENABLED',
+    required: [{ key: 'NUXT_PUBLIC_POSTHOG_KEY', hint: 'PostHog project API key (public-safe)' }],
+    optional: [
+      { key: 'NUXT_PUBLIC_POSTHOG_HOST', hint: 'defaults to https://us.i.posthog.com' },
+      { key: 'NUXT_PUBLIC_POSTHOG_SESSION_REPLAY', hint: 'true to record session replays' },
+    ],
+  },
+  {
     id: 'billing',
     label: 'Billing (Polar)',
     category: 'billing',
