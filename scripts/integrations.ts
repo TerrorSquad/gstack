@@ -74,6 +74,14 @@ export const integrations: Integration[] = [
     ],
   },
   {
+    id: 'feedback',
+    label: 'Feedback widget (self-hosted → DB)',
+    category: 'growth',
+    flag: 'NUXT_PUBLIC_FEEDBACK_ENABLED',
+    // No external keys — submits to the feedback table via Supabase (core).
+    required: [],
+  },
+  {
     id: 'posthog',
     label: 'PostHog product analytics + feature flags',
     category: 'growth',

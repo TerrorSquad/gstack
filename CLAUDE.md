@@ -68,6 +68,14 @@ rows; `app/stores/notifications.ts` + `NotificationBell.vue` render the feed;
 a Supabase DB webhook → `server/api/hooks/notification-email.post.ts` mirrors each
 row to email via Resend. Keep the whole thing behind the one flag.
 
+## Feedback
+
+Off by default (`NUXT_PUBLIC_FEEDBACK_ENABLED`). Self-hosted, no third-party
+widget: `layers/feedback` renders a floating `FeedbackWidget` (signed-in users
+only) that submits to the `feedback` table via `useFeedback().submit()`, RLS-
+scoped like notes. Append-only — users read their own, admins read the tenant's
+(`list()`). No external keys; it's all Supabase.
+
 ## Analytics (PostHog)
 
 Off by default (`NUXT_PUBLIC_POSTHOG_ENABLED` + a key). `layers/analytics` inits

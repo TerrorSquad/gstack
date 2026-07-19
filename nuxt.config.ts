@@ -20,6 +20,7 @@ export default defineNuxtConfig({
     './layers/billing',
     './layers/email',
     './layers/analytics',
+    './layers/feedback',
   ],
   modules: [
     '@nuxt/ui',
@@ -132,6 +133,8 @@ export default defineNuxtConfig({
       // Notifications (in-app feed + bell + transactional emails) off by default —
       // flip NUXT_PUBLIC_NOTIFICATIONS_ENABLED=true to enable the whole subsystem.
       notificationsEnabled: false,
+      // Self-hosted feedback widget (submits to the feedback table). Off by default.
+      feedbackEnabled: false,
       // Sentry DSN is public-safe by design (write-only ingest key). Replace with
       // your own project's DSN.
       sentryDsn: '',
