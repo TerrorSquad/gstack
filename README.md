@@ -40,6 +40,7 @@ What's built and what's next: [`docs/roadmap.md`](docs/roadmap.md). Key decision
 ```bash
 pnpm install
 cp .env.example .env          # fill in after `pnpm supabase start`
+pnpm setup                    # pick which integrations to enable + stub their env vars
 pnpm supabase start           # local Postgres + Auth (needs Docker)
 pnpm db:reset                 # apply the migration + seed
 pnpm db:types                 # regenerate the typed client from the live schema
