@@ -1,0 +1,19 @@
+# Keep dependencies current. Weekly, grouped so a template clone gets one PR to
+# review instead of a swarm. GitHub Actions + pnpm (npm ecosystem covers pnpm).
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      # Non-breaking updates in one PR; majors stay separate for manual review.
+      minor-and-patch:
+        update-types:
+          - minor
+          - patch
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
