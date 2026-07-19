@@ -81,6 +81,14 @@ Never edit migrations retroactively once applied to a real DB — add a new one.
 build a demo tenant. Idempotent — wipes the `@example.com` domain first. Creds
 live in `scripts/seed/fixtures.ts` (shared with e2e). `SEED_FAST=1` = minimal set.
 
+## Setup wizard
+
+`pnpm setup` (`scripts/setup.ts`) reads `scripts/integrations.ts` (the subsystem
+manifest) and writes `.env`: it flips the flag for each subsystem you pick and
+stubs any missing keys. Unpicked subsystems are set to `false`, never deleted;
+existing values are never overwritten. It writes; `pnpm doctor` verifies — both
+share the one manifest, so adding a subsystem there wires up both scripts.
+
 ## Testing
 
 - `**/*.test.ts` (vitest) — pure logic only, no DOM/Supabase.

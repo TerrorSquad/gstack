@@ -9,6 +9,8 @@ import process from 'node:process'
 
 import { consola } from 'consola'
 
+import { integrations } from './integrations'
+
 const env = process.env
 const has = (k: string) => !!env[k]?.trim()
 const on = (k: string) => env[k]?.trim() === 'true'
@@ -57,25 +59,27 @@ if (bsToken && bsUrl) ok('BetterStack log forwarding on')
 else if (bsToken || bsUrl) fail('BetterStack half-configured — set both SOURCE_TOKEN and INGEST_URL')
 else info('BetterStack off')
 
-consola.log('')
-consola.info('Notifications')
-if (on('NUXT_PUBLIC_NOTIFICATIONS_ENABLED')) {
-  if (has('NUXT_RESEND_KEY')) ok('Resend key set')
-  else fail('Notifications ENABLED but NUXT_RESEND_KEY missing')
-  if (has('NUXT_NOTIFICATION_WEBHOOK_SECRET')) ok('Webhook secret set')
-  else fail('Notifications ENABLED but NUXT_NOTIFICATION_WEBHOOK_SECRET missing')
-} else info('Notifications off')
-
-consola.log('')
-consola.info('Billing')
-if (on('NUXT_PUBLIC_BILLING_ENABLED')) {
-  if (has('NUXT_POLAR_ACCESS_TOKEN')) ok('Polar access token set')
-  else fail('Billing ENABLED but NUXT_POLAR_ACCESS_TOKEN missing')
-  if (has('NUXT_POLAR_WEBHOOK_SECRET')) ok('Polar webhook secret set')
-  else fail('Billing ENABLED but NUXT_POLAR_WEBHOOK_SECRET missing')
-  if (has('NUXT_POLAR_PRICE_PRO') || has('NUXT_POLAR_PRICE_ENTERPRISE')) ok('At least one Polar price id set')
-  else warn('Billing ENABLED but no price ids — checkout CTAs have nothing to sell')
-} else info('Billing off')
+// Flag-gated subsystems, checked generically from the shared manifest so this
+// script and `pnpm setup` never drift. Bespoke pairings (OAuth, BetterStack)
+// stay hand-written above; anything with a plain flag + required/optional keys
+// lives in scripts/integrations.ts.
+for (const it of integrations) {
+  if (!it.flag) continue
+  consola.log('')
+  consola.info(it.label)
+  if (!on(it.flag)) {
+    info(`${it.id} off`)
+    continue
+  }
+  for (const v of it.required) {
+    if (has(v.key)) ok(v.key)
+    else fail(`${it.label} ENABLED but ${v.key} missing`)
+  }
+  for (const v of it.optional ?? []) {
+    if (has(v.key)) ok(v.key)
+    else warn(`${v.key} unset${v.hint ? ` — ${v.hint}` : ''}`)
+  }
+}
 
 consola.log('')
 consola.info('Prod')
