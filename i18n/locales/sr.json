@@ -107,6 +107,8 @@
   "notes.fieldBody": "Sadržaj",
   "notes.titleRequired": "Naslov je obavezan.",
   "notes.confirmDelete": "Obrisati ovu belešku?",
+  "notes.search": "Pretraži beleške…",
+  "notes.noResults": "Nijedna beleška ne odgovara pretrazi.",
   "account.title": "Podešavanja naloga",
   "account.fullName": "Ime i prezime",
   "account.email": "Email",

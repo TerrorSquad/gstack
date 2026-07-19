@@ -107,6 +107,8 @@
   "notes.fieldBody": "Body",
   "notes.titleRequired": "Title is required.",
   "notes.confirmDelete": "Delete this note?",
+  "notes.search": "Search notes…",
+  "notes.noResults": "No notes match your search.",
   "account.title": "Account settings",
   "account.fullName": "Full name",
   "account.email": "Email",

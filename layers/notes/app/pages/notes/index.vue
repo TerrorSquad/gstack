@@ -8,6 +8,15 @@ const { confirm } = useConfirm()
 async function remove(id: string) {
   if (await confirm(t('notes.confirmDelete'))) await deleteNote(id)
 }
+
+const query = ref('')
+const filtered = computed(() => {
+  const q = query.value.trim().toLowerCase()
+  if (!q) return notes.value
+  return notes.value.filter(
+    (n) => n.title.toLowerCase().includes(q) || n.body?.toLowerCase().includes(q),
+  )
+})
 </script>
 
 <template>
@@ -16,6 +25,14 @@ async function remove(id: string) {
       <h1 class="text-2xl font-bold">{{ $t('notes.title') }}</h1>
       <UButton to="/notes/new" icon="i-lucide-plus">{{ $t('notes.new') }}</UButton>
     </div>
+
+    <UInput
+      v-if="notes.length"
+      v-model="query"
+      icon="i-lucide-search"
+      :placeholder="$t('notes.search')"
+      class="mt-6 w-full sm:max-w-xs"
+    />
 
     <div v-if="pending" class="mt-8 flex flex-col gap-3">
       <div v-for="i in 3" :key="i" class="surface-border rounded-(--ui-radius) p-4">
@@ -35,8 +52,12 @@ async function remove(id: string) {
       </UButton>
     </div>
 
+    <div v-else-if="!filtered.length" class="mt-8 py-16 text-center text-muted">
+      {{ $t('notes.noResults') }}
+    </div>
+
     <div v-else v-auto-animate class="mt-8 flex flex-col gap-3">
-      <UCard v-for="note in notes" :key="note.id">
+      <UCard v-for="note in filtered" :key="note.id">
         <div class="flex items-start justify-between gap-4">
           <NuxtLink :to="`/notes/${note.id}`" class="min-w-0 flex-1">
             <p class="truncate font-semibold">{{ note.title }}</p>
