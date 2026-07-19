@@ -68,6 +68,15 @@ rows; `app/stores/notifications.ts` + `NotificationBell.vue` render the feed;
 a Supabase DB webhook → `server/api/hooks/notification-email.post.ts` mirrors each
 row to email via Resend. Keep the whole thing behind the one flag.
 
+## Analytics (PostHog)
+
+Off by default (`NUXT_PUBLIC_POSTHOG_ENABLED` + a key). `layers/analytics` inits
+`posthog-js` in a client plugin (`$posthog`), captures SPA pageviews, and exposes
+`useFeatureFlag(key, fallback)` — a reactive flag that degrades to `fallback` when
+PostHog is off, so gated UI works with no PostHog. Session replay is a separate
+opt-in flag (`NUXT_PUBLIC_POSTHOG_SESSION_REPLAY`). Client-only — no server capture
+(add `posthog-node` if you need it). Distinct from Vercel Analytics (traffic).
+
 ## Database
 
 Migrations in `supabase/migrations/`. Run `pnpm supabase <cmd>` (CLI isn't global).

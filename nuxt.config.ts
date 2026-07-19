@@ -19,6 +19,7 @@ export default defineNuxtConfig({
     './layers/account',
     './layers/billing',
     './layers/email',
+    './layers/analytics',
   ],
   modules: [
     '@nuxt/ui',
@@ -54,8 +55,12 @@ export default defineNuxtConfig({
           'http://127.0.0.1:54321',
           'ws://127.0.0.1:54321',
           'https://vitals.vercel-insights.com',
+          // PostHog ingest + assets (analytics layer). Harmless when disabled.
+          'https://*.posthog.com',
         ],
-        'img-src': ["'self'", 'data:', 'blob:', 'https://*.supabase.co'],
+        'img-src': ["'self'", 'data:', 'blob:', 'https://*.supabase.co', 'https://*.posthog.com'],
+        // PostHog session replay records via a web worker.
+        'worker-src': ["'self'", 'blob:'],
         'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
         'font-src': ["'self'", 'https://fonts.gstatic.com', 'data:'],
         'frame-ancestors': ["'none'"],
@@ -130,6 +135,15 @@ export default defineNuxtConfig({
       // Sentry DSN is public-safe by design (write-only ingest key). Replace with
       // your own project's DSN.
       sentryDsn: '',
+      // PostHog product analytics + feature flags. Off until a key is set AND the
+      // flag is on. See layers/analytics. Key is public-safe (write-only ingest).
+      posthog: {
+        enabled: false,
+        key: '',
+        host: 'https://us.i.posthog.com',
+        // Session replay records user sessions — off by default (privacy + cost).
+        sessionReplay: false,
+      },
     },
   },
   sentry: {
