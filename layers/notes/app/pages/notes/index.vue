@@ -27,7 +27,7 @@ async function remove(id: string) {
       <p>{{ $t('notes.empty') }}</p>
     </div>
 
-    <div v-else class="mt-8 flex flex-col gap-3">
+    <div v-else v-auto-animate class="mt-8 flex flex-col gap-3">
       <UCard v-for="note in notes" :key="note.id">
         <div class="flex items-start justify-between gap-4">
           <NuxtLink :to="`/notes/${note.id}`" class="min-w-0 flex-1">

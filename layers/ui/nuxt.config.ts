@@ -12,6 +12,8 @@ import { fileURLToPath } from 'node:url'
 const dir = dirname(fileURLToPath(import.meta.url))
 
 export default defineNuxtConfig({
+  // v-auto-animate directive for lightweight list/enter/leave transitions.
+  modules: ['@formkit/auto-animate/nuxt'],
   css: [join(dir, 'app/assets/css/main.css')],
   fonts: {
     families: [
