@@ -3,7 +3,6 @@ import type { NotificationType } from '#shared/types'
 
 import { serverSupabaseServiceRole } from '#supabase/server'
 
-import { renderNotificationEmail } from '../../utils/notificationEmail'
 
 // Called by a Supabase DB webhook on every notifications INSERT. Mirrors the
 // in-app notification to a transactional email via Resend. Configure the webhook
@@ -42,7 +41,7 @@ export default defineEventHandler(async (event) => {
   if (!recipient?.email) throw createError({ statusCode: 404, message: 'missing recipient' })
 
   const origin = config.siteUrl || getRequestURL(event).origin
-  const { subject, html } = renderNotificationEmail(rec.type, {
+  const { subject, html } = await renderNotificationEmail(rec.type, {
     recipientName: recipient.full_name,
     actorName: actor?.full_name ?? 'A teammate',
     noteTitle: note?.title ?? '',

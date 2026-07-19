@@ -18,6 +18,7 @@ export default defineNuxtConfig({
     './layers/admin',
     './layers/account',
     './layers/billing',
+    './layers/email',
   ],
   modules: [
     '@nuxt/ui',
