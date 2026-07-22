@@ -3,7 +3,16 @@ import { createClient } from '@supabase/supabase-js'
 
 import type { Database } from '../../app/types/database.types'
 
-import { ADMIN, MEMBER, PASSWORD, TENANT_NAME } from './fixtures'
+import {
+  ACME_SECRET_NOTE_TITLE,
+  ADMIN,
+  ADMIN2,
+  MEMBER,
+  MEMBER2,
+  PASSWORD,
+  TENANT2_NAME,
+  TENANT_NAME,
+} from './fixtures'
 
 // Idempotent local seed. Creates one demo tenant with an admin, a member, and a
 // handful of faker-generated extra members, each with a few notes. Every member
@@ -56,12 +65,27 @@ async function addNotes(userId: string, tenantId: string, count: number) {
   if (error) throw error
 }
 
-async function main() {
-  console.info('Wiping demo data…')
-  await wipe()
+/** Move a user's auto-created tenant into `tenantId` as a member, dropping the
+ *  now-empty tenant the signup trigger spawned. */
+async function joinTenant(userId: string, tenantId: string) {
+  const { data: p } = await admin.from('profiles').select('tenant_id').eq('id', userId).single()
+  const ownTenant = p?.tenant_id
+  await admin.from('profiles').update({ tenant_id: tenantId, role: 'member' }).eq('id', userId)
+  if (ownTenant && ownTenant !== tenantId) {
+    await admin.from('tenants').delete().eq('id', ownTenant)
+  }
+}
 
-  // Admin creates the tenant.
-  const adminId = await createUser(ADMIN.email, ADMIN.fullName, TENANT_NAME)
+/** Seed one tenant: admin (creator) + one named member. Extra faker members
+ *  and a distinctive `secretTitle` note are optional. Returns the tenant id. */
+async function seedTenant(opts: {
+  tenantName: string
+  admin: { email: string; fullName: string }
+  member: { email: string; fullName: string }
+  extraMembers: number
+  secretTitle?: string
+}) {
+  const adminId = await createUser(opts.admin.email, opts.admin.fullName, opts.tenantName)
   const { data: adminProfile, error } = await admin
     .from('profiles')
     .select('tenant_id')
@@ -70,35 +94,49 @@ async function main() {
   if (error || !adminProfile) throw error ?? new Error('admin profile missing')
   const tenantId = adminProfile.tenant_id
 
-  // A member joins the tenant. Each createUser spawns its own tenant via the
-  // trigger, so move the profile into the admin's tenant and demote to member,
-  // then delete the now-empty tenant it created.
-  async function joinTenant(userId: string) {
-    const { data: p } = await admin.from('profiles').select('tenant_id').eq('id', userId).single()
-    const ownTenant = p?.tenant_id
-    await admin.from('profiles').update({ tenant_id: tenantId, role: 'member' }).eq('id', userId)
-    if (ownTenant && ownTenant !== tenantId) {
-      await admin.from('tenants').delete().eq('id', ownTenant)
-    }
-  }
-
-  const memberId = await createUser(MEMBER.email, MEMBER.fullName, 'temp')
-  await joinTenant(memberId)
+  const memberId = await createUser(opts.member.email, opts.member.fullName, 'temp')
+  await joinTenant(memberId, tenantId)
   await addNotes(memberId, tenantId, 3)
 
-  if (!fast) {
-    for (let i = 0; i < 4; i++) {
-      const name = faker.person.fullName()
-      const email = faker.internet.email({ provider: 'example.com' }).toLowerCase()
-      const id = await createUser(email, name, 'temp')
-      await joinTenant(id)
-      await addNotes(id, tenantId, faker.number.int({ min: 1, max: 4 }))
-    }
+  if (opts.secretTitle) {
+    const { error: e } = await admin
+      .from('notes')
+      .insert({ user_id: memberId, tenant_id: tenantId, title: opts.secretTitle, body: 'seed' })
+    if (e) throw e
   }
 
-  console.info(`Seeded tenant "${TENANT_NAME}".`)
-  console.info(`  Admin:  ${ADMIN.email} / ${PASSWORD}`)
-  console.info(`  Member: ${MEMBER.email} / ${PASSWORD}`)
+  for (let i = 0; i < opts.extraMembers; i++) {
+    const name = faker.person.fullName()
+    const email = faker.internet.email({ provider: 'example.com' }).toLowerCase()
+    const id = await createUser(email, name, 'temp')
+    await joinTenant(id, tenantId)
+    await addNotes(id, tenantId, faker.number.int({ min: 1, max: 4 }))
+  }
+
+  return tenantId
+}
+
+async function main() {
+  console.info('Wiping demo data…')
+  await wipe()
+
+  // Tenant 1: Acme — the primary demo tenant, with a distinctive secret note.
+  await seedTenant({
+    tenantName: TENANT_NAME,
+    admin: ADMIN,
+    member: MEMBER,
+    extraMembers: fast ? 0 : 4,
+    secretTitle: ACME_SECRET_NOTE_TITLE,
+  })
+
+  // Tenant 2: Globex — always seeded (even fast) so RLS isolation is testable.
+  await seedTenant({ tenantName: TENANT2_NAME, admin: ADMIN2, member: MEMBER2, extraMembers: 0 })
+
+  console.info(`Seeded tenants "${TENANT_NAME}" and "${TENANT2_NAME}".`)
+  console.info(`  Acme   admin:  ${ADMIN.email} / ${PASSWORD}`)
+  console.info(`  Acme   member: ${MEMBER.email} / ${PASSWORD}`)
+  console.info(`  Globex admin:  ${ADMIN2.email} / ${PASSWORD}`)
+  console.info(`  Globex member: ${MEMBER2.email} / ${PASSWORD}`)
 }
 
 main().catch((e) => {

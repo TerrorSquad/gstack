@@ -42,8 +42,8 @@ jobs:
       - name: i18n key usage check
         run: pnpm run lint:i18n-keys
 
-      - name: Unit tests (vitest)
-        run: pnpm run test
+      - name: Unit tests + coverage gate (vitest)
+        run: pnpm run test:coverage
 
       - name: Typecheck
         run: pnpm run typecheck

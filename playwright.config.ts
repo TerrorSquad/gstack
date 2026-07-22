@@ -27,11 +27,18 @@ export default defineConfig({
       dependencies: ['setup'],
     },
     {
-      // Authenticated feature flows (feedback submit → admin list).
+      // Authenticated feature flows using the saved admin (Acme) session.
       name: 'app',
-      testMatch: /feedback\.spec\.ts/,
+      testMatch: /(feedback|notes)\.spec\.ts/,
       use: { ...devices['Desktop Chrome'], storageState: 'e2e/.auth.json' },
       dependencies: ['setup'],
+    },
+    {
+      // Tenant isolation logs in as a *different* tenant (Globex) itself, so it
+      // runs with no saved session (a saved one would redirect /login away).
+      name: 'isolation',
+      testMatch: /tenant-isolation\.spec\.ts/,
+      use: { ...devices['Desktop Chrome'] },
     },
   ],
   webServer: {
