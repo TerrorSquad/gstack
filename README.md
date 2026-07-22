@@ -8,6 +8,11 @@ CRUD (`notes`) shows the pattern to copy for your own domain.
 > **Using this as a template?** Click **"Use this template"** on GitHub, then
 > follow [`SETUP.md`](SETUP.md) — one rename command and env setup and it's yours.
 
+|                                                     |                                                   |
+| --------------------------------------------------- | ------------------------------------------------- |
+| ![Landing](docs/screenshots/landing.png)            | ![Dashboard](docs/screenshots/dashboard.png)      |
+| ![Notes](docs/screenshots/notes.png)                | ![Admin](docs/screenshots/admin.png)              |
+
 ## What's included
 
 - **Auth** — email/password + social login (GitHub, Google via Supabase OAuth),
@@ -25,7 +30,9 @@ CRUD (`notes`) shows the pattern to copy for your own domain.
 - **Seeding** — `pnpm seed` builds a demo tenant (admin + members + notes) with
   `@faker-js/faker`. Idempotent; wipes the `@example.com` demo domain first.
 - **i18n** — `sr` (default) + `en`, parity-checked in CI.
-- **Testing** — vitest (pure logic) + Playwright (e2e + a11y via axe, both themes).
+- **Testing** — vitest (pure logic, **100% coverage gate** on the logic layer) +
+  Playwright (e2e + a11y via axe, both themes). Includes a **tenant-isolation e2e**
+  that proves one tenant can never read another's rows through RLS.
 - **CI/release** — GitHub Actions (lint/test/typecheck, scheduled a11y, PR visual
   regression) + release-please + a user-facing `/changelog`.
 

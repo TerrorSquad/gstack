@@ -34,3 +34,6 @@ test-results/
 .playwright-browsers/
 
 supabase/.temp
+
+# test coverage
+coverage/
