@@ -8,8 +8,7 @@
   "todo-tree.filtering.excludeGlobs": ["**/.agents/**", "**/docs/**"],
 
   "editor.codeActionsOnSave": {
-    "source.fixAll": "never",
-    "source.fixAll.eslint": "explicit"
+    "source.fixAll.oxc": "explicit"
   },
   "tailwindCSS.classAttributes": ["class", "ui"],
   "tailwindCSS.classFunctions": ["defineAppConfig"],
@@ -55,5 +54,8 @@
     "editor.defaultFormatter": "oxc.oxc-vscode",
     "editor.formatOnSave": true
   },
-  "todo-tree.ripgrep.ripgrep": "/home/linuxbrew/.linuxbrew/bin/rg"
+  "[vue]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.formatOnSave": true
+  }
 }

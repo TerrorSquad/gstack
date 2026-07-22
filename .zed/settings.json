@@ -1,0 +1,31 @@
+{
+  "format_on_save": "on",
+  "formatter": "language_server",
+  "languages": {
+    "Vue.js": {
+      "language_servers": ["vtsls", "oxc", "tailwindcss-language-server"]
+    },
+    "TypeScript": {
+      "formatter": { "language_server": { "name": "oxc" } },
+      "code_actions_on_format": { "source.fixAll.oxc": true }
+    },
+    "JavaScript": {
+      "formatter": { "language_server": { "name": "oxc" } },
+      "code_actions_on_format": { "source.fixAll.oxc": true }
+    },
+    "JSON": {
+      "formatter": { "language_server": { "name": "oxc" } }
+    }
+  },
+  "lsp": {
+    "tailwindcss-language-server": {
+      "settings": {
+        "classAttributes": ["class", "ui"],
+        "classFunctions": ["defineAppConfig", "clsx", "cn"]
+      }
+    }
+  },
+  "file_types": {
+    "Tailwind CSS": ["css"]
+  }
+}
