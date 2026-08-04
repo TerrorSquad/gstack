@@ -2,7 +2,7 @@
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
   "semi": false,
   "singleQuote": true,
-  "ignorePatterns": [".agents/**", ".claude/**", "app/types/database.types.ts"],
+  "ignorePatterns": [".agents/**", ".claude/**", "site/**", "supabase/templates/**", "shared/types/database.types.ts"],
   "sortImports": {
     "groups": [
       "type-import",
@@ -15,7 +15,7 @@
     ]
   },
   "sortTailwindcss": {
-    "stylesheet": "app/assets/css/main.css",
+    "stylesheet": "layers/ui/app/assets/css/main.css",
     "functions": ["clsx", "cn"],
     "preserveWhitespace": true
   },

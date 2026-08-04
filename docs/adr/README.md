@@ -12,4 +12,4 @@ pick a third-party provider.
 | [0004](./0004-distribution-github-template.md) | Distribution as a GitHub template repo | Accepted |
 | [0005](./0005-nuxt-layers.md) | Nuxt Layers for feature organization | Accepted |
 
-See also: [`../g-stack.md`](../g-stack.md) (stack definition) · [`../roadmap.md`](../roadmap.md) (build order).
+See also: [`../gstack.md`](../gstack.md) (stack definition) · [`../roadmap.md`](../roadmap.md) (build order).

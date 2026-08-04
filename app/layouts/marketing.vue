@@ -117,7 +117,7 @@ const legalLinks = [
         <div
           class="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 text-xs text-muted sm:px-6"
         >
-          <span>© {{ year }} Starter. {{ $t('footer.rights') }}</span>
+          <span>© {{ year }} GStack. {{ $t('footer.rights') }}</span>
           <div class="flex items-center gap-3">
             <span>v{{ version }}</span>
             <!-- Point this at your repository. -->

@@ -81,7 +81,7 @@ export default defineNuxtConfig({
   // NUXT_PUBLIC_SITE_URL (nuxt-site-config reads it automatically).
   site: {
     url: process.env.NUXT_PUBLIC_SITE_URL || 'https://example.com',
-    name: 'Starter',
+    name: 'GStack',
   },
   // Advertise exactly the public marketing pages — authenticated app routes stay
   // out. Explicit list (auto-discovery off) so the sitemap is predictable.

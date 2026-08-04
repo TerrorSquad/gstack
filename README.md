@@ -1,4 +1,4 @@
-# Nuxt + Supabase Starter
+# GStack
 
 A batteries-included starting point for a multi-tenant, role-aware SSR app:
 Nuxt 4, Supabase (Postgres + Auth), Nuxt UI v4, i18n (English + Serbian), plus
@@ -8,10 +8,12 @@ CRUD (`notes`) shows the pattern to copy for your own domain.
 > **Using this as a template?** Click **"Use this template"** on GitHub, then
 > follow [`SETUP.md`](SETUP.md) — one rename command and env setup and it's yours.
 
-|                                                     |                                                   |
-| --------------------------------------------------- | ------------------------------------------------- |
-| ![Landing](docs/screenshots/landing.png)            | ![Dashboard](docs/screenshots/dashboard.png)      |
-| ![Notes](docs/screenshots/notes.png)                | ![Admin](docs/screenshots/admin.png)              |
+|                                                |                                                  |
+| ---------------------------------------------- | ------------------------------------------------ |
+| ![Landing](docs/screenshots/landing-light.png) | ![Dashboard](docs/screenshots/dashboard-dark.png) |
+| ![Notes](docs/screenshots/notes-light.png)     | ![Admin](docs/screenshots/admin-dark.png)         |
+
+<sub>Regenerate with `pnpm screenshots` — every route, both themes, plus a mobile pass.</sub>
 
 ## What's included
 
@@ -21,24 +23,42 @@ CRUD (`notes`) shows the pattern to copy for your own domain.
 - **Multi-tenancy** — every table is tenant-scoped by RLS via a `current_tenant_id()`
   helper. Self-service registration creates a tenant with the registrant as admin.
 - **Roles** — `member` / `admin`, enforced by RLS (the real gate) + page meta (UX).
-- **Example CRUD** — `notes`, RLS-scoped. `app/composables/useNotes.ts` + `app/pages/notes/*`.
+- **Example CRUD** — `notes`, RLS-scoped. `layers/notes/app/composables/useNotes.ts` + `layers/notes/app/pages/notes/*`.
 - **Notifications** — in-app feed + bell + transactional email (Resend). A DB trigger
   fans a new note out to tenant admins; a DB webhook mirrors it to email. Off by
   default — flip `NUXT_PUBLIC_NOTIFICATIONS_ENABLED=true`.
+- **Billing** — Polar checkout + customer portal + webhook, plan gating via
+  `useSubscription()` (`layers/billing`). Off until keys are set.
+- **Account & admin** — self-serve account deletion; admin user list with
+  invite / set-role / ban / delete / impersonate (`layers/{account,admin}`).
+- **Transactional email** — Resend + a typed template layer with a dev preview
+  route at `/dev/emails` (`layers/email`).
+- **Feedback** — self-hosted in-app widget, RLS-scoped, no third-party script
+  (`layers/feedback`). Off by default.
+- **Onboarding tour** — driver.js first-run product tour targeting nav by `href`
+  (`layers/tour`). Off by default.
+- **Analytics & flags** — PostHog pageviews + `useFeatureFlag()` that degrades to
+  a fallback when PostHog is off (`layers/analytics`). Off by default.
 - **Observability** — Sentry (client + server + 5xx forwarding + tunnel), BetterStack
   log forwarding, Vercel Analytics + Speed Insights. All no-op until configured.
 - **Seeding** — `pnpm seed` builds a demo tenant (admin + members + notes) with
   `@faker-js/faker`. Idempotent; wipes the `@example.com` demo domain first.
-- **i18n** — `sr` (default) + `en`, parity-checked in CI.
+- **i18n** — `en` (default) + `sr`, parity-checked in CI.
 - **Testing** — vitest (pure logic, **100% coverage gate** on the logic layer) +
   Playwright (e2e + a11y via axe, both themes). Includes a **tenant-isolation e2e**
   that proves one tenant can never read another's rows through RLS.
+- **DX** — `pnpm setup` (pick your integrations, it writes `.env`), `pnpm doctor`
+  (verifies them — both driven by one manifest), `pnpm gen:layer <name>` to scaffold
+  a feature, and Claude Code skills checked into `.claude/skills/`.
 - **CI/release** — GitHub Actions (lint/test/typecheck, scheduled a11y, PR visual
   regression) + release-please + a user-facing `/changelog`.
 
 ## Direction
 
-This is the **G Stack**. What it is and why: [`docs/g-stack.md`](docs/g-stack.md).
+📖 **[Documentation → terrorsquad.github.io/gstack](https://terrorsquad.github.io/gstack)**
+— getting started, architecture, and the reasoning. Source in [`site/`](site/).
+
+This is the **GStack**. What it is and why: [`docs/gstack.md`](docs/gstack.md).
 What's built and what's next: [`docs/roadmap.md`](docs/roadmap.md). Key decisions
 (payments, data layer, Redis, distribution): [`docs/adr/`](docs/adr/).
 
@@ -57,7 +77,7 @@ pnpm dev                      # http://localhost:3000
 Demo logins after `pnpm db:reset`: `admin@example.com` / `member@example.com`,
 password `Demo123!Demo123`.
 
-The typed client (`app/types/database.types.ts`) ships hand-written so `pnpm dev`
+The typed client (`shared/types/database.types.ts`) ships hand-written so `pnpm dev`
 and typecheck work before Supabase is up. Run `pnpm db:types` to regenerate it.
 
 ## Commands
@@ -69,7 +89,7 @@ pnpm test:e2e          # Playwright e2e + a11y (needs seeded local Supabase)
 pnpm lint / fmt
 pnpm lint:i18n / lint:i18n-keys
 pnpm db:reset          # reset local DB + migrate + seed
-pnpm db:types          # regenerate app/types/database.types.ts
+pnpm db:types          # regenerate shared/types/database.types.ts
 pnpm seed              # reseed (SEED_FAST=1 for the minimal set)
 ```
 
@@ -93,9 +113,11 @@ update public.profiles set role = 'admin' where email = 'you@example.com';
 
 ## Notes
 
-- Everything is generic ("Starter" branding, indigo theme) — rename in `AppLogo.vue`,
-  `app.vue`, `app/assets/css/main.css` (brand palette), and `supabase/templates/*.html`.
-- Auth email templates (`supabase/templates/*.html`) carry placeholder branding —
-  swap them for yours before shipping.
+- Branding is generic ("GStack", indigo theme). `node scripts/rename.mjs "My App"`
+  swaps the display name everywhere; brand palette (`layers/ui/app/assets/css/main.css`),
+  favicon and LICENSE are by hand — see [`SETUP.md`](SETUP.md).
+- Auth email templates (`supabase/templates/*.html`) are **generated** from the same
+  shell as the app's own mail — edit `scripts/gen-auth-templates.ts`, not the HTML,
+  then `pnpm gen:auth-templates`. A unit test fails if the committed files drift.
 - `CHANGELOG.md` is release-please's (never hand-edit). The user-facing changelog
   is `app/utils/changelog.ts` → `/changelog`; see the `changelog` skill.

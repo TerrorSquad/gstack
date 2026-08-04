@@ -4,8 +4,8 @@
 
 ## Context
 
-The G Stack is distributed by others cloning it to start a project. Options were
-a **GitHub template repository**, a **`create-g-stack` CLI** (scaffolder), or a
+GStack is distributed by others cloning it to start a project. Options were
+a **GitHub template repository**, a **`create-gstack` CLI** (scaffolder), or a
 **fork-based** workflow.
 
 ## Decision
@@ -26,7 +26,7 @@ Being a template (not just a repo) imposes rules:
 - **Zero-config local path must work.** `pnpm i && supabase start && pnpm db:reset
   && pnpm dev` with no third-party accounts — every integration (Sentry, Resend,
   billing, Upstash, OAuth) is env-gated and no-ops when unset.
-- **One-shot rebrand.** A `SETUP.md` + rename script covers app name (`Starter`),
+- **One-shot rebrand.** A `SETUP.md` + rename script covers app name (`GStack`),
   favicon, brand palette (`main.css`), and `siteUrl`, so a clone is personalized
   fast.
 - **Sane starting version.** `package.json` at `0.1.0`, release-please manifest

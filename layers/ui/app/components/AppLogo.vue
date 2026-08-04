@@ -7,6 +7,6 @@
     >
       <UIcon name="i-lucide-layers" class="size-[18px] text-white" />
     </span>
-    Starter
+    GStack
   </span>
 </template>

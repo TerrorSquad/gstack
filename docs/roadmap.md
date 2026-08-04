@@ -1,7 +1,7 @@
 # Roadmap
 
-Build order for the G Stack. Each phase is independently shippable and leaves the
-template in a working state. Stack rationale lives in [`g-stack.md`](./g-stack.md);
+Build order for the GStack. Each phase is independently shippable and leaves the
+template in a working state. Stack rationale lives in [`gstack.md`](./gstack.md);
 open decisions are [ADRs](./adr/).
 
 Status legend: ✅ done · 🔜 next · ⬜ planned · 💤 deferred
@@ -25,9 +25,8 @@ Make the repo a clean GitHub template (see [ADR-0004](./adr/0004-distribution-gi
 - [x] Verify a from-template bootstrap: `pnpm i && supabase start && db:reset && dev`.
 - [x] Reset version (`0.1.0`) + manifest and reduce the user changelog to a
       single "Initial release" entry.
-- [x] Document "Use this template" (README + `SETUP.md`). *Flipping the GitHub
-      "Template repository" setting happens once the repo is pushed to GitHub —
-      no remote yet.*
+- [x] Document "Use this template" (README + `SETUP.md`). *Flip the GitHub
+      "Template repository" setting on the pushed repo.*
 
 **Acceptance:** a new repo from the template runs locally with only env setup. ✅
 
@@ -109,7 +108,49 @@ until set; webhook + sync + entitlements verified locally.)
 the real login flow; CSRF token enforced on mutations. ✅ Passkeys remain a
 documented follow-up.
 
-## Phase 6 — Data-layer option 💤
+## Phase 6 — Feature layers ✅ (see [ADR-0005](./adr/0005-nuxt-layers.md))
+
+Features moved out of the root app into `layers/*`, each independently
+removable and flag-gated.
+
+- [x] `layers/ui` as the design-system layer — theme tokens, AA overrides, fonts
+      and brand chrome in one place, so a future app/marketing/docs split can't
+      drift into three palettes.
+- [x] `layers/email` — typed templates + a `/dev/emails` preview route.
+- [x] `layers/feedback` — self-hosted in-app widget, RLS-scoped, no third-party
+      script.
+- [x] `layers/tour` — driver.js first-run tour targeting nav by `href`.
+- [x] `layers/analytics` — PostHog pageviews + `useFeatureFlag()` that degrades
+      to a fallback when PostHog is off.
+- [x] `pnpm gen:layer <name>` to scaffold a new feature layer.
+
+**Acceptance:** adding a feature is a new `layers/<name>/` plus one line in
+`extends`. ✅
+
+## Phase 7 — Public launch ✅
+
+Make the repo something a stranger can clone.
+
+- [x] Renamed to **GStack** (package, docs, demo branding, release branch).
+- [x] Fixed `scripts/rename.mjs` — it pointed at two paths moved by the layers
+      refactor and would have crashed on the first "Use this template" run.
+- [x] Auth email templates are now **generated** (`pnpm gen:auth-templates`)
+      from the same shell as the app's own mail, with a unit test asserting the
+      committed HTML matches. Collapsed three different brand palettes into one.
+- [x] `pnpm screenshots` — every route, both themes, plus a mobile pass, against
+      the **production build** so captures match what users see.
+- [x] Redesigned the auth screens off the 50/50 split (which hid its own selling
+      half below `lg`) to a single column; removed the duplicated brand/heading
+      this exposed.
+- [x] a11y coverage for `/login`, `/register`, `/auth/forgot-password` — signed
+      out, both themes. They were absent because the suite runs signed in.
+- [x] Docs site (`site/`, Docus) deployed to GitHub Pages.
+- [x] `work-ticket` skill for unattended backlog work.
+
+**Acceptance:** a stranger can clone, rename and run it without reading the
+source. ✅
+
+## Phase 8 — Data-layer option 💤
 
 - [ ] Adopt Drizzle as a typed server-query layer **only if** server query
       complexity demands it — Supabase keeps owning schema + RLS ([ADR-0002](./adr/0002-data-layer.md)).
@@ -120,4 +161,6 @@ documented follow-up.
 
 - Phase 1 first: it's cheap and makes everything after it distributable.
 - Phases 2–4 are the commercial-parity core; 2 before 4 so pricing has a home.
+- Phase 6 (layers) came after 2–5: it is a refactor, and refactoring fewer
+  features is cheaper than refactoring more.
 - Phase 5 is independent — pull it forward if you hit abuse or need a strict CSP.

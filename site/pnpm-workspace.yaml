@@ -1,0 +1,11 @@
+# Makes site/ its own pnpm workspace root. Without this, pnpm walks up, finds the
+# starter's pnpm-workspace.yaml, decides site/ is an unlisted member of THAT
+# workspace, and installs nothing. The docs site must resolve independently — its
+# deps are not the starter's deps.
+allowBuilds:
+  '@parcel/watcher': true
+  better-sqlite3: true
+  esbuild: true
+  sharp: true
+  unrs-resolver: true
+  vue-demi: true
