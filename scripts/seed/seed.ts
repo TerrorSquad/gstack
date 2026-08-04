@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker'
 import { createClient } from '@supabase/supabase-js'
 
-import type { Database } from '../../app/types/database.types'
+import type { Database } from '../../shared/types/database.types'
 
 import {
   ACME_SECRET_NOTE_TITLE,

@@ -4,7 +4,10 @@ export default defineConfig({
   test: {
     // Exclude Playwright e2e specs - vitest's default glob picks them up otherwise.
     // e2e/*.test.ts (vitest specs for e2e/fixtures.ts etc.) stay included.
-    exclude: ['e2e/**/*.spec.ts', 'node_modules/**'],
+    // `**/node_modules/**`, not `node_modules/**`: site/ is a standalone Nuxt
+    // project with its own node_modules, and the anchored pattern let vitest
+    // collect ~3.5k test files out of the docs site's dependencies.
+    exclude: ['e2e/**/*.spec.ts', '**/node_modules/**', 'site/**'],
     coverage: {
       provider: 'v8',
       all: true, // count every included file, even ones no test imports
