@@ -36,16 +36,10 @@ async function oauth(provider: 'github' | 'google') {
 </script>
 
 <template>
-  <AuthShell
-    :heading="$t('login.panelHeading')"
-    :body="$t('login.panelBody')"
-    icon="i-lucide-log-in"
-  >
-    <AppLogo class="mb-4" />
-    <h2 class="text-lg font-bold">{{ $t('login.title') }}</h2>
-    <p class="text-sm text-muted">{{ $t('login.subtitle') }}</p>
-
-    <div class="mt-6 flex flex-col gap-2">
+  <!-- Heading/brand live in AuthShell; repeating them in the slot stacked two
+       logos and two headings once the layout became a single column. -->
+  <AuthShell :heading="$t('login.title')" :body="$t('login.subtitle')" icon="i-lucide-log-in">
+    <div class="flex flex-col gap-2">
       <UButton
         block
         size="lg"

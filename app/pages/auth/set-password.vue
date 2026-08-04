@@ -66,15 +66,11 @@ async function submit() {
 
 <template>
   <AuthShell
-    :heading="$t('setPassword.panelHeading')"
-    :body="$t('setPassword.panelBody')"
+    :heading="$t('setPassword.title')"
+    :body="$t('setPassword.subtitle')"
     icon="i-lucide-key-round"
   >
-    <AppLogo :class="'mb-4'" />
-    <h2 class="text-lg font-bold">{{ $t('setPassword.title') }}</h2>
-    <p class="text-sm text-muted">{{ $t('setPassword.subtitle') }}</p>
-
-    <form class="mt-6 flex flex-col gap-4" @submit.prevent="submit">
+    <form class="flex flex-col gap-4" @submit.prevent="submit">
       <UFormField :label="$t('setPassword.password')">
         <UInput
           v-model="password"

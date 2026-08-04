@@ -36,3 +36,31 @@ for (const theme of ['light', 'dark'] as const) {
     }
   })
 }
+
+/**
+ * Auth pages, scanned signed-OUT. They're absent from PAGES above because the
+ * project's saved admin session redirects them away — which meant the most
+ * form-dense, highest-stakes screens in the app had no a11y coverage at all.
+ */
+const LOGGED_OUT_PAGES = ['/login', '/register', '/auth/forgot-password']
+
+for (const theme of ['light', 'dark'] as const) {
+  for (const path of LOGGED_OUT_PAGES) {
+    test(`a11y: ${path} (${theme}, logged out)`, async ({ browser }) => {
+      const ctx = await browser.newContext({
+        storageState: { cookies: [], origins: [] },
+        colorScheme: theme,
+      })
+      const page = await ctx.newPage()
+      await page.goto(path)
+      await page.waitForLoadState('networkidle')
+      await injectAxe(page)
+      await checkA11y(page, undefined, {
+        detailedReport: true,
+        detailedReportOptions: { html: true },
+        axeOptions: axeRunOptions,
+      })
+      await ctx.close()
+    })
+  }
+}

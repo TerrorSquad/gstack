@@ -99,8 +99,6 @@ async function resend() {
 
 <template>
   <AuthShell v-bind="panelProps" :step="step" :steps="STEPS">
-    <AppLogo class="mb-4" />
-
     <div v-if="confirmSent" class="flex flex-col gap-3">
       <UAlert
         color="success"
@@ -119,8 +117,6 @@ async function resend() {
     </div>
 
     <template v-else>
-      <h2 class="text-lg font-bold">{{ $t('register.title') }}</h2>
-      <p class="text-sm text-muted">{{ $t('register.subtitle') }}</p>
 
       <!-- Step 1: personal account -->
       <form v-if="step === 1" class="mt-6 flex flex-col gap-4" @submit.prevent="goNext">

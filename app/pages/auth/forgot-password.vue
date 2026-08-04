@@ -31,15 +31,11 @@ async function submit() {
 
 <template>
   <AuthShell
-    :heading="$t('forgotPassword.panelHeading')"
-    :body="$t('forgotPassword.panelBody')"
+    :heading="$t('forgotPassword.title')"
+    :body="$t('forgotPassword.subtitle')"
     icon="i-lucide-lock-keyhole"
   >
-    <AppLogo :class="'mb-4'" />
-    <h2 class="text-lg font-bold">{{ $t('forgotPassword.title') }}</h2>
-    <p class="text-sm text-muted">{{ $t('forgotPassword.subtitle') }}</p>
-
-    <UAlert v-if="sent" class="mt-6" color="success" :title="$t('forgotPassword.sent')" />
+    <UAlert v-if="sent" color="success" :title="$t('forgotPassword.sent')" />
     <form v-else class="mt-6 flex flex-col gap-4" @submit.prevent="submit">
       <UFormField :label="$t('login.email')">
         <UInput v-model="email" type="email" autocomplete="email" class="w-full" required />
