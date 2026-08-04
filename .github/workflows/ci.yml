@@ -49,4 +49,8 @@ jobs:
         run: pnpm run typecheck
 
       - name: Build
-        run: pnpm run build
+        # Runners default Node to a ~2GB old-space; the Nitro build (Sentry's
+        # rollup plugin + source maps) exceeds it and dies with an OOM that looks
+        # like a code failure. Dev machines don't hit this because their default
+        # heap is larger, so it only ever reproduces in CI.
+        run: NODE_OPTIONS=--max-old-space-size=4096 pnpm run build

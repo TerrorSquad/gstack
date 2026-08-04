@@ -17,6 +17,11 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # configure-pages needs pages:write to turn Pages on via `enablement` below.
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     defaults:
       run:
         working-directory: site
@@ -34,7 +39,12 @@ jobs:
       - name: Build
         run: pnpm build
 
+      # enablement: true turns Pages on the first time this runs, so a fork or a
+      # repo made from this template doesn't need anyone to click through
+      # Settings before the first deploy.
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       - uses: actions/upload-pages-artifact@v3
         with:
