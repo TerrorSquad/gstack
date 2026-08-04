@@ -1,0 +1,14 @@
+{
+  // Without this file, TS resolution walks up to the starter's own tsconfig.json,
+  // whose references point at the ROOT .nuxt/ — which only exists if the root
+  // project was installed and prepared. The Pages job only installs site/, so the
+  // build failed there while passing locally off a stale root .nuxt.
+  // https://nuxt.com/docs/guide/concepts/typescript
+  "files": [],
+  "references": [
+    { "path": "./.nuxt/tsconfig.app.json" },
+    { "path": "./.nuxt/tsconfig.server.json" },
+    { "path": "./.nuxt/tsconfig.shared.json" },
+    { "path": "./.nuxt/tsconfig.node.json" }
+  ]
+}

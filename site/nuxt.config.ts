@@ -16,6 +16,11 @@ export default defineNuxtConfig({
   },
 
   site: {
+    // Keeps the /gstack path despite nuxt-site-config warning "should not
+    // contain a path". That warning assumes a site at a domain root; this is a
+    // Pages *project* site. Dropping the path emits canonicals at
+    // /docs/... instead of /gstack/docs/..., i.e. URLs that 404. Verified both
+    // ways against the built HTML.
     url: 'https://terrorsquad.github.io/gstack',
     name: 'GStack',
     description: 'An opinionated, RLS-first, type-safe Nuxt + Supabase stack for shipping multi-tenant SaaS.',

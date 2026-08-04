@@ -4,9 +4,10 @@
   "private": true,
   "description": "Docs + showcase site for GStack, deployed to GitHub Pages.",
   "scripts": {
-    "dev": "nuxi dev",
     "build": "nuxi build --preset github_pages",
+    "dev": "nuxi dev",
     "generate": "nuxi generate",
+    "postinstall": "nuxi prepare",
     "preview": "nuxi preview"
   },
   "devDependencies": {
@@ -14,6 +15,13 @@
     "nuxt": "^4.5.1"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["@parcel/watcher", "better-sqlite3", "esbuild", "sharp", "unrs-resolver", "vue-demi"]
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "better-sqlite3",
+      "esbuild",
+      "sharp",
+      "unrs-resolver",
+      "vue-demi"
+    ]
   }
 }
