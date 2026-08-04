@@ -1,0 +1,119 @@
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0b1120;
+    --surface: #111a2e;
+    --border: #1e293b;
+    --brand: #8b5cf6;
+    --brand-soft: #a78bfa;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --dim: #64748b;
+    --string: #5eead4;
+    --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+
+  body {
+    width: 1200px; height: 1200px;
+    background: var(--bg);
+    font-family: var(--sans);
+    color: var(--text);
+    display: flex; flex-direction: column;
+    justify-content: center;
+    padding: 76px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Same dot-grid + brand glow as the app's auth canvas, so the image reads as
+     part of the product rather than a generic code screenshot. */
+  body::before {
+    content: ''; position: absolute; inset: 0;
+    background-image: radial-gradient(#1e293b 1px, transparent 1px);
+    background-size: 26px 26px;
+    mask-image: radial-gradient(ellipse 75% 60% at 50% 45%, black, transparent 78%);
+  }
+  body::after {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 45% 32% at 50% 38%,
+      color-mix(in oklch, var(--brand) 26%, transparent), transparent 70%);
+  }
+
+  .inner { position: relative; z-index: 1; }
+
+  .eyebrow {
+    font-size: 21px; font-weight: 700; letter-spacing: .18em;
+    text-transform: uppercase; color: var(--brand-soft);
+    margin-bottom: 22px;
+  }
+
+  h1 {
+    font-size: 58px; line-height: 1.08; font-weight: 800;
+    letter-spacing: -.025em; margin-bottom: 44px;
+  }
+  h1 .quiet { color: var(--muted); font-weight: 700; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(0,0,0,.45);
+  }
+  .filename {
+    font-family: var(--mono); font-size: 19px; color: var(--dim);
+    padding: 18px 30px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 11px;
+  }
+  .dot { width: 11px; height: 11px; border-radius: 50%; background: #334155; }
+
+  pre {
+    font-family: var(--mono);
+    font-size: 24px; line-height: 1.58;
+    padding: 32px 30px;
+    white-space: pre; color: var(--text);
+  }
+  .fn { color: var(--brand-soft); }
+  .kw { color: #f0abfc; }
+  .str { color: var(--string); }
+  .p  { color: #64748b; }
+  .id { color: #cbd5e1; }
+
+  .caption {
+    margin-top: 40px;
+    display: flex; align-items: flex-end; justify-content: space-between; gap: 40px;
+  }
+  .caption p { font-size: 30px; line-height: 1.35; color: var(--muted); max-width: 720px; }
+  .caption strong { color: var(--text); font-weight: 700; }
+
+  .brand { text-align: right; flex-shrink: 0; }
+  .brand .name { font-size: 30px; font-weight: 800; letter-spacing: -.02em; }
+  .brand .url { font-family: var(--mono); font-size: 18px; color: var(--dim); margin-top: 6px; }
+</style>
+
+<div class="inner">
+  <div class="eyebrow">Multi-tenancy</div>
+  <h1>A test.<br /><span class="quiet">Not a promise.</span></h1>
+
+  <div class="card">
+    <div class="filename"><span class="dot"></span>e2e/tenant-isolation.spec.ts</div>
+    <pre><span class="fn">test</span><span class="p">(</span><span class="str">'Globex cannot read Acme rows'</span><span class="p">,</span> <span class="kw">async</span> <span class="p">({</span> <span class="id">page</span> <span class="p">}) =&gt; {</span>
+  <span class="kw">await</span> <span class="fn">login</span><span class="p">(</span><span class="id">page</span><span class="p">,</span> <span class="id">GLOBEX_ADMIN</span><span class="p">.</span><span class="id">email</span><span class="p">)</span>
+  <span class="kw">await</span> <span class="id">page</span><span class="p">.</span><span class="fn">goto</span><span class="p">(</span><span class="str">'/notes'</span><span class="p">)</span>
+
+  <span class="kw">await</span> <span class="fn">expect</span><span class="p">(</span>
+    <span class="id">page</span><span class="p">.</span><span class="fn">getByText</span><span class="p">(</span><span class="id">ACME_SECRET_NOTE_TITLE</span><span class="p">)</span>
+  <span class="p">).</span><span class="fn">toHaveCount</span><span class="p">(</span><span class="id">0</span><span class="p">)</span>
+<span class="p">})</span></pre>
+  </div>
+
+  <div class="caption">
+    <p>Access control lives in Postgres RLS.<br /><strong>The database refuses, not the component.</strong></p>
+    <div class="brand">
+      <div class="name">GStack</div>
+      <div class="url">terrorsquad.github.io/gstack</div>
+    </div>
+  </div>
+</div>
