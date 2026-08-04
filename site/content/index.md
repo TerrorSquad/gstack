@@ -40,6 +40,9 @@ never read another's rows — proven by a test, not a promise.
 
 #default
 ```bash
+pnpm dlx degit TerrorSquad/gstack my-app   # or: Use this template
+cd my-app
+
 pnpm install
 pnpm setup          # pick your integrations; writes .env
 pnpm supabase start # local Postgres + Auth (needs Docker)
