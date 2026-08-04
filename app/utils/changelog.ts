@@ -18,6 +18,18 @@ const fix = (text: string): ChangelogHighlight => ({ kind: 'fix', text })
 // user language, not commit-speak. See the `changelog` skill.
 export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
   {
+    date: '2026-08-04',
+    title: 'A new name and a calmer sign-in',
+    highlights: [
+      feature('We’re now called GStack.'),
+      feature(
+        'Signing in and creating an account got a cleaner, single-column layout that works the same on a phone as on a desktop.',
+      ),
+      feature('Creating an account now shows how many steps are left.'),
+      fix('Our emails now all look the same — confirmation and password-reset messages had drifted to different colours.'),
+    ],
+  },
+  {
     date: '2026-07-19',
     title: 'Roadmap & a fresh look',
     highlights: [

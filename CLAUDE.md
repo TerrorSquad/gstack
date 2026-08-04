@@ -56,7 +56,7 @@ Performance upgrade path is noted in the migration (move tenant_id to a JWT clai
 
 ## Example CRUD (notes)
 
-`app/composables/useNotes.ts` + `app/pages/notes/*` are the reference pattern:
+`layers/notes/app/composables/useNotes.ts` + `layers/notes/app/pages/notes/*` are the reference pattern:
 a composable with `useAsyncData` + async mutators that `refresh()`. Owner-scoping
 is done by RLS, not app code.
 
@@ -98,7 +98,7 @@ opt-in flag (`NUXT_PUBLIC_POSTHOG_SESSION_REPLAY`). Client-only — no server ca
 
 Migrations in `supabase/migrations/`. Run `pnpm supabase <cmd>` (CLI isn't global).
 After changing a table/function, run `pnpm db:types` to regenerate
-`app/types/database.types.ts` (hand-written until you do) or typecheck fails.
+`shared/types/database.types.ts` (hand-written until you do) or typecheck fails.
 Never edit migrations retroactively once applied to a real DB — add a new one.
 
 ## Seeding
@@ -128,6 +128,37 @@ share the one manifest, so adding a subsystem there wires up both scripts.
 `i18n/locales/{en,sr}.json` (flat dot-keys), then `pnpm lint:i18n`. Build dynamic
 keys with template literals (`` `common.role.${x}` ``) so the key-usage checker
 resolves them.
+
+## Email templates (generated)
+
+`supabase/templates/*.html` are **output, not source** — don't hand-edit them.
+They render from `emailBase()` in `layers/email/server/utils/emailShell.ts` (which
+also owns `EMAIL_BRAND`, the inlined palette the app's own mail uses, since email
+clients strip CSS custom properties). Edit the specs in
+`scripts/gen-auth-templates.ts`, then `pnpm gen:auth-templates`.
+`emailShell.test.ts` compares the committed HTML against the generator, so drift
+fails on pre-commit rather than shipping a mismatched password-reset email.
+
+## Screenshots
+
+`pnpm screenshots` (Playwright project gated behind `SCREENSHOTS=1`) captures every
+route in both themes at 1920×1080 plus a Pixel 7 mobile pass into
+`docs/screenshots/`. Opt-in so a bare `pnpm test:e2e` never dirties the tree. Not a
+visual-regression baseline — no pixel diffing.
+
+## Docs site (`site/`)
+
+The GitHub Pages showcase: a **standalone** Nuxt project extending `docus`, with
+its own `package.json`, lockfile and `pnpm-workspace.yaml` (that last one stops
+pnpm walking up and treating `site/` as an unlisted member of the root workspace,
+which silently installs nothing). It is deliberately not part of the starter's
+dependency tree — someone cloning the template shouldn't get the docs site's deps.
+
+`site/nuxt.config.ts` sets `app.baseURL` to `/gstack/`; Pages serves the repo under
+its name, so that must match the repo or every asset 404s in production while
+working fine locally. Deployed by `.github/workflows/pages.yml` on pushes touching
+`site/**`. Content is authored fresh — ADRs are linked to GitHub, not copied, to
+avoid a second drifting version.
 
 ## Changelog
 

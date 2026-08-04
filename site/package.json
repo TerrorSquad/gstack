@@ -1,0 +1,19 @@
+{
+  "name": "gstack-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Docs + showcase site for GStack, deployed to GitHub Pages.",
+  "scripts": {
+    "dev": "nuxi dev",
+    "build": "nuxi build --preset github_pages",
+    "generate": "nuxi generate",
+    "preview": "nuxi preview"
+  },
+  "devDependencies": {
+    "docus": "^5.12.3",
+    "nuxt": "^4.5.1"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["@parcel/watcher", "better-sqlite3", "esbuild", "sharp", "unrs-resolver", "vue-demi"]
+  }
+}
