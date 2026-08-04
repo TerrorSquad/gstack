@@ -1,4 +1,4 @@
-# The G Stack
+# GStack
 
 An opinionated, RLS-first, type-safe, batteries-included stack for shipping
 multi-tenant SaaS with Nuxt — distributed as a GitHub template repository.

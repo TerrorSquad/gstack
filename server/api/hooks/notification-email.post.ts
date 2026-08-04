@@ -52,7 +52,7 @@ export default defineEventHandler(async (event) => {
     method: 'POST',
     headers: { Authorization: `Bearer ${config.resendKey}`, 'content-type': 'application/json' },
     body: JSON.stringify({
-      from: 'Starter <no-reply@example.com>', // must be a Resend-verified domain
+      from: 'GStack <no-reply@example.com>', // must be a Resend-verified domain
       to: recipient.email,
       subject,
       html,

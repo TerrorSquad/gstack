@@ -4,7 +4,7 @@
 
 ## Context
 
-Should the G Stack adopt **Drizzle ORM**, or keep the **Supabase-native** data
+Should the GStack adopt **Drizzle ORM**, or keep the **Supabase-native** data
 layer (supabase-js + types generated from the live schema)?
 
 Today: migrations are SQL in `supabase/migrations/`, RLS lives in those

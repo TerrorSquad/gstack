@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for contributing. This is the G Stack — see [`docs/g-stack.md`](docs/g-stack.md)
+Thanks for contributing. This is the GStack — see [`docs/gstack.md`](docs/gstack.md)
 for the philosophy and [`docs/roadmap.md`](docs/roadmap.md) for what's planned.
 
 ## Prerequisites

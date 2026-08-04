@@ -1,6 +1,6 @@
 # Setup
 
-You just created a repo from the G Stack template. Here's how to make it yours.
+You just created a repo from the GStack template. Here's how to make it yours.
 
 ## 1. Rebrand
 
@@ -8,7 +8,7 @@ You just created a repo from the G Stack template. Here's how to make it yours.
 node scripts/rename.mjs "My App" --package my-app --site https://myapp.com
 ```
 
-This replaces the `Starter` display name across the app + email templates, sets
+This replaces the `GStack` display name across the app + email templates, sets
 the `package.json` name, updates the release/Vercel identifier, and (with
 `--site`) the auth-panel link. Then finish by hand:
 
