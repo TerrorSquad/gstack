@@ -17,11 +17,9 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    # configure-pages needs pages:write to turn Pages on via `enablement` below.
     permissions:
       contents: read
-      pages: write
-      id-token: write
+      pages: read
     defaults:
       run:
         working-directory: site
@@ -39,12 +37,16 @@ jobs:
       - name: Build
         run: pnpm build
 
-      # enablement: true turns Pages on the first time this runs, so a fork or a
-      # repo made from this template doesn't need anyone to click through
-      # Settings before the first deploy.
+      # Reads the existing Pages config. Note `enablement: true` does NOT work
+      # here: creating a Pages site needs repo admin rights, which GITHUB_TOKEN
+      # never has regardless of the `permissions:` block. Pages has to be turned
+      # on once, out of band, per repo:
+      #
+      #   gh api -X POST repos/<owner>/<repo>/pages -f build_type=workflow
+      #
+      # (or Settings → Pages → Source: GitHub Actions). It also requires a public
+      # repo on the free plan.
       - uses: actions/configure-pages@v5
-        with:
-          enablement: true
 
       - uses: actions/upload-pages-artifact@v3
         with:
