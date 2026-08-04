@@ -64,6 +64,19 @@ What's built and what's next: [`docs/roadmap.md`](docs/roadmap.md). Key decision
 
 ## Setup
 
+Get the code — it's a GitHub **template repository**, so make your own repo from
+it rather than forking:
+
+```bash
+# GitHub CLI: creates your repo from the template and clones it
+gh repo create my-app --template TerrorSquad/gstack --private --clone && cd my-app
+
+# or, no GitHub account needed (downloads the files, no git history)
+pnpm dlx degit TerrorSquad/gstack my-app && cd my-app && git init
+```
+
+Then:
+
 ```bash
 pnpm install
 cp .env.example .env          # fill in after `pnpm supabase start`
