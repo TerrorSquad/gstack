@@ -150,6 +150,24 @@ Make the repo something a stranger can clone.
 **Acceptance:** a stranger can clone, rename and run it without reading the
 source. ✅
 
+## Known issues 🔜
+
+Found while opening the repo to the public. None block using the starter; all are
+tracked as issues.
+
+- [ ] **[#16](https://github.com/TerrorSquad/gstack/issues/16) — form labels lose
+      their association after hydration (production only).** `useId()` diverges
+      between server and client, so `<label for>` resolves to nothing on
+      `/notes/new` (Title, Body) and `/admin` (invite email). Those fields have no
+      accessible name in prod. Dev is unaffected, which is why local `test:e2e`
+      passes and CI does not.
+- [ ] **[#17](https://github.com/TerrorSquad/gstack/issues/17) — a11y coverage
+      gap.** `/notes/new` is not scanned at all, and axe passed `/admin` despite a
+      visibly unnamed input. The second half matters more than the first.
+- [ ] **[#18](https://github.com/TerrorSquad/gstack/issues/18) — 53 files of oxfmt
+      drift**, surfaced once `fmt:check` stopped crashing. Cosmetic; CI doesn't
+      run it.
+
 ## Phase 8 — Data-layer option 💤
 
 - [ ] Adopt Drizzle as a typed server-query layer **only if** server query
