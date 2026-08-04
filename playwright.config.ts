@@ -40,9 +40,36 @@ export default defineConfig({
       testMatch: /tenant-isolation\.spec\.ts/,
       use: { ...devices['Desktop Chrome'] },
     },
+    // README/design screenshots into docs/screenshots/. Opt-in via `pnpm
+    // screenshots` (sets SCREENSHOTS) so a bare `pnpm test:e2e` never
+    // regenerates PNGs and dirties the working tree.
+    ...(process.env.SCREENSHOTS
+      ? [
+          {
+            name: 'screenshots',
+            testMatch: /screenshots\.spec\.ts/,
+            // 1080p, not Desktop Chrome's 1280x720 — a README screenshot is read
+            // at the size people actually run the app, and 720p crops the right
+            // third off every wide layout.
+            use: {
+              ...devices['Desktop Chrome'],
+              viewport: { width: 1920, height: 1080 },
+              storageState: 'e2e/.auth.json',
+            },
+            dependencies: ['setup'],
+          },
+        ]
+      : []),
   ],
   webServer: {
-    command: process.env.CI ? 'node .output/server/index.mjs' : 'pnpm dev --port 3010',
+    // Screenshots always run against the production build, never `nuxt dev`: dev
+    // floats the devtools badge over the page (it lands mid-shot and ends up in
+    // the README) and serves unoptimised assets, so the captures wouldn't match
+    // what a user actually sees. `pnpm screenshots` builds first.
+    command:
+      process.env.CI || process.env.SCREENSHOTS
+        ? 'node .output/server/index.mjs'
+        : 'pnpm dev --port 3010',
     // Dev compiles routes on first hit; warm /login to pre-compile the heaviest.
     url: 'http://localhost:3010/login',
     reuseExistingServer: !process.env.CI,
