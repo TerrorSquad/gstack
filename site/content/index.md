@@ -37,74 +37,41 @@ never read another's rows — proven by a test, not a promise.
   ---
   View on GitHub
   :::
+
+#default
+```bash
+pnpm install
+pnpm setup          # pick your integrations; writes .env
+pnpm supabase start # local Postgres + Auth (needs Docker)
+pnpm db:reset       # migrate + seed a demo tenant
+pnpm dev            # http://localhost:3000
+```
 ::
 
 ::u-page-section
-#title
-Batteries included, every one flag-gated
-
-#description
-Nothing half-works. Each subsystem is fully wired and switched off until you set
-its env flag, so `pnpm dev` runs on a bare clone with no third-party account.
-
-  :::u-page-grid
-    ::::u-page-card
-    ---
+---
+title: Batteries included, every one flag-gated
+description: Nothing half-works. Each subsystem is fully wired and switched off until you set its env flag, so a bare clone runs with no third-party account.
+features:
+  - title: RLS-first multi-tenancy
+    description: Every table carries a tenant_id and Postgres Row Level Security scopes rows to the caller's tenant. Page-level role gates are UX only — a bug in a component cannot leak another tenant's data.
     icon: i-lucide-shield-check
-    title: RLS-first multi-tenancy
-    ---
-    Every table carries a `tenant_id`; Postgres Row Level Security scopes rows via
-    a `current_tenant_id()` helper. Page-level role gates are UX only — a bug in a
-    component cannot leak another tenant's data.
-    ::::
-
-    ::::u-page-card
-    ---
+  - title: Auth that survives SSR
+    description: Email/password plus GitHub and Google OAuth, password reset, email confirmation, and a global role-aware middleware instead of the Supabase module's redirect.
     icon: i-lucide-key-round
-    title: Auth that survives SSR
-    ---
-    Email/password plus GitHub and Google OAuth, password reset, email
-    confirmation, and a global role-aware middleware instead of the Supabase
-    module's redirect.
-    ::::
-
-    ::::u-page-card
-    ---
+  - title: Features as Nuxt Layers
+    description: Marketing, notes, admin, account, billing, email, feedback, tour and analytics are independent layers. Adding a feature is one scaffold command plus one line in extends.
     icon: i-lucide-layers
-    title: Features as Nuxt Layers
-    ---
-    Marketing, notes, admin, account, billing, email, feedback, tour and analytics
-    are independent layers. Adding a feature is `pnpm gen:layer <name>` plus one
-    line in `extends`.
-    ::::
-
-    ::::u-page-card
-    ---
+  - title: Billing
+    description: Polar checkout, customer portal and webhook behind an adapter — a Merchant of Record, so it works from countries Stripe won't onboard.
     icon: i-lucide-credit-card
-    title: Billing
-    ---
-    Polar checkout, customer portal and webhook behind an adapter — a Merchant of
-    Record, so it works from countries Stripe won't onboard.
-    ::::
-
-    ::::u-page-card
-    ---
+  - title: One email shell
+    description: Transactional mail and the Supabase auth templates render from the same generated shell, so the branding can't drift. A unit test fails if it does.
     icon: i-lucide-mail
-    title: One email shell
-    ---
-    Transactional mail and the Supabase auth templates render from the same
-    generated shell, so the branding can't drift. A unit test fails if it does.
-    ::::
-
-    ::::u-page-card
-    ---
+  - title: Accessibility, enforced
+    description: Playwright and axe run every page in light and dark on a schedule. Contrast overrides live in one design-system layer.
     icon: i-lucide-accessibility
-    title: Accessibility, enforced
-    ---
-    Playwright + axe run every page in light *and* dark on a schedule. Contrast
-    overrides live in one design-system layer.
-    ::::
-  :::
+---
 ::
 
 ::u-page-section
@@ -116,8 +83,8 @@ Most starters claim multi-tenancy. This one logs in as a second tenant and asser
 the first tenant's rows are invisible through the real HTTP surface — so the claim
 fails loudly the day someone widens a policy.
 
-```ts
-// e2e/tenant-isolation.spec.ts
+#default
+```ts [e2e/tenant-isolation.spec.ts]
 test('Globex cannot read Acme rows', async ({ page }) => {
   await login(page, GLOBEX_ADMIN.email)
   await page.goto('/notes')
@@ -127,23 +94,17 @@ test('Globex cannot read Acme rows', async ({ page }) => {
 ::
 
 ::u-page-section
+---
+links:
+  - label: Read the docs
+    to: /docs/getting-started/introduction
+    size: xl
+    trailingIcon: i-lucide-arrow-right
+---
 #title
-Start in five commands
+Free and MIT licensed
 
-```bash
-pnpm install
-pnpm setup          # pick your integrations; writes .env
-pnpm supabase start # local Postgres + Auth (needs Docker)
-pnpm db:reset       # migrate + seed a demo tenant
-pnpm dev            # http://localhost:3000
-```
-
-::u-button
----
-to: /docs/getting-started/introduction
-size: lg
-trailing-icon: i-lucide-arrow-right
----
-Read the docs
-::
+#description
+Clone it, rename it with one command, and start building your product instead of
+its scaffolding.
 ::
