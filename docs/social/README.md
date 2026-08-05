@@ -1,7 +1,7 @@
 # Social cards
 
-Marketing images built from the same brand tokens as the app (violet
-`--color-brand-600`, the dot-grid + glow from the auth canvas), so they can't
+Marketing images built from the same brand tokens as the app (amber
+`--color-brand-500`, the dot-grid + glow from the auth canvas), so they can't
 drift into looking like a different product.
 
 | File | Size | Where it goes |

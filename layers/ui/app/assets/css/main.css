@@ -7,21 +7,26 @@
   --font-heading: 'Space Grotesk', sans-serif;
 }
 
-/* Brand palette — violet. 500 is the action color; darker steps carry text/fills
-   that need AA contrast (the -600/-700 override in this file relies on those being
-   dark enough for white text — see DESIGN.md before rebranding to a lighter hue). */
+/* Brand palette — amber. 500 is the action color; darker steps carry text/fills
+   that need AA contrast (the -700 override in this file relies on those being
+   dark enough for white text — see DESIGN.md before rebranding to a lighter hue).
+
+   Amber is a warm mid-tone hue, so it needs one more step of darkening than a
+   blue/violet would: -600 is only 3.0:1 against white and fails AA, so solid
+   fills use -700 (4.9:1). That is the single difference from the old violet
+   ramp — see the light-mode block below. */
 @theme static {
-  --color-brand-50: #f5f3ff;
-  --color-brand-100: #ede9fe;
-  --color-brand-200: #ddd6fe;
-  --color-brand-300: #c4b5fd;
-  --color-brand-400: #a78bfa;
-  --color-brand-500: #8b5cf6;
-  --color-brand-600: #7c3aed;
-  --color-brand-700: #6d28d9;
-  --color-brand-800: #5b21b6;
-  --color-brand-900: #4c1d95;
-  --color-brand-950: #2e1065;
+  --color-brand-50: #fffbeb;
+  --color-brand-100: #fef3c7;
+  --color-brand-200: #fde68a;
+  --color-brand-300: #fcd34d;
+  --color-brand-400: #fbbf24;
+  --color-brand-500: #f59e0b;
+  --color-brand-600: #d97706;
+  --color-brand-700: #b45309;
+  --color-brand-800: #92400e;
+  --color-brand-900: #78350f;
+  --color-brand-950: #451a03;
 }
 
 h1,
@@ -42,7 +47,7 @@ h3,
   --ui-border: #e2e8f0;
   --surface-border-color: var(--ui-border);
   --surface-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 4px 12px rgba(15, 23, 42, 0.05);
-  --surface-shadow-hover: 0 2px 4px rgba(15, 23, 42, 0.06), 0 12px 24px rgba(124, 58, 237, 0.1);
+  --surface-shadow-hover: 0 2px 4px rgba(15, 23, 42, 0.06), 0 12px 24px rgba(180, 83, 9, 0.1);
 }
 
 /* Colored text uses the semantic -500 hue, too light on white to pass WCAG AA.
@@ -67,9 +72,10 @@ h3,
   }
 
   /* Solid buttons render white text on the -500 fill, which fails AA. Darken the
-     fill to -600/-700 in light mode so the label passes; keeps the brand hue. */
+     fill in light mode so the label passes; keeps the brand hue. Amber needs
+     -700 (4.9:1); -600 is 3.0:1 and would fail. */
   :is(button, a).bg-primary {
-    background-color: var(--ui-color-primary-600);
+    background-color: var(--ui-color-primary-700);
   }
   :is(button, a).bg-success {
     background-color: var(--ui-color-success-700);

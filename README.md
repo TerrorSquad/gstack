@@ -55,7 +55,7 @@ CRUD (`notes`) shows the pattern to copy for your own domain.
 
 ## Direction
 
-📖 **[Documentation → terrorsquad.github.io/gstack](https://terrorsquad.github.io/gstack)**
+📖 **[Documentation → gstack.goranninkovic.com](https://gstack.goranninkovic.com)**
 — getting started, architecture, and the reasoning. Source in [`site/`](site/).
 
 This is the **GStack**. What it is and why: [`docs/gstack.md`](docs/gstack.md).
