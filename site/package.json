@@ -8,9 +8,14 @@
     "dev": "nuxi dev",
     "generate": "node scripts/ensure-root-tsconfig.mjs && nuxi generate",
     "postinstall": "nuxi prepare",
-    "preview": "nuxi preview"
+    "preview": "nuxi preview",
+    "screenshots": "node scripts/screenshots.mjs"
   },
   "devDependencies": {
+    "@iconify-json/lucide": "1.2.121",
+    "@iconify-json/simple-icons": "1.2.93",
+    "@iconify-json/vscode-icons": "1.2.68",
+    "@playwright/test": "^1.62.1",
     "docus": "^5.12.3",
     "nuxt": "^4.5.1",
     "shiki": "^4.4.1"

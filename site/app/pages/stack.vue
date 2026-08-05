@@ -34,7 +34,7 @@ $ pnpm doctor
 <template>
   <div>
     <!-- Hero -->
-    <UContainer class="grid-surface relative py-20 sm:py-28">
+    <UContainer class="grid-surface relative pt-16 pb-12 sm:pt-24 sm:pb-16">
       <p class="font-mono text-xs uppercase tracking-[0.18em] text-primary">
         {{ page.eyebrow }}
       </p>

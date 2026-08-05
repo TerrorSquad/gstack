@@ -52,6 +52,18 @@ export default defineNuxtConfig({
     robotsTxt: false,
   },
 
+  // Docus leaves Nuxt Icon on the remote Iconify API, so every build logged
+  // dozens of "[Icon] failed to load icon" and the prerendered HTML shipped
+  // without them — icons only appeared once the browser fetched them, so they
+  // popped in. With the collections installed as devDependencies, the local
+  // server bundle resolves them during prerender and they're inlined instead.
+  icon: {
+    provider: 'server',
+    serverBundle: {
+      collections: ['lucide', 'simple-icons', 'vscode-icons'],
+    },
+  },
+
   nitro: {
     // Pinned so the output directory is the SAME everywhere. Left unset, Nitro
     // sniffs the environment: `static` locally (-> .output/public) but
