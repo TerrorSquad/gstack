@@ -4,9 +4,9 @@
   "private": true,
   "description": "Docs + showcase site for GStack, deployed to Cloudflare Pages.",
   "scripts": {
-    "build": "nuxi build",
+    "build": "node scripts/ensure-root-tsconfig.mjs && nuxi build",
     "dev": "nuxi dev",
-    "generate": "nuxi generate",
+    "generate": "node scripts/ensure-root-tsconfig.mjs && nuxi generate",
     "postinstall": "nuxi prepare",
     "preview": "nuxi preview"
   },
