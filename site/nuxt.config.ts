@@ -78,9 +78,55 @@ export default defineNuxtConfig({
       collections: ['lucide', 'simple-icons', 'vscode-icons'],
     },
     clientBundle: {
+      // `scan` only finds icons written literally in source. Names that arrive
+      // from app.config (the footer socials) or from MDC code-block filenames
+      // are invisible to it, so on the deployed site those three fell back to
+      // fetching /api/_nuxt_icon/*.json — a route a static build doesn't have,
+      // producing a 404 on every page. Listing them explicitly closes it.
+      //
+      // Regenerate with:
+      //   grep -rhoE 'i-(simple-icons|vscode-icons|lucide):[a-z0-9-]+' dist --include='*.html' | sort -u
       scan: true,
       includeCustomCollections: true,
       sizeLimitKb: 512,
+      icons: [
+        'lucide:alert-circle',
+        'lucide:arrow-right',
+        'lucide:arrow-up-right',
+        'lucide:building-2',
+        'lucide:check',
+        'lucide:chevron-down',
+        'lucide:circle-alert',
+        'lucide:cloud',
+        'lucide:copy',
+        'lucide:file-lock-2',
+        'lucide:file-text',
+        'lucide:flask-conical',
+        'lucide:gauge',
+        'lucide:git-branch',
+        'lucide:hash',
+        'lucide:house',
+        'lucide:info',
+        'lucide:key-round',
+        'lucide:languages',
+        'lucide:layers',
+        'lucide:lightbulb',
+        'lucide:mail',
+        'lucide:moon',
+        'lucide:pen',
+        'lucide:repeat-2',
+        'lucide:rocket',
+        'lucide:search',
+        'lucide:shield-check',
+        'lucide:sliders-horizontal',
+        'lucide:sun',
+        'lucide:terminal',
+        'lucide:triangle-alert',
+        'lucide:webhook',
+        'simple-icons:github',
+        'simple-icons:linkedin',
+        'vscode-icons:file-type-typescript',
+      ],
     },
   },
 
