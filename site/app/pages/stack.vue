@@ -1,0 +1,247 @@
+<script setup lang="ts">
+definePageMeta({ layout: 'default' })
+
+useSeoMeta({
+  title: 'The stack — GStack',
+  description:
+    'Every subsystem GStack ships, what turning it on gives you, and which ones need a third-party account. A bare clone runs end-to-end with none of them.',
+})
+
+// Facts (flag, category, whether keys are needed) come from the starter's
+// subsystem manifest via app/utils/integrations.ts. Only the per-category
+// framing below is editorial. Adding a subsystem to the manifest without copy
+// fails the build rather than quietly omitting it here.
+const CATEGORY_BLURB: Record<string, string> = {
+  Core: 'Always on. No flag, because without it there is no app.',
+  Security: 'No flag — present the keys and the buttons start working.',
+  Growth: 'The subsystems that grow the product. Two of them are self-hosted and cost nothing.',
+  Billing: 'Behind an adapter, so the provider is replaceable.',
+  Observability: 'Also keyed rather than flagged: no DSN, no reporting.',
+}
+
+const setupSnippet = `$ pnpm setup
+
+  Which subsystems do you want?
+  ◉ Feedback widget      (no account needed)
+  ◉ Onboarding tour      (no account needed)
+  ◯ Notifications        (Resend)
+  ◯ Billing              (Polar)
+
+  wrote .env
+
+$ pnpm doctor
+  ✓ supabase        4 vars set
+  ✓ feedback        enabled, no keys required
+  ! notifications   disabled`
+</script>
+
+<template>
+  <div>
+    <!-- Hero -->
+    <UContainer class="grid-surface relative py-20 sm:py-28">
+      <p class="font-mono text-xs uppercase tracking-[0.18em] text-primary">
+        The stack
+      </p>
+      <h1 class="mt-4 max-w-3xl text-4xl sm:text-6xl font-bold tracking-tight text-highlighted text-pretty">
+        Batteries included. All of them off.
+      </h1>
+      <p class="mt-6 max-w-2xl text-lg text-muted text-pretty">
+        Every subsystem here is fully wired and switched off until you say
+        otherwise. Nothing half-works, nothing is a stub, and a clone you have
+        just downloaded runs end-to-end without a single third-party account.
+      </p>
+    </UContainer>
+
+    <!-- 01 Zero accounts -->
+    <UContainer class="py-16 sm:py-24">
+      <SectionHead
+        index="01"
+        eyebrow="The bare clone"
+        title="What you get before signing up for anything"
+        description="This is the whole point of flag-gating. The starter has to be fully usable on a laptop with no accounts, or the batteries are decoration."
+      />
+
+      <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div
+          v-for="item in ['Auth, roles and RLS multi-tenancy', 'Notes CRUD as the reference feature', 'Feedback widget writing to your DB', 'Onboarding tour, i18n, a11y, tests']"
+          :key="item"
+          class="rounded-[var(--ui-radius)] border border-success/40 bg-success/5 p-5"
+        >
+          <UIcon
+            name="i-lucide-check"
+            class="size-5 text-success"
+          />
+          <p class="mt-3 text-sm text-toned">
+            {{ item }}
+          </p>
+        </div>
+      </div>
+
+      <p class="mt-6 max-w-3xl text-sm text-muted">
+        Supabase runs in Docker via <code class="font-mono text-primary">pnpm supabase start</code>,
+        so even the database is local. The first account you create is the one
+        you choose to create.
+      </p>
+    </UContainer>
+
+    <!-- 02 The subsystems -->
+    <UContainer class="py-16 sm:py-24">
+      <SectionHead
+        index="02"
+        eyebrow="The inventory"
+        title="Every subsystem, and what it costs"
+        description="Grouped the way the manifest groups them. If a row says no account, it means the feature is genuinely self-hosted — not a trial tier."
+      />
+
+      <div class="mt-10 space-y-10">
+        <div
+          v-for="group in subsystemGroups"
+          :key="group.category"
+        >
+          <div class="flex flex-wrap items-baseline gap-x-4 gap-y-1 border-b border-default pb-3">
+            <h3 class="font-mono text-sm uppercase tracking-[0.14em] text-primary">
+              {{ group.label }}
+            </h3>
+            <p class="text-sm text-muted">
+              {{ CATEGORY_BLURB[group.label] }}
+            </p>
+          </div>
+
+          <div class="mt-4 grid gap-4 lg:grid-cols-2">
+            <div
+              v-for="item in group.items"
+              :key="item.id"
+              class="rounded-[var(--ui-radius)] border border-default bg-muted/40 p-5"
+            >
+              <div class="flex flex-wrap items-center gap-2">
+                <p class="font-medium text-highlighted">
+                  {{ item.label }}
+                </p>
+                <UBadge
+                  v-if="item.account"
+                  :label="`needs ${item.account}`"
+                  color="neutral"
+                  variant="soft"
+                  size="sm"
+                />
+                <UBadge
+                  v-else
+                  label="no account"
+                  color="success"
+                  variant="soft"
+                  size="sm"
+                />
+              </div>
+
+              <p class="mt-2 text-sm text-muted">
+                {{ item.blurb }}
+              </p>
+
+              <p class="mt-3 font-mono text-xs text-dimmed">
+                {{ item.flag ?? `no flag — set ${item.requiredKeys.length} keys` }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </UContainer>
+
+    <!-- 03 setup/doctor -->
+    <UContainer class="py-16 sm:py-24">
+      <SectionHead
+        index="03"
+        eyebrow="One manifest, two scripts"
+        title="Something writes it, something else checks it"
+        description="pnpm setup picks the subsystems and writes .env. pnpm doctor verifies what's there. Both read the same manifest, so adding a subsystem to it wires up both — and neither can drift from the other."
+      />
+
+      <div class="mt-10 grid gap-6 lg:grid-cols-2">
+        <CodeCard
+          file="terminal"
+          lang="bash"
+          :code="setupSnippet"
+        />
+
+        <div class="flex flex-col justify-center gap-4">
+          <p class="text-muted">
+            Unpicked subsystems are set to
+            <code class="font-mono text-primary">false</code>, never deleted, and
+            existing values are never overwritten — so re-running
+            <code class="font-mono text-primary">setup</code> after you have
+            edited <code class="font-mono text-primary">.env</code> by hand is
+            safe.
+          </p>
+          <p class="text-muted">
+            <code class="font-mono text-primary">doctor</code> fails on a missing
+            required key and warns on a missing optional one, which is how a
+            half-configured subsystem gets caught before it is deployed rather
+            than after.
+          </p>
+        </div>
+      </div>
+    </UContainer>
+
+    <!-- 04 Deploy -->
+    <UContainer class="py-16 sm:py-24">
+      <SectionHead
+        index="04"
+        eyebrow="Where it runs"
+        title="Vercel is the default, not the requirement"
+        description="The build output is Nitro, which targets Node, Deno, Bun, Cloudflare, Netlify and a plain server. Nothing in the app reaches for a platform-specific API."
+      />
+
+      <div class="mt-10 grid gap-4 sm:grid-cols-3">
+        <div class="rounded-[var(--ui-radius)] border border-default bg-muted/40 p-5">
+          <p class="font-medium text-highlighted">
+            Portable by construction
+          </p>
+          <p class="mt-1.5 text-sm text-muted">
+            Swap the Nitro preset and deploy elsewhere. The only Vercel-specific
+            pieces are the analytics and speed-insights modules, and both no-op
+            off Vercel.
+          </p>
+        </div>
+        <div class="rounded-[var(--ui-radius)] border border-default bg-muted/40 p-5">
+          <p class="font-medium text-highlighted">
+            Supabase, hosted or not
+          </p>
+          <p class="mt-1.5 text-sm text-muted">
+            The same migrations run against a local Docker stack and a hosted
+            project. Self-host the whole thing if you'd rather.
+          </p>
+        </div>
+        <div class="rounded-[var(--ui-radius)] border border-default bg-muted/40 p-5">
+          <p class="font-medium text-highlighted">
+            Migrations, not snapshots
+          </p>
+          <p class="mt-1.5 text-sm text-muted">
+            Schema changes are ordered SQL files. After changing one, regenerate
+            types or typecheck fails — the schema can't silently drift from the
+            code.
+          </p>
+        </div>
+      </div>
+    </UContainer>
+
+    <!-- CTA -->
+    <UContainer class="pb-24">
+      <div class="flex flex-col items-start gap-6 rounded-[var(--ui-radius)] border border-default bg-muted/40 p-8 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p class="text-xl font-semibold text-highlighted">
+            Ready to wire one of these up?
+          </p>
+          <p class="mt-1 text-muted">
+            The configuration reference has the exact variables and the webhook
+            steps for each subsystem.
+          </p>
+        </div>
+        <UButton
+          to="/docs/getting-started/configuration"
+          size="lg"
+          trailing-icon="i-lucide-arrow-right"
+          label="Configuration reference"
+        />
+      </div>
+    </UContainer>
+  </div>
+</template>

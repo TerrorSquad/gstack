@@ -1,0 +1,111 @@
+/*
+ * Docs-site tokens. Docus auto-imports this file (its css module looks for
+ * `app/app.css`) AFTER tailwind + @nuxt/ui, so no `@import "tailwindcss"` here.
+ *
+ * Everything below is deliberately a MIRROR of layers/ui/app/assets/css/main.css
+ * in the starter itself — same fonts, same amber ramp, same dark canvas, same
+ * radius. The docs site and the app you clone have to be recognisably the same
+ * product; a second palette here is drift, not a redesign. If you rebrand the
+ * starter, change layers/ui first and copy the ramp across.
+ *
+ * What IS new here is the "engineered" reading of that system: mono eyebrow
+ * labels (wired in app.config.ts, not CSS) and a 24px grid backdrop. Those sit
+ * on top of the brand rather than replacing it.
+ */
+
+@theme {
+  --font-sans: 'Inter', sans-serif;
+  --font-heading: 'Space Grotesk', sans-serif;
+}
+
+/* Brand palette — amber. Kept byte-identical to the starter's layers/ui ramp;
+   the light-mode overrides below depend on those steps being dark enough to
+   carry white text at AA. Amber is warm, so the solid-fill step is -700
+   (4.9:1 on white); -600 is 3.0:1 and fails. */
+@theme static {
+  --color-brand-50: #fffbeb;
+  --color-brand-100: #fef3c7;
+  --color-brand-200: #fde68a;
+  --color-brand-300: #fcd34d;
+  --color-brand-400: #fbbf24;
+  --color-brand-500: #f59e0b;
+  --color-brand-600: #d97706;
+  --color-brand-700: #b45309;
+  --color-brand-800: #92400e;
+  --color-brand-900: #78350f;
+  --color-brand-950: #451a03;
+}
+
+h1,
+h2,
+h3,
+.font-heading {
+  font-family: var(--font-heading);
+  letter-spacing: -0.01em;
+}
+
+:root {
+  --ui-radius: 0.75rem;
+  --ui-bg: #f8fafc;
+  --ui-bg-elevated: #ffffff;
+  --ui-bg-muted: #f1f5f9;
+  --ui-border: #e2e8f0;
+}
+
+/* The -500 semantic hues are too light on white to pass WCAG AA as text. Same
+   fix the app ships: redirect text utilities and solid fills to a darker step
+   in light mode only. The docs site is audited in both themes too — a dark-only
+   showcase would quietly contradict the accessibility claim it's making. */
+:root:not(.dark) {
+  --ui-text-dimmed: var(--ui-color-neutral-600);
+  --ui-text-muted: var(--ui-color-neutral-600);
+
+  .text-primary {
+    color: var(--ui-color-primary-700);
+  }
+
+  :is(button, a).bg-primary {
+    background-color: var(--ui-color-primary-700);
+  }
+}
+
+.dark {
+  --ui-bg: #0b1120;
+  --ui-bg-elevated: #131a2b;
+  --ui-bg-muted: #1e293b;
+  --ui-border: var(--ui-color-neutral-600);
+  --ui-text-dimmed: var(--ui-color-neutral-300);
+  --ui-text-muted: var(--ui-color-neutral-300);
+}
+
+/* Warm glow behind the hero so the brand hue is present as light, not just as
+   accents on text. The canvas stays cool slate on purpose — amber over a cool
+   ground is a complement; matching the background to the brand would flatten
+   both. This is what keeps the page from reading grey. */
+.grid-surface::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(
+    ellipse 60% 50% at 15% 0%,
+    color-mix(in oklch, var(--ui-color-primary-500) 18%, transparent),
+    transparent 70%
+  );
+}
+
+/* 24px graph-paper backdrop, masked to fade out before it reaches the content
+   below. Two repeating-linear-gradients beat an SVG data-URI here: they inherit
+   the theme's border color, so light and dark need no separate asset. */
+.grid-surface::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    repeating-linear-gradient(to right, var(--ui-border) 0 1px, transparent 1px 24px),
+    repeating-linear-gradient(to bottom, var(--ui-border) 0 1px, transparent 1px 24px);
+  opacity: 0.35;
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
+}
