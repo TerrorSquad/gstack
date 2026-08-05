@@ -2,7 +2,7 @@ export default defineAppConfig({
   ui: {
     // One design language applied globally via Nuxt UI's theme system instead of
     // repeating classes on every instance: a thin border + crisp low shadow.
-    // `primary` is the indigo brand; `secondary` maps to neutral so secondary
+    // `primary` is the amber brand; `secondary` maps to neutral so secondary
     // actions render as plain outline buttons, not a second brand color.
     colors: {
       primary: 'brand',

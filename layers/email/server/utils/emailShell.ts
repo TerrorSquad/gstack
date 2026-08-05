@@ -18,8 +18,8 @@
  * `layers/ui/app/assets/css/main.css` by hand; there is one value to change.
  */
 export const EMAIL_BRAND = {
-  accent: '#7c3aed', // --color-brand-600
-  accentSoft: '#f5f3ff', // --color-brand-50
+  accent: '#b45309', // --color-brand-700 (the AA-safe fill step for amber)
+  accentSoft: '#fffbeb', // --color-brand-50
   page: '#f1f5f9',
   surface: '#ffffff',
   border: '#e2e8f0',

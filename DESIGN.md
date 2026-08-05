@@ -24,9 +24,12 @@ or radius of its own — reach for the token/utility instead.
 ## Foundations
 
 ### Color
-- **Brand** is an indigo/violet ramp `--color-brand-50…950` mapped to Nuxt UI's
+- **Brand** is an amber ramp `--color-brand-50…950` mapped to Nuxt UI's
   `primary` (`app.config.ts`). Use `primary`/`text-primary`/`bg-primary` — never a
   raw brand hex in a component.
+- Brand amber sits near Nuxt UI's default `warning` (yellow). That's tolerable
+  because alerts carry an icon and text, never colour alone — but don't add a
+  colour-only status indicator that leans on telling the two apart.
 - `secondary` maps to **neutral** on purpose: secondary actions render as plain
   outline buttons, not a second brand color.
 - Semantic colors: `success` / `warning` / `error` — use these, not green/amber/red.
@@ -38,13 +41,16 @@ or radius of its own — reach for the token/utility instead.
 ### The accessibility contract (do not undo this)
 Nuxt UI's default `-500` colored text and dimmed/muted neutrals sit **below WCAG
 AA** on white. `main.css` redirects `.text-primary/success/warning/error` to a
-darker step and darkens solid button fills to `-600/-700` in light mode. Two rules
-follow:
+darker step and darkens solid button fills in light mode. Two rules follow:
 1. Don't "fix" a color by hardcoding a lighter hex — you'll reintroduce the AA
    failure the overrides exist to prevent.
-2. **Rebranding to a light hue (teal, emerald, amber, cyan) breaks this.** Those
-   ramps aren't dark enough at `-600/-700` for white text to pass AA; you'd have to
-   re-tune the overrides. Indigo/violet/blue/purple/rose are safe as-is.
+2. **The fill step depends on the hue.** Warm mid-tone ramps (amber, teal,
+   emerald, cyan, orange) are too light at `-600` for white text: amber-600 is
+   3.0:1 and fails, amber-700 is 5.0:1 and passes, which is why the
+   `:is(button, a).bg-primary` override targets `-700`. Cool ramps
+   (indigo/violet/blue/rose) pass at `-600`. If you rebrand, measure your fill
+   step against white before shipping and move the override to match — that one
+   rule is the whole contract.
 
 ### Typography
 - Body: **Inter** (`--font-sans`). Headings: **Space Grotesk** (`--font-heading`),
