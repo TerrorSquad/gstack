@@ -8,76 +8,65 @@ below it, P1 are correctness bugs, P2 is polish, P3 is new surface area.
 
 ---
 
-## P0 — Move to Cloudflare Pages
+## P0 — Cloudflare Pages migration — CODE DONE, awaiting first deploy
 
-Do this first: it changes `baseURL`, `site.url`, canonicals, OG image URLs and
-the sitemap, so anything below that touches those would be redone. The pattern
-to copy is `~/Projects/vue3/nuxt3-portfolio`, which already ships a Nuxt app to
-Cloudflare Pages.
+The code side is finished and merged. What remains is dashboard-only.
 
-### Why
+Deployed via **Cloudflare Pages' Git integration**, not GitHub Actions. The
+portfolio uses Actions because its build is genuinely complex (Puppeteer PDF
+generation, a PHP server); a static docs site needs none of that, so there is no
+workflow file, no `wrangler.toml`, and no `CLOUDFLARE_*` secrets.
 
-GitHub Pages forces `app.baseURL = '/gstack/'` because project sites are served
-under the repo name. That one constraint causes most of the site's sharp edges:
+### Project settings (Cloudflare dashboard)
 
-- Every asset 404s in production if `baseURL` and the repo name disagree.
-- `site.url` must carry the `/gstack` path, so `nuxt-site-config` warns on every
-  build ("should not contain a path") — currently explained away in a comment
-  rather than fixed.
-- Canonicals, OG image URLs and the sitemap all have to be path-aware.
+| Field | Value |
+|---|---|
+| Project name | `gstack` |
+| Production branch | `main` |
+| Framework preset | None — the Nuxt.js preset injects `npm run build` and `dist`, both wrong |
+| Build command | `pnpm generate` |
+| Build output directory | `.output/public` |
+| Root directory | `site` |
+| Env var | `NODE_VERSION=26` |
 
-On a custom domain the site sits at `/` and all of it disappears. Cloudflare also
-gives per-branch preview deploys, which Pages can't do for a subdirectory site.
+`Root directory` is the one that breaks things silently if missed: `site/` has
+its own lockfile and `pnpm-workspace.yaml` so it resolves independently, and
+leaving the path blank makes Cloudflare install the starter's deps and build the
+wrong project. `NODE_VERSION` is needed because Cloudflare doesn't read
+`mise.toml`.
 
-### Domain
+### Remaining steps
 
-**`gstack.goranninkovic.com`.** `stack.goranninkovic.com` reads as "Goran's tech
-stack" — a personal page — rather than a product name. Repo, wordmark, docs
-title and URL should all say the same word. Keep `terrorsquad.github.io/gstack`
-redirecting for a while; the README and social cards point at it.
+1. Save and Deploy.
+2. Custom domain → `gstack.goranninkovic.com`. The zone is already in this
+   account, so Cloudflare writes the DNS record itself.
+3. Build watch paths → `site/*`, replacing the old workflow's `paths: site/**`.
+4. Decide what happens to `terrorsquad.github.io/gstack`. GitHub Pages will go
+   stale now that `pages.yml` is deleted; either disable Pages in repo settings
+   or leave the last build up as a dead end. Inbound links in `README.md` and
+   `docs/social/README.md` already point at the new domain.
 
-### Steps
+### Deliberately not ported
 
-1. **Preset.** The site is fully prerendered, so uploading `nuxi generate` output
-   as static assets is enough — `nitro.preset = 'cloudflare-pages'` is only
-   needed if a server route ever has to run at the edge. Start static. What
-   changes is the `--preset github_pages` flag in `package.json` → `build`.
-2. **Drop the baseURL.** Remove `app.baseURL` and `app.buildAssetsDir`; set
-   `site.url` to `https://gstack.goranninkovic.com`. This also silences the
-   nuxt-site-config warning.
-3. **`wrangler.toml`** at `site/`:
-   ```toml
-   name = "gstack-docs"
-   pages_build_output_dir = ".output/public"
-   compatibility_date = "2026-01-01"
-   ```
-4. **Workflow.** Replace `.github/workflows/pages.yml`. The portfolio uses
-   `AdrianGonz97/refined-cf-pages-action@v1.3.0` with `CLOUDFLARE_API_TOKEN` and
-   `CLOUDFLARE_ACCOUNT_ID` secrets — previews for non-`main`, production for
-   `main`. Keep the `paths: site/**` trigger so app-only commits don't redeploy.
-5. **Cache purge after publish.** Copy the portfolio's purge step *and its
-   comment*. `/_nuxt/*` is served `immutable` for a year; if an edge node requests
-   a chunk in the window between new HTML going live and assets finishing
-   propagation, a 404 HTML page gets cached under a `.js` URL for a year and the
-   site stops hydrating. Must be `continue-on-error: true` — the deploy has
-   already succeeded by then.
-6. **DNS.** CNAME `gstack` → the Pages project, proxied.
-7. **Update inbound links.** Root `README.md`, `docs/social/README.md`, the OG
-   image base, any `terrorsquad.github.io/gstack` references.
+The portfolio's **cache-purge step**. It exists because that site actually hit a
+race where a `/_nuxt/*` 404 got cached under an `immutable` header. Pages
+deployments carry their own asset manifest, so the exposure isn't obviously the
+same. Ship without it; add a small purge Action if it ever bites, rather than
+porting a workaround for a problem this site may not have.
 
-### Ride-along fix
+### Verify after the first deploy
 
-`sitemap.xml` emits **relative** `<loc>` values (`/stack`, `/docs/...`), which is
-invalid per the sitemap spec — they must be absolute. Docus's `inferSiteURL()`
-returns empty at prerender. Check whether a path-free `site.url` fixes it on its
-own; if not, fix it in the `prerender:generate` hook in `nuxt.config.ts` that
-already post-processes the sitemap.
+Already verified locally against `pnpm generate` output — re-check on the real
+deploy:
 
-### Do not
-
-Don't move the site into the root pnpm workspace to share deploy tooling. It's
-standalone on purpose — someone cloning the starter must not inherit the docs
-site's dependencies.
+- No asset URL references `/gstack/`. (The 27 remaining occurrences are all
+  `github.com/TerrorSquad/gstack/…` links, which are correct.)
+- `sitemap.xml` `<loc>` values are absolute at the new origin. A path-free
+  `site.url` did **not** fix this on its own — docus's `inferSiteURL()` still
+  returned empty at prerender, so the `prerender:generate` hook now rewrites
+  them and throws if a relative one survives.
+- OG images and canonicals resolve at the new domain **on content pages**. The
+  designed pages have neither — see P1 #2.
 
 ---
 
@@ -103,11 +92,17 @@ Two ways out, pick one:
 Prefer the second. Note the same fix removes the need for the manual
 `STATIC_PAGES` list in `app/utils/nav.ts`.
 
-### 2. No OG images for the designed pages
+### 2. Designed pages have no OG image and no canonical
 
-`nuxt-og-image` auto-generates for content pages; the three Vue pages share the
-site-wide default, so posting a link to `/security` gives a bare card. Add
-`defineOgImage()` per page — the docs pages already show the shape to copy.
+Confirmed in the built output: `security.html` carries no `og:image` and no
+`<link rel="canonical">`, while `docs/getting-started/introduction.html` has
+both. Docus's `[...slug].vue` calls `useSeo()` and `defineOgImage()`; the Vue
+pages only call `useSeoMeta()`, so they miss both.
+
+Sharing `/stack`, `/architecture` or `/security` currently gives a bare card,
+and the three pages are non-canonical — which matters more now that they're in
+the sitemap. Add `defineOgImage()` and a canonical to each; copy the shape from
+docus's slug page.
 
 ---
 

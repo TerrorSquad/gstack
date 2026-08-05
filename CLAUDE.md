@@ -148,17 +148,26 @@ visual-regression baseline — no pixel diffing.
 
 ## Docs site (`site/`)
 
-The GitHub Pages showcase: a **standalone** Nuxt project extending `docus`, with
+The showcase site at **gstack.goranninkovic.com**: a **standalone** Nuxt project extending `docus`, with
 its own `package.json`, lockfile and `pnpm-workspace.yaml` (that last one stops
 pnpm walking up and treating `site/` as an unlisted member of the root workspace,
 which silently installs nothing). It is deliberately not part of the starter's
 dependency tree — someone cloning the template shouldn't get the docs site's deps.
 
-`site/nuxt.config.ts` sets `app.baseURL` to `/gstack/`; Pages serves the repo under
-its name, so that must match the repo or every asset 404s in production while
-working fine locally. Deployed by `.github/workflows/pages.yml` on pushes touching
-`site/**`. Content is authored fresh — ADRs are linked to GitHub, not copied, to
-avoid a second drifting version.
+Deployed by **Cloudflare Pages' own Git integration** — there is no workflow file
+and no `wrangler.toml`. Project settings that matter: root directory `site`,
+build command `pnpm generate`, output `.output/public`, `NODE_VERSION=26`, and
+build watch paths `site/*` so app-only commits don't rebuild the docs.
+
+The site is served from the **root** of its own domain, so `app.baseURL` is
+unset. It was `/gstack/` under GitHub Pages, which forced the path into
+`site.url` and made canonicals, OG images and the sitemap path-aware — don't
+reintroduce one without putting the path back in `site.url` too.
+
+Content is authored fresh — ADRs are linked to GitHub, not copied, to avoid a
+second drifting version. The subsystem table on the configuration page is
+**generated** from `scripts/integrations.ts` via `site/app/utils/integrations.ts`;
+adding a subsystem to that manifest without site copy fails the docs build.
 
 ## Changelog
 
