@@ -120,51 +120,44 @@ both themes.
 - **TOC truncation** → the slot is on `contentToc`, not `pageAnchors` (the first
   attempt silently did nothing; the screenshot check caught it). Entries wrap.
 
-### 5. Landing hero terminal is underweight — still open
+### 5. Landing hero terminal — resolved differently
 
-The install block is the most persuasive thing on the landing page and sits
-small in a narrow right-hand column. Deliberately left until #8: a real app
-screenshot may be the better occupant, and it is not worth restyling twice.
+Rather than restyle it, the landing gained a "What it looks like" section
+(§02) leading into /screens. The terminal keeps its slot; the product is now
+visible above the fold's fold, which was the actual problem.
 
 ---
 
-## P3 — New surface
+## P3 — DONE
 
-### 8. Embed real app screenshots — BLOCKED
+- **8. App screenshots** — regenerated in amber and surfaced at **/screens**
+  (signed-in surface, public pages, mobile, with a theme toggle). Also fixed
+  the portfolio's project image, which was still the violet dashboard.
+- **9. /workbench** — dropped; it would have restated /stack §03 and the
+  landing's CI table.
+- **10. /compare** — shipped, with an "Edge" column allowed to say *They lead*.
 
-`docs/screenshots/` (the **starter app**, not this site) is still violet. It
-also backs `public/projects/gstack.webp` in the portfolio, which shows the old
-dashboard.
+---
 
-Regenerating needs the app's Supabase running, and the ports are currently held
-by the job-finder project:
+## Known operational quirk
 
+Cloudflare Pages briefly serves **edge-cached HTML from the previous deploy**
+after a push, so for a minute or two some pages reference `_nuxt` chunks the new
+deployment no longer contains, and hydration on those pages fails.
+
+Observed directly during this work — it is the same race the portfolio's
+cache-purge step exists to close, and the reason that step was written. It
+converges on its own within a couple of minutes.
+
+If it ever matters (a demo, a launch), port the purge: a small GitHub Action on
+`main` hitting the zone purge endpoint with `continue-on-error: true`, exactly
+as `nuxt3-portfolio/.github/workflows/build-and-deploy.yml` does. Verify with:
+
+```bash
+# every chunk referenced by a page should resolve
+curl -s https://gstack.goranninkovic.com/ | grep -oE '/_nuxt/[^"]+\.js' \
+  | xargs -I{} curl -s -o /dev/null -w '%{http_code} {}\n' https://gstack.goranninkovic.com{}
 ```
-supabase stop --project-id job-finder
-pnpm supabase start && pnpm db:reset && pnpm screenshots
-```
-
-Stopping another project's database is a call for a human, not something to do
-silently. Data survives — it is `supabase start` to bring it back.
-
-### 9. `/workbench` page — DROPPED
-
-Deciding rather than leaving it to rot: it would have repeated two sections that
-already exist. `pnpm setup` / `pnpm doctor` is section 03 of `/stack`, and the
-CI gate table is on the landing. A third page restating both is precisely the
-duplication the generated configuration table was introduced to remove.
-
-If DX ever needs its own page, it should *move* those sections rather than copy
-them.
-
-### 10. `/compare` — DONE
-
-Built at `/compare`, with a deliberate rule: every table carries an "Edge"
-column that is allowed to say **They lead**, and it does — on ecosystem, on
-prebuilt UI, and on support. Plus a section of reasons to pick something else.
-
-It also caught a stale claim in `docs/gstack.md`: billing was listed as a place
-commercial kits lead, which stopped being true when Polar shipped.
 
 ---
 
