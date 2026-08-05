@@ -42,6 +42,32 @@ export interface DesignedPage {
 
 export const designedPages: DesignedPage[] = [
   {
+    path: '/screens',
+    title: 'What you get — GStack',
+    description:
+      'The screens the starter ships with: dashboard, notes CRUD, tenant admin, billing, account, pricing and feedback — in both themes and on mobile.',
+    eyebrow: 'What you get',
+    heading: 'The screens, before you write any.',
+    intro:
+      'Every one of these is in the template on the first run, rendered against a seeded demo tenant. They are captured by a script, not curated by hand, so they cannot flatter the product.',
+    sections: [
+      {
+        index: '01',
+        eyebrow: 'The app',
+        title: 'Signed-in surface',
+        description:
+          'Dashboard, the reference CRUD feature, tenant administration, billing and account — the parts you would otherwise build before writing anything of your own.',
+      },
+      {
+        index: '02',
+        eyebrow: 'Public and mobile',
+        title: 'The rest of it',
+        description:
+          'Marketing and pricing pages, the feedback widget, and the same screens on a phone. Both themes are tested for contrast, not just drawn.',
+      },
+    ],
+  },
+  {
     path: '/compare',
     title: 'How it compares — GStack',
     description:

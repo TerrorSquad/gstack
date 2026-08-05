@@ -38,8 +38,9 @@
               v-else
               class="text-xs text-dimmed"
             >
-              no flag — set {{ s.requiredKeys.length }}
-              {{ s.requiredKeys.length === 1 ? 'key' : 'keys' }}
+              {{ s.category === 'core'
+                ? 'core — always on'
+                : `no flag — set ${s.requiredKeys.length} ${s.requiredKeys.length === 1 ? 'key' : 'keys'}` }}
             </span>
           </td>
           <td class="py-2.5">

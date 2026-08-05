@@ -26,6 +26,7 @@ const outDir = join(siteDir, 'docs', 'screenshots')
 
 const ROUTES = [
   ['index', 'Landing'],
+  ['screens', 'Screens'],
   ['stack', 'The stack'],
   ['architecture', 'Architecture'],
   ['security', 'Security'],
@@ -33,6 +34,7 @@ const ROUTES = [
   ['docs/getting-started/introduction', 'Docs — Introduction'],
   ['docs/getting-started/installation', 'Docs — Installation'],
   ['docs/getting-started/configuration', 'Docs — Configuration'],
+  ['docs/getting-started/deployment', 'Docs — Deployment'],
   ['docs/architecture/layers', 'Docs — Layers'],
   ['docs/architecture/multi-tenancy', 'Docs — Multi-tenancy'],
   ['docs/architecture/testing', 'Docs — Testing'],

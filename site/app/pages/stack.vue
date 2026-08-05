@@ -15,6 +15,15 @@ const CATEGORY_BLURB: Record<string, string> = {
   Observability: 'Also keyed rather than flagged: no DSN, no reporting.',
 }
 
+// Derived, so a subsystem that stops being self-hosted can't linger here as a
+// promise the manifest no longer makes.
+const freeForever = computed(() => [
+  'Auth, roles and RLS multi-tenancy',
+  'Notes CRUD as the reference feature',
+  ...subsystems.filter(s => s.account === null && s.category !== 'core').map(s => s.label),
+  'i18n, accessibility checks and the test suite',
+])
+
 const setupSnippet = `$ pnpm setup
 
   Which subsystems do you want?
@@ -52,7 +61,7 @@ $ pnpm doctor
 
       <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div
-          v-for="item in ['Auth, roles and RLS multi-tenancy', 'Notes CRUD as the reference feature', 'Feedback widget writing to your DB', 'Onboarding tour, i18n, a11y, tests']"
+          v-for="item in freeForever"
           :key="item"
           class="rounded-[var(--ui-radius)] border border-success/40 bg-success/5 p-5"
         >
@@ -122,7 +131,10 @@ $ pnpm doctor
               </p>
 
               <p class="mt-3 font-mono text-xs text-dimmed">
-                {{ item.flag ?? `no flag — set ${item.requiredKeys.length} keys` }}
+                {{ item.flag
+                  ?? (item.category === 'core'
+                    ? 'core — always on'
+                    : `no flag — set ${item.requiredKeys.length} keys`) }}
               </p>
             </div>
           </div>
