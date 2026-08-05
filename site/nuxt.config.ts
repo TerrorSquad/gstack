@@ -42,6 +42,14 @@ export default defineNuxtConfig({
   // Cloudflare Pages deletes that entire class of problem — don't reintroduce a
   // baseURL without also putting the path back in site.url.
 
+  // Docus links /favicon.ico by default, which 404'd — the tab showed a blank
+  // icon. Point it at the same mark the app uses.
+  app: {
+    head: {
+      link: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
+    },
+  },
+
   site: {
     url: SITE_URL,
     name: 'GStack',
