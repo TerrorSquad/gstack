@@ -1,10 +1,3 @@
-/**
- * Every route that exists as a Vue page rather than as content. The sitemap
- * route reads this too — @nuxt/content can't see these, so anything added here
- * has to be listed or it ships unlisted.
- */
-export const STATIC_PAGES = ['/stack', '/architecture', '/security']
-
 // Top-level product navigation, shared by the desktop header and the mobile
 // menu so the two can't drift. Docs pages come from the content tree; these are
 // the designed pages under app/pages/.

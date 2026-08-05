@@ -1,11 +1,7 @@
 <script setup lang="ts">
 definePageMeta({ layout: 'default' })
 
-useSeoMeta({
-  title: 'The stack — GStack',
-  description:
-    'Every subsystem GStack ships, what turning it on gives you, and which ones need a third-party account. A bare clone runs end-to-end with none of them.',
-})
+const page = useDesignedPageSeo('/stack')
 
 // Facts (flag, category, whether keys are needed) come from the starter's
 // subsystem manifest via app/utils/integrations.ts. Only the per-category
@@ -40,26 +36,19 @@ $ pnpm doctor
     <!-- Hero -->
     <UContainer class="grid-surface relative py-20 sm:py-28">
       <p class="font-mono text-xs uppercase tracking-[0.18em] text-primary">
-        The stack
+        {{ page.eyebrow }}
       </p>
       <h1 class="mt-4 max-w-3xl text-4xl sm:text-6xl font-bold tracking-tight text-highlighted text-pretty">
-        Batteries included. All of them off.
+        {{ page.heading }}
       </h1>
       <p class="mt-6 max-w-2xl text-lg text-muted text-pretty">
-        Every subsystem here is fully wired and switched off until you say
-        otherwise. Nothing half-works, nothing is a stub, and a clone you have
-        just downloaded runs end-to-end without a single third-party account.
+        {{ page.intro }}
       </p>
     </UContainer>
 
     <!-- 01 Zero accounts -->
     <UContainer class="py-16 sm:py-24">
-      <SectionHead
-        index="01"
-        eyebrow="The bare clone"
-        title="What you get before signing up for anything"
-        description="This is the whole point of flag-gating. The starter has to be fully usable on a laptop with no accounts, or the batteries are decoration."
-      />
+      <SectionHead v-bind="page.sections[0]!" />
 
       <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div
@@ -86,12 +75,7 @@ $ pnpm doctor
 
     <!-- 02 The subsystems -->
     <UContainer class="py-16 sm:py-24">
-      <SectionHead
-        index="02"
-        eyebrow="The inventory"
-        title="Every subsystem, and what it costs"
-        description="Grouped the way the manifest groups them. If a row says no account, it means the feature is genuinely self-hosted — not a trial tier."
-      />
+      <SectionHead v-bind="page.sections[1]!" />
 
       <div class="mt-10 space-y-10">
         <div
@@ -148,12 +132,7 @@ $ pnpm doctor
 
     <!-- 03 setup/doctor -->
     <UContainer class="py-16 sm:py-24">
-      <SectionHead
-        index="03"
-        eyebrow="One manifest, two scripts"
-        title="Something writes it, something else checks it"
-        description="pnpm setup picks the subsystems and writes .env. pnpm doctor verifies what's there. Both read the same manifest, so adding a subsystem to it wires up both — and neither can drift from the other."
-      />
+      <SectionHead v-bind="page.sections[2]!" />
 
       <div class="mt-10 grid gap-6 lg:grid-cols-2">
         <CodeCard
@@ -183,12 +162,7 @@ $ pnpm doctor
 
     <!-- 04 Deploy -->
     <UContainer class="py-16 sm:py-24">
-      <SectionHead
-        index="04"
-        eyebrow="Where it runs"
-        title="Vercel is the default, not the requirement"
-        description="The build output is Nitro, which targets Node, Deno, Bun, Cloudflare, Netlify and a plain server. Nothing in the app reaches for a platform-specific API."
-      />
+      <SectionHead v-bind="page.sections[3]!" />
 
       <div class="mt-10 grid gap-4 sm:grid-cols-3">
         <div class="rounded-[var(--ui-radius)] border border-default bg-muted/40 p-5">

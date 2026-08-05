@@ -8,7 +8,7 @@ below it, P1 are correctness bugs, P2 is polish, P3 is new surface area.
 
 ---
 
-## P0 — Cloudflare Pages migration — CODE DONE, awaiting first deploy
+## P0 — Cloudflare Pages migration — DONE, live at gstack.goranninkovic.com
 
 The code side is finished and merged. What remains is dashboard-only.
 
@@ -70,39 +70,39 @@ deploy:
 
 ---
 
-## P1 — Correctness
+## P1 — Correctness — DONE
 
-### 1. The designed pages aren't in site search
+Both items landed together, because they had one cause: the designed pages had
+no machine-readable description of themselves.
 
-`/stack`, `/architecture` and `/security` live in `app/pages/`, and docus's
-search indexes @nuxt/content collections only. Searching "RLS" does not surface
-the security page. This is the biggest functional gap on the site.
+`app/utils/designedPages.ts` is now that description, and the single source for
+**four** things previously separate or missing:
 
-Two ways out, pick one:
+- the pages' own `<h1>` and section headings (via `SectionHead`)
+- the search index (`app/components/app/AppSearch.vue`)
+- `sitemap.xml` (the `nuxt.config.ts` hook reads `designedPagePaths`)
+- title, description, canonical and OG image (`useDesignedPageSeo()`)
 
-- **Move them into content** as `.md` with MDC components for the designed bits.
-  Blocked by the collection shape: because `content/docs/` exists, docus scopes
-  the `docs` collection to `docs/**` with a `/docs` prefix, so top-level markdown
-  doesn't route at all. Would need a custom `content.config.ts` that redeclares
-  docus's collections plus a marketing one — couples us to docus internals.
-- **Feed the existing index**, by registering the three pages' headings into
-  whatever `AppSearch` queries. Less invasive, needs a look at how docus builds
-  `queryCollectionSearchSections`.
+Changing a heading now changes the page, the search index and the sitemap
+together.
 
-Prefer the second. Note the same fix removes the need for the manual
-`STATIC_PAGES` list in `app/utils/nav.ts`.
+### 1. Search — fixed
 
-### 2. Designed pages have no OG image and no canonical
+`UContentSearch` builds its groups by walking `navigation` and attaching
+matching entries from `files`, so a page must be in **both** to be findable —
+adding search sections alone would have done nothing. `AppSearch.vue` prepends a
+synthetic "Product" navigation group and merges generated sections into `files`.
 
-Confirmed in the built output: `security.html` carries no `og:image` and no
-`<link rel="canonical">`, while `docs/getting-started/introduction.html` has
-both. Docus's `[...slug].vue` calls `useSeo()` and `defineOgImage()`; the Vue
-pages only call `useSeoMeta()`, so they miss both.
+Verified by driving the real search UI: "RLS" → `/security`, "ten layers" →
+`/architecture`, "batteries" → `/stack`, and section-level "known ceiling" →
+`/security`.
 
-Sharing `/stack`, `/architecture` or `/security` currently gives a bare card,
-and the three pages are non-canonical — which matters more now that they're in
-the sitemap. Add `defineOgImage()` and a canonical to each; copy the shape from
-docus's slug page.
+### 2. OG images and canonicals — fixed
+
+The pages called plain `useSeoMeta()`; docus's own pages call `useSeo()` +
+`defineOgImage()`, which is where canonicals, Open Graph meta and JSON-LD come
+from. `useDesignedPageSeo()` does the same. All three now emit a canonical at
+the custom domain and a rendered OG image.
 
 ---
 
@@ -125,9 +125,16 @@ the hero padding, or give the heroes something on the right (see #5).
 
 The install block is the most persuasive element on the landing page and it sits
 small in a narrow right-hand column. Consider giving it more width, or replacing
-it with a real app screenshot once #7 lands.
+it with a real app screenshot once #8 lands.
 
-### 6. TOC entries truncate
+### 6. Icons resolve at runtime, not build time
+
+Every Cloudflare build logs dozens of `[Icon] failed to load icon`. Nuxt Icon is
+in `remote` mode with one icon in the client bundle, so icons aren't inlined
+into the prerendered HTML — the browser fetches them from the Iconify API. They
+appear, but they pop in. Bundling the used set locally would fix it.
+
+### 7. TOC entries truncate
 
 "Type-safe end t...", "Batteries include...", "DX over clevern..." on the
 introduction page. Docus's default aside width. Either shorten those headings or
@@ -137,7 +144,7 @@ widen the aside.
 
 ## P3 — New surface
 
-### 7. Embed real app screenshots
+### 8. Embed real app screenshots
 
 `docs/screenshots/` is `pnpm screenshots` capturing the **starter app** — 42
 images, both themes plus mobile. It's the strongest proof asset in the repo and
@@ -147,7 +154,7 @@ the docs site uses none of it.
 root with Supabase up (`pnpm supabase start`) to regenerate in amber, then copy
 the handful worth showing into `site/public/`.
 
-### 8. `/workbench` page
+### 9. `/workbench` page
 
 DX: the commands worth knowing, codegen (`db:types`, `gen:auth-templates`,
 `gen:layer`), seeding, the pre-commit hook, and the CI gate list.
@@ -157,7 +164,7 @@ DX: the commands worth knowing, codegen (`db:types`, `gen:auth-templates`,
 Either this page absorbs those and they're cut from where they are, or it's not
 worth a page. Decide before building.
 
-### 9. `/compare` page
+### 10. `/compare` page
 
 vs create-t3-app, vs commercial Nuxt SaaS kits — including where GStack loses.
 `docs/gstack.md` already has the honest version; the introduction page has a
@@ -173,4 +180,6 @@ condensed table. Honest comparisons convert; a dishonest one is worse than none.
 - Build-time Shiki highlighting in `CodeCard` (zero client bundle cost).
 - Docs configuration table generated from `scripts/integrations.ts`; build fails
   if a subsystem has no site copy.
-- Sitemap includes the designed pages.
+- Sitemap includes the designed pages, with absolute URLs.
+- Deployed to Cloudflare Pages at gstack.goranninkovic.com.
+- Designed pages are searchable and carry canonicals + OG images.

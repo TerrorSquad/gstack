@@ -1,11 +1,7 @@
 <script setup lang="ts">
 definePageMeta({ layout: 'default' })
 
-useSeoMeta({
-  title: 'Security — GStack',
-  description:
-    'Multi-tenant isolation enforced by Postgres Row Level Security, proven by an end-to-end test, with CSP, CSRF and rate limiting layered above it.',
-})
+const page = useDesignedPageSeo('/security')
 
 const tenantFn = `create or replace function public.current_tenant_id()
 returns uuid
@@ -80,27 +76,19 @@ const hardening = [
     <!-- Hero -->
     <UContainer class="grid-surface relative py-20 sm:py-28">
       <p class="font-mono text-xs uppercase tracking-[0.18em] text-primary">
-        Security
+        {{ page.eyebrow }}
       </p>
       <h1 class="mt-4 max-w-3xl text-4xl sm:text-6xl font-bold tracking-tight text-highlighted text-pretty">
-        Isolation is a database property.
+        {{ page.heading }}
       </h1>
       <p class="mt-6 max-w-2xl text-lg text-muted text-pretty">
-        Not a middleware, not a <code class="font-mono">where</code> clause
-        someone remembered to write. Postgres Row Level Security scopes every
-        row to the caller's tenant, so a bug in a component cannot leak data the
-        component was never given.
+        {{ page.intro }}
       </p>
     </UContainer>
 
     <!-- 01 The model -->
     <UContainer class="py-16 sm:py-24">
-      <SectionHead
-        index="01"
-        eyebrow="The model"
-        title="One database, one tenant_id, one helper"
-        description="Single-database, shared-schema multi-tenancy. Every table carries a tenant_id, and one security-definer function answers who is asking."
-      />
+      <SectionHead v-bind="page.sections[0]!" />
 
       <div class="mt-10 grid gap-6 lg:grid-cols-2">
         <CodeCard
@@ -128,12 +116,7 @@ const hardening = [
 
     <!-- 02 A real policy -->
     <UContainer class="py-16 sm:py-24">
-      <SectionHead
-        index="02"
-        eyebrow="A real policy"
-        title="Read the rule, not the marketing"
-        description="This is the actual notes policy, unedited. Tenant scoping and ownership are one expression the database evaluates on every single read."
-      />
+      <SectionHead v-bind="page.sections[1]!" />
 
       <div class="mt-10 grid gap-6 lg:grid-cols-2">
         <CodeCard
@@ -162,12 +145,7 @@ const hardening = [
 
     <!-- 03 The test -->
     <UContainer class="py-16 sm:py-24">
-      <SectionHead
-        index="03"
-        eyebrow="The proof"
-        title="A claim that fails loudly"
-        description="Every starter says multi-tenant. This one logs in as a second tenant and asserts the first tenant's rows are absent — from the list, from search, and from the SSR payload."
-      />
+      <SectionHead v-bind="page.sections[2]!" />
 
       <div class="mt-10">
         <CodeCard
@@ -186,12 +164,7 @@ const hardening = [
 
     <!-- 04 Hardening -->
     <UContainer class="py-16 sm:py-24">
-      <SectionHead
-        index="04"
-        eyebrow="Above the database"
-        title="The ordinary web attack surface, closed"
-        description="RLS is the boundary that matters. It is not an excuse to ship without the rest."
-      />
+      <SectionHead v-bind="page.sections[3]!" />
 
       <div class="mt-10 grid gap-4 sm:grid-cols-2">
         <div
@@ -215,12 +188,7 @@ const hardening = [
 
     <!-- 05 The ceiling -->
     <UContainer class="py-16 sm:py-24">
-      <SectionHead
-        index="05"
-        eyebrow="Known ceiling"
-        title="Where this design stops scaling"
-        description="Written in the migration itself, not discovered by you at 3am."
-      />
+      <SectionHead v-bind="page.sections[4]!" />
 
       <div class="mt-10 rounded-[var(--ui-radius)] border border-primary/40 bg-primary/5 p-6 sm:p-8">
         <p class="text-muted">

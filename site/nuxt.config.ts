@@ -1,10 +1,14 @@
 import { fileURLToPath } from 'node:url'
 
+import { designedPagePaths } from './app/utils/designedPages'
+
 const SITE_URL = 'https://gstack.goranninkovic.com'
 
 // Routes that exist as Vue pages rather than content. @nuxt/content can't see
 // them, so docus's sitemap route misses them — see the nitro hook below.
-const STATIC_PAGES = ['/stack', '/architecture', '/security']
+// Imported rather than repeated: app/utils/designedPages.ts is the one place
+// these pages are described, for the sitemap, search, SEO and the pages
+// themselves.
 
 // Standalone Nuxt project — deliberately NOT part of the root app or its
 // pnpm workspace. It has its own lockfile and node_modules so the starter you
@@ -79,7 +83,7 @@ export default defineNuxtConfig({
           throw new Error('sitemap.xml: no </urlset> to append to — docus changed its format')
         }
 
-        const extra = STATIC_PAGES
+        const extra = designedPagePaths
           .map(path => `  <url>\n    <loc>${path}</loc>\n  </url>\n`)
           .join('')
 

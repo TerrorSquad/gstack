@@ -1,11 +1,7 @@
 <script setup lang="ts">
 definePageMeta({ layout: 'default' })
 
-useSeoMeta({
-  title: 'Architecture — GStack',
-  description:
-    'Ten Nuxt layers over one shell, types generated from the Postgres schema, and a request lifecycle where authorization is a database property.',
-})
+const page = useDesignedPageSeo('/architecture')
 
 // Mirrors the `extends` array in the starter's root nuxt.config.ts, in order.
 // `ui` is listed first there for a reason — it's the design-system foundation
@@ -80,26 +76,19 @@ const deferred = [
     <!-- Hero -->
     <UContainer class="grid-surface relative py-20 sm:py-28">
       <p class="font-mono text-xs uppercase tracking-[0.18em] text-primary">
-        Architecture
+        {{ page.eyebrow }}
       </p>
       <h1 class="mt-4 max-w-3xl text-4xl sm:text-6xl font-bold tracking-tight text-highlighted text-pretty">
-        Ten layers, one shell.
+        {{ page.heading }}
       </h1>
       <p class="mt-6 max-w-2xl text-lg text-muted text-pretty">
-        Every feature is a self-contained Nuxt layer over a shared foundation.
-        Adding one is a directory and a line; removing one is deleting the
-        directory. Nothing in between reaches across.
+        {{ page.intro }}
       </p>
     </UContainer>
 
     <!-- 01 The shape -->
     <UContainer class="py-16 sm:py-24">
-      <SectionHead
-        index="01"
-        eyebrow="The shape"
-        title="Features are layers, not folders"
-        description="The root project is the shell — app.vue, layouts, auth pages, stores, base components and the core server routes. Everything else is a layer it extends."
-      />
+      <SectionHead v-bind="page.sections[0]!" />
 
       <div class="mt-10 space-y-3">
         <div class="rounded-[var(--ui-radius)] border border-accented bg-elevated px-5 py-4">
@@ -142,12 +131,7 @@ const deferred = [
 
     <!-- 02 Adding a feature -->
     <UContainer class="py-16 sm:py-24">
-      <SectionHead
-        index="02"
-        eyebrow="Adding a feature"
-        title="One command, one line"
-        description="pnpm gen:layer scaffolds the directory and its nuxt.config.ts. You add it to extends. That is the whole ceremony."
-      />
+      <SectionHead v-bind="page.sections[1]!" />
 
       <div class="mt-10 grid gap-6 lg:grid-cols-2">
         <CodeCard
@@ -174,12 +158,7 @@ const deferred = [
 
     <!-- 03 Lifecycle -->
     <UContainer class="py-16 sm:py-24">
-      <SectionHead
-        index="03"
-        eyebrow="Request lifecycle"
-        title="Authorization happens in Postgres"
-        description="By the time a component sees data, the database has already filtered it. The middleware exists to send people to the right page, not to protect rows."
-      />
+      <SectionHead v-bind="page.sections[2]!" />
 
       <ol class="mt-10 space-y-px overflow-hidden rounded-[var(--ui-radius)] border border-default">
         <li
@@ -200,12 +179,7 @@ const deferred = [
 
     <!-- 04 Types -->
     <UContainer class="py-16 sm:py-24">
-      <SectionHead
-        index="04"
-        eyebrow="Type pipeline"
-        title="The schema is the source of types"
-        description="No ORM, no hand-written row interfaces. pnpm db:types regenerates from the live local database, and a query that under-selects fails at typecheck instead of in production."
-      />
+      <SectionHead v-bind="page.sections[3]!" />
 
       <div class="mt-10 grid gap-6 lg:grid-cols-2">
         <div class="flex flex-col justify-center gap-2 rounded-[var(--ui-radius)] border border-default bg-muted/40 p-6">
@@ -232,12 +206,7 @@ const deferred = [
 
     <!-- 05 Deferred -->
     <UContainer class="py-16 sm:py-24">
-      <SectionHead
-        index="05"
-        eyebrow="Deliberately deferred"
-        title="What this stack refuses to add yet"
-        description="A starter is judged as much by what it leaves out. These are written down with their trade-offs, not silently omitted."
-      />
+      <SectionHead v-bind="page.sections[4]!" />
 
       <div class="mt-10 grid gap-4 md:grid-cols-3">
         <ULink
