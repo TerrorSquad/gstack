@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.1.0](https://github.com/TerrorSquad/gstack/compare/gstack-v1.0.0...gstack-v1.1.0) (2026-08-05)
+
+
+### Features
+
+* **site:** add /compare, including where GStack loses ([bb10943](https://github.com/TerrorSquad/gstack/commit/bb109431df1e17a5392ed30e3cd48fb9b71c13b1))
+* **site:** add screenshot tooling, and fix what it immediately found ([81ad12c](https://github.com/TerrorSquad/gstack/commit/81ad12c2964f8f7bf10e707679e434b05dbcd49f))
+* **site:** make the designed pages searchable, canonical and shareable ([d390466](https://github.com/TerrorSquad/gstack/commit/d39046625b4ca7122f3eba692ed7f17d3388ebef))
+* **site:** show the product, and close the gaps a reader would hit ([264b65b](https://github.com/TerrorSquad/gstack/commit/264b65b27dd8f352f42c1d8b9de04ce01a237e1c))
+* **ui:** rebrand from violet to amber ([34e5855](https://github.com/TerrorSquad/gstack/commit/34e58556c129f3839b0404afebdb37b18b15094b))
+
+
+### Bug Fixes
+
+* amber favicon, and give the docs site one at all ([9682bf0](https://github.com/TerrorSquad/gstack/commit/9682bf040746d7344172177f97c822af81ee2e48))
+* **site:** build the docs from a checkout where only site/ is installed ([e6d4501](https://github.com/TerrorSquad/gstack/commit/e6d45015cb8a7992790eb10430e0d254c8709b9d))
+* **site:** footer attribution, single GitHub link, readable feature cards ([f1ea5ea](https://github.com/TerrorSquad/gstack/commit/f1ea5eaffd1f839c8a922914efc3fae78f6c07b5))
+* **site:** pin every rendered icon into the client bundle ([44d24a6](https://github.com/TerrorSquad/gstack/commit/44d24a6e0cfda911f3f8160226277acae9b2aec5))
+* **site:** pin the Nitro preset so the output directory is stable ([af4f9ea](https://github.com/TerrorSquad/gstack/commit/af4f9eac29000a300eb5a77d153a581e928f703c))
+* **site:** stop the client requesting an icon API that cannot exist ([9bd7aa8](https://github.com/TerrorSquad/gstack/commit/9bd7aa88dd7acc90a18c1cdf714b54670191da4d))
+
 ## [1.0.0](https://github.com/TerrorSquad/gstack/compare/gstack-v0.1.0...gstack-v1.0.0) (2026-08-04)
 
 
