@@ -65,10 +65,22 @@ export default defineNuxtConfig({
   // without them — icons only appeared once the browser fetched them, so they
   // popped in. With the collections installed as devDependencies, the local
   // server bundle resolves them during prerender and they're inlined instead.
+  // `provider: 'server'` was wrong for a static site: it made the CLIENT fetch
+  // /api/_nuxt_icon/<collection>.json at runtime, a route that only exists when
+  // a server is running, so every page 404'd twice in production even though the
+  // icons themselves looked fine (they're inlined into the prerendered HTML).
+  //
+  // 'none' means no runtime fetching at all: prerender inlines what each page
+  // uses, and clientBundle covers anything rendered after hydration.
   icon: {
-    provider: 'server',
+    provider: 'none',
     serverBundle: {
       collections: ['lucide', 'simple-icons', 'vscode-icons'],
+    },
+    clientBundle: {
+      scan: true,
+      includeCustomCollections: true,
+      sizeLimitKb: 512,
     },
   },
 
