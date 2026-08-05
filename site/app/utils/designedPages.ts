@@ -42,6 +42,39 @@ export interface DesignedPage {
 
 export const designedPages: DesignedPage[] = [
   {
+    path: '/compare',
+    title: 'How it compares — GStack',
+    description:
+      'GStack against create-t3-app and against commercial Nuxt SaaS kits — including the places it loses, which are the useful part.',
+    eyebrow: 'How it compares',
+    heading: 'Where it wins, and where it loses.',
+    intro:
+      'A comparison that only lists wins is an advert. These are the real trade-offs, including the ones that should send you elsewhere.',
+    sections: [
+      {
+        index: '01',
+        eyebrow: 'vs create-t3-app',
+        title: 'Same instincts, different boundary',
+        description:
+          'Both are type-safe to the edges and allergic to magic. They disagree about where authorization lives, and about which framework you write.',
+      },
+      {
+        index: '02',
+        eyebrow: 'vs commercial Nuxt kits',
+        title: 'What you pay for, and what you do not',
+        description:
+          'Paid kits buy breadth and someone else on the hook. This buys depth in the parts that are painful to retrofit.',
+      },
+      {
+        index: '03',
+        eyebrow: 'The honest part',
+        title: 'Reasons to pick something else',
+        description:
+          'Written down because a starter you adopt for the wrong reason costs far more than the evening you saved choosing it.',
+      },
+    ],
+  },
+  {
     path: '/stack',
     title: 'The stack — GStack',
     description:

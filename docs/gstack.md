@@ -56,9 +56,11 @@ choices are recorded as [ADRs](./adr/).
 - **vs. T3 / create-t3-app** — same type-safety ethos, but RLS-first Postgres
   instead of app-layer authz, and Vue/Nuxt instead of React/Next.
 - **vs. commercial Nuxt SaaS kits** (e.g. nuxtstarterkit.com) — we match auth,
-  i18n, testing and beat them on observability, a11y, release automation and
-  multi-tenancy. They lead on billing, marketing surface and operational admin —
-  which is exactly what the [roadmap](./roadmap.md) closes.
+  i18n and testing, and lead on observability, a11y, release automation and
+  proven multi-tenancy. They lead on breadth of prebuilt UI and on having
+  someone you can page. Billing is no longer the gap it was — Polar checkout,
+  portal and webhooks ship behind a flag. See the site's `/compare` page, which
+  is the version kept honest about where this loses.
 
 ## Non-goals
 

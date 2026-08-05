@@ -106,69 +106,65 @@ the custom domain and a rendered OG image.
 
 ---
 
-## P2 — Polish
+## P2 — Polish — DONE
 
-### 3. Blue `info` alert is off-palette
+3, 4, 6 and 7 all fixed and verified by `pnpm screenshots`, which now asserts
+no console errors, no horizontal overflow and no clipped text on every page in
+both themes.
 
-`::note` / `info` renders Nuxt UI blue — the only blue pixel on the site, visible
-on `/docs/getting-started/introduction`. Either remap `info` in the site's
-`app.config.ts` or switch those callouts to `::tip`. Check the whole docs tree
-for other `info` uses first.
+- **Blue `info` alert** → mapped to neutral. success/warning/error keep meaning
+  something; notes are quiet.
+- **Hero dead space** → heroes are `pt-16 pb-12 sm:pt-24 sm:pb-16`.
+- **Icons** → collections are devDependencies bundled locally. Verified: zero
+  external requests, icons painted from inline data URIs, no build warnings.
+- **TOC truncation** → the slot is on `contentToc`, not `pageAnchors` (the first
+  attempt silently did nothing; the screenshot check caught it). Entries wrap.
 
-### 4. Hero dead space
+### 5. Landing hero terminal is underweight — still open
 
-All three designed pages have a large gap between hero and section 01 — short
-hero content against `py-20 sm:py-28` plus a section's `py-16 sm:py-24`. Tighten
-the hero padding, or give the heroes something on the right (see #5).
-
-### 5. Landing hero terminal is underweight
-
-The install block is the most persuasive element on the landing page and it sits
-small in a narrow right-hand column. Consider giving it more width, or replacing
-it with a real app screenshot once #8 lands.
-
-### 6. Icons resolve at runtime, not build time
-
-Every Cloudflare build logs dozens of `[Icon] failed to load icon`. Nuxt Icon is
-in `remote` mode with one icon in the client bundle, so icons aren't inlined
-into the prerendered HTML — the browser fetches them from the Iconify API. They
-appear, but they pop in. Bundling the used set locally would fix it.
-
-### 7. TOC entries truncate
-
-"Type-safe end t...", "Batteries include...", "DX over clevern..." on the
-introduction page. Docus's default aside width. Either shorten those headings or
-widen the aside.
+The install block is the most persuasive thing on the landing page and sits
+small in a narrow right-hand column. Deliberately left until #8: a real app
+screenshot may be the better occupant, and it is not worth restyling twice.
 
 ---
 
 ## P3 — New surface
 
-### 8. Embed real app screenshots
+### 8. Embed real app screenshots — BLOCKED
 
-`docs/screenshots/` is `pnpm screenshots` capturing the **starter app** — 42
-images, both themes plus mobile. It's the strongest proof asset in the repo and
-the docs site uses none of it.
+`docs/screenshots/` (the **starter app**, not this site) is still violet. It
+also backs `public/projects/gstack.webp` in the portfolio, which shows the old
+dashboard.
 
-**Blocked:** they're all still violet. Re-run `pnpm screenshots` from the repo
-root with Supabase up (`pnpm supabase start`) to regenerate in amber, then copy
-the handful worth showing into `site/public/`.
+Regenerating needs the app's Supabase running, and the ports are currently held
+by the job-finder project:
 
-### 9. `/workbench` page
+```
+supabase stop --project-id job-finder
+pnpm supabase start && pnpm db:reset && pnpm screenshots
+```
 
-DX: the commands worth knowing, codegen (`db:types`, `gen:auth-templates`,
-`gen:layer`), seeding, the pre-commit hook, and the CI gate list.
+Stopping another project's database is a call for a human, not something to do
+silently. Data survives — it is `supabase start` to bring it back.
 
-**Watch the overlap** — `pnpm setup` / `pnpm doctor` is already section 03 of
-`/stack`, and "What CI won't let you break" is already a section on the landing.
-Either this page absorbs those and they're cut from where they are, or it's not
-worth a page. Decide before building.
+### 9. `/workbench` page — DROPPED
 
-### 10. `/compare` page
+Deciding rather than leaving it to rot: it would have repeated two sections that
+already exist. `pnpm setup` / `pnpm doctor` is section 03 of `/stack`, and the
+CI gate table is on the landing. A third page restating both is precisely the
+duplication the generated configuration table was introduced to remove.
 
-vs create-t3-app, vs commercial Nuxt SaaS kits — including where GStack loses.
-`docs/gstack.md` already has the honest version; the introduction page has a
-condensed table. Honest comparisons convert; a dishonest one is worse than none.
+If DX ever needs its own page, it should *move* those sections rather than copy
+them.
+
+### 10. `/compare` — DONE
+
+Built at `/compare`, with a deliberate rule: every table carries an "Edge"
+column that is allowed to say **They lead**, and it does — on ecosystem, on
+prebuilt UI, and on support. Plus a section of reasons to pick something else.
+
+It also caught a stale claim in `docs/gstack.md`: billing was listed as a place
+commercial kits lead, which stopped being true when Polar shipped.
 
 ---
 
@@ -183,3 +179,5 @@ condensed table. Honest comparisons convert; a dishonest one is worse than none.
 - Sitemap includes the designed pages, with absolute URLs.
 - Deployed to Cloudflare Pages at gstack.goranninkovic.com.
 - Designed pages are searchable and carry canonicals + OG images.
+- `pnpm screenshots` for the docs site, with 26 committed captures.
+- /compare, including where GStack loses.

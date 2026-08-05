@@ -29,6 +29,7 @@ const ROUTES = [
   ['stack', 'The stack'],
   ['architecture', 'Architecture'],
   ['security', 'Security'],
+  ['compare', 'How it compares'],
   ['docs/getting-started/introduction', 'Docs — Introduction'],
   ['docs/getting-started/installation', 'Docs — Installation'],
   ['docs/getting-started/configuration', 'Docs — Configuration'],

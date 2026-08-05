@@ -5,5 +5,6 @@ export const mainNav = [
   { label: 'Stack', to: '/stack', icon: 'i-lucide-package' },
   { label: 'Architecture', to: '/architecture', icon: 'i-lucide-layers' },
   { label: 'Security', to: '/security', icon: 'i-lucide-shield-check' },
+  { label: 'Compare', to: '/compare', icon: 'i-lucide-scale' },
   { label: 'Docs', to: '/docs/getting-started/introduction', icon: 'i-lucide-book-open' },
 ]
