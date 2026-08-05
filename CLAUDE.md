@@ -156,7 +156,7 @@ dependency tree — someone cloning the template shouldn't get the docs site's d
 
 Deployed by **Cloudflare Pages' own Git integration** — there is no workflow file
 and no `wrangler.toml`. Project settings that matter: root directory `site`,
-build command `pnpm generate`, output `.output/public`, `NODE_VERSION=26`, and
+build command `pnpm generate`, output `dist`, `NODE_VERSION=26`, and
 build watch paths `site/*` so app-only commits don't rebuild the docs.
 
 The site is served from the **root** of its own domain, so `app.baseURL` is

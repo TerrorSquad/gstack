@@ -49,6 +49,17 @@ export default defineNuxtConfig({
   },
 
   nitro: {
+    // Pinned so the output directory is the SAME everywhere. Left unset, Nitro
+    // sniffs the environment: `static` locally (-> .output/public) but
+    // `cloudflare-pages-static` on Pages (-> dist). The first deploy built fine
+    // and then failed on "Output directory site/.output/public not found",
+    // because the dashboard was configured for the local path.
+    //
+    // This preset also emits dist/_headers and dist/_redirects, which is why
+    // it's the one to standardise on rather than forcing plain `static`.
+    // Cloudflare's "Build output directory" must be `dist`.
+    preset: 'cloudflare-pages-static',
+
     hooks: {
       // Two fixes to docus's /sitemap.xml, which it builds purely from
       // @nuxt/content collections:

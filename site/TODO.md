@@ -25,7 +25,7 @@ workflow file, no `wrangler.toml`, and no `CLOUDFLARE_*` secrets.
 | Production branch | `main` |
 | Framework preset | None — the Nuxt.js preset injects `npm run build` and `dist`, both wrong |
 | Build command | `pnpm generate` |
-| Build output directory | `.output/public` |
+| Build output directory | `dist` |
 | Root directory | `site` |
 | Env var | `NODE_VERSION=26` |
 
