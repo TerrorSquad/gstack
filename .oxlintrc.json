@@ -17,7 +17,10 @@
   },
   "overrides": [
     {
-      "files": ["scripts/**", "tools/**"],
+      // Leading **/ so this reaches site/scripts too, not just the root ones —
+      // a build script is a build script wherever it lives, and the nested copy
+      // was failing CI on rules the root copy is exempt from.
+      "files": ["**/scripts/**", "**/tools/**"],
       "rules": {
         "no-console": "off",
         "no-await-in-loop": "off",

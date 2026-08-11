@@ -48,22 +48,29 @@ if (useFts) {
 // One entry for the page itself plus one per section, mirroring the shape
 // queryCollectionSearchSections returns for markdown headings.
 const designedFiles = computed(() =>
-  designedPages.flatMap(page => [
-    {
+  // oxc(no-map-spread) targets `map(x => [...x, y])`, where the spread rebuilds
+  // each element. This is the `[one, ...many]` flatMap shape instead: the spread
+  // concatenates a sibling list, and flattening is the point of flatMap. There
+  // is no per-element copy to avoid, and push/concat would only add a mutable
+  // accumulator.
+  // eslint-disable-next-line oxc/no-map-spread
+  designedPages.flatMap((page) => {
+    const pageEntry = {
       id: page.path,
       title: page.heading,
       titles: [],
       level: 1,
       content: page.intro,
-    },
-    ...page.sections.map(section => ({
+    }
+    const sectionEntries = page.sections.map(section => ({
       id: `${page.path}#${section.index}`,
       title: section.title,
       titles: [page.heading],
       level: 2,
       content: [section.eyebrow, section.description].filter(Boolean).join(' — '),
-    })),
-  ]),
+    }))
+    return [pageEntry, ...sectionEntries]
+  }),
 )
 
 // Prepended as its own group so the designed pages read as a section of the
