@@ -1,7 +1,14 @@
 ---
 seo:
   title: GStack — RLS-first Nuxt + Supabase SaaS starter
-  description: An opinionated, type-safe, batteries-included stack for shipping multi-tenant SaaS with Nuxt. Auth, RLS multi-tenancy, billing, email, i18n, a11y and release automation, wired and flag-gated.
+  # Two constraints, both from docus's formatOgDescription:
+  #  - Stay under its 150-char budget minus the title (~103 here) and do NOT end
+  #    in a period, or it truncates back onto a sentence boundary keeping the
+  #    dot, producing a "..png" filename Nitro refuses to write — leaving the
+  #    landing page with no OG card at all. The prerender:generate hook in
+  #    nuxt.config.ts fails the build if that recurs.
+  #  - It strips commas, so separate clauses with · to keep the card readable.
+  description: Multi-tenant SaaS starter for Nuxt 4 + Supabase · auth · RLS · billing · email · all flag-gated
 ---
 
 ::u-page-hero

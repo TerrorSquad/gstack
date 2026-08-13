@@ -143,8 +143,12 @@ export default defineNuxtConfig({
     preset: 'cloudflare-pages-static',
 
     hooks: {
-      // Two fixes to docus's /sitemap.xml, which it builds purely from
-      // @nuxt/content collections:
+      // NOTE: one handler, deliberately. `hooks` is a plain object literal, so a
+      // second 'prerender:generate' key would silently REPLACE this one rather
+      // than run alongside it. Keep every prerender rewrite in this function.
+      //
+      // Besides the OG guard below, it applies two fixes to docus's
+      // /sitemap.xml, which it builds purely from @nuxt/content collections:
       //
       // 1. The designed pages under app/pages/ aren't content, so they ship
       //    unlisted. Appending here — rather than replacing docus's route —
@@ -155,6 +159,29 @@ export default defineNuxtConfig({
       //
       // Both throw rather than silently no-op if docus changes its output shape.
       'prerender:generate'(route) {
+        // Guard against the `..` filename trap silently returning. Nitro's
+        // canWriteToDisk() rejects any route containing `..` as path traversal,
+        // so such an OG image renders and is then dropped ("(skipped)" in the
+        // log) and the page ships pointing at a 404 PNG — which is exactly what
+        // happened to the landing page, the one every shared link points at.
+        //
+        // It arises because nuxt-og-image encodes the description into the
+        // filename while docus truncates that description at a sentence
+        // boundary KEEPING the period (formatOgDescription: `lastDot + 1`), so
+        // "…with Nuxt." + ".png" becomes "..png".
+        //
+        // The cure is upstream — keep OG descriptions inside docus's 150-char
+        // budget (minus the title) so no truncation happens. This only shouts if
+        // that slips, since the failure is otherwise invisible until someone
+        // shares a link and gets a blank card.
+        if (route.route.includes('/_og/') && route.route.includes('..')) {
+          throw new Error(
+            `OG image "${route.route.slice(0, 80)}…" contains ".." so Nitro will `
+            + 'refuse to write it, leaving a 404 card. Shorten the page\'s '
+            + 'seo.description so docus does not truncate it onto a period.',
+          )
+        }
+
         if (route.route !== '/sitemap.xml' || !route.contents) return
 
         if (!route.contents.includes('</urlset>')) {
