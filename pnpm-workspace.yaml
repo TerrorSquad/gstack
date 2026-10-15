@@ -10,4 +10,4 @@ allowBuilds:
 # 1.61.1 — producing a second playwright/playwright-core pair that breaks every
 # spec at runtime ("did not expect test() to be called here"). Pin it to match.
 overrides:
-  axe-playwright>playwright: 1.61.1
+  axe-playwright>playwright: $@playwright/test

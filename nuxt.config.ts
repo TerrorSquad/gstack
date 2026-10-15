@@ -153,13 +153,9 @@ export default defineNuxtConfig({
     },
   },
   sentry: {
-    // Injects init into the server entry so serverless errors are captured
-    // without a NODE_OPTIONS preload (which Vercel can't set).
-    autoInjectServerSentry: 'top-level-import',
-    sourceMapsUploadOptions: {
-      // Fill in your Sentry org/project; SENTRY_AUTH_TOKEN gates upload at build.
-      org: '',
-      project: '',
-    },
+    // Fill in your Sentry org/project; SENTRY_AUTH_TOKEN gates the source-map upload at build. The SDK bundles
+    // sentry.server.config.ts into the Nitro build, so serverless errors are captured without a preload.
+    org: '',
+    project: '',
   },
 })
