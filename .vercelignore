@@ -1,0 +1,3 @@
+# CLI deploys (`vercel deploy`) upload the working tree: never local secrets.
+.env*
+!.env.example

@@ -22,14 +22,14 @@ useHead({
 // + site.name, so social/link previews work with zero art. Uses the ejected
 // template at app/components/OgImage/NuxtSeo.satori.vue (community templates must
 // be ejected to render in production). Override per page with
-// defineOgImageComponent('NuxtSeoSatori', { title, description }), or point at a
+// defineOgImage('NuxtSeoSatori', { title, description }), or point at a
 // static (e.g. AI-generated) image via defineOgImage({ url: '/og/home.png' }) —
 // drop the file in public/og/.
-defineOgImageComponent('NuxtSeoSatori')
+defineOgImage('NuxtSeoSatori')
 </script>
 
 <template>
-  <UApp>
+  <UApp :locale="UI_LOCALES[locale as 'en' | 'sr']">
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>

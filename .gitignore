@@ -37,3 +37,6 @@ supabase/.temp
 
 # test coverage
 coverage/
+
+# forge git hooks (installed by `pnpm install` / prepare)
+.forge/

@@ -37,10 +37,16 @@ for (const k of [
 
 consola.log('')
 consola.info('Security')
-if (has('NUXT_CSURF_ENCRYPT_SECRET')) ok('CSRF secret pinned')
+// nuxt-csurf uses the secret as an AES-256 key as-is: any length but 32 fails every request.
+const csrf = env.NUXT_CSURF_ENCRYPT_SECRET?.trim() ?? ''
+if (csrf.length === 32) ok('CSRF secret pinned')
+else if (csrf)
+  fail(
+    `NUXT_CSURF_ENCRYPT_SECRET must be exactly 32 characters (got ${csrf.length}): openssl rand -base64 24`,
+  )
 else
   warn(
-    'NUXT_CSURF_ENCRYPT_SECRET unset — fine locally, but in prod tokens reset every deploy (openssl rand -hex 32)',
+    'NUXT_CSURF_ENCRYPT_SECRET unset — fine locally, but in prod tokens reset every deploy (openssl rand -base64 24)',
   )
 if (has('UPSTASH_REDIS_REST_URL') && has('UPSTASH_REDIS_REST_TOKEN'))
   ok('Rate limiting: Upstash (distributed)')

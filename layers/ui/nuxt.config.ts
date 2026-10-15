@@ -15,6 +15,9 @@ export default defineNuxtConfig({
   // v-auto-animate directive for lightweight list/enter/leave transitions.
   modules: ['@formkit/auto-animate/nuxt'],
   css: [join(dir, 'app/assets/css/main.css')],
+  // Every icon the sources name ships in the client bundle. A missing one is fetched from our own server, never the
+  // public Iconify API: the CSP blocks that host, so the fallback only ever produced console errors.
+  icon: { clientBundle: { scan: true }, fallbackToApi: false },
   fonts: {
     families: [
       { name: 'Inter', provider: 'google' },

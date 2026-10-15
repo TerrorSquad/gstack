@@ -32,6 +32,12 @@
         "typescript/no-explicit-any": "off",
         "unicorn/prefer-node-protocol": "off"
       }
+    },
+    {
+      // UI steps run one after another on purpose; page.evaluate callbacks run in the browser, so they must be
+      // self-contained and take their constants as same-named arguments.
+      "files": ["e2e/**"],
+      "rules": { "no-console": "off", "no-await-in-loop": "off", "no-shadow": "off" }
     }
   ]
 }
