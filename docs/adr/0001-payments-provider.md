@@ -16,13 +16,13 @@ countries Stripe-direct can't.
 
 ## Options (verified July 2026)
 
-| Provider | Serbia payout | Model | Notes |
-|---|---|---|---|
-| **Polar** | ✅ Yes (via Stripe Connect Express) | MoR | Developer-first, open-source, ~4% + fees; used by comparable Nuxt kits |
-| **Paddle** | ✅ Yes (Payoneer / wire) | MoR | Established, strong tax handling; stricter manual seller vetting |
-| **Freemius** | ✅ Yes (Wire / Wise / Payoneer / PayPal, "sellers worldwide") | MoR | SaaS + software-licensing focus; 4.7% + gateway fees; strong licensing/renewal/cart-recovery; WordPress heritage |
-| **Lemon Squeezy** | ~ (PayPal/Wise; being folded into "Stripe Managed Payments") | MoR | Future uncertain post-Stripe acquisition |
-| Stripe direct | ❌ No | PSP | Not available to Serbian sellers; also not a MoR |
+| Provider          | Serbia payout                                                 | Model | Notes                                                                                                            |
+| ----------------- | ------------------------------------------------------------- | ----- | ---------------------------------------------------------------------------------------------------------------- |
+| **Polar**         | ✅ Yes (via Stripe Connect Express)                           | MoR   | Developer-first, open-source, ~4% + fees; used by comparable Nuxt kits                                           |
+| **Paddle**        | ✅ Yes (Payoneer / wire)                                      | MoR   | Established, strong tax handling; stricter manual seller vetting                                                 |
+| **Freemius**      | ✅ Yes (Wire / Wise / Payoneer / PayPal, "sellers worldwide") | MoR   | SaaS + software-licensing focus; 4.7% + gateway fees; strong licensing/renewal/cart-recovery; WordPress heritage |
+| **Lemon Squeezy** | ~ (PayPal/Wise; being folded into "Stripe Managed Payments")  | MoR   | Future uncertain post-Stripe acquisition                                                                         |
+| Stripe direct     | ❌ No                                                         | PSP   | Not available to Serbian sellers; also not a MoR                                                                 |
 
 Sources: [Polar supported countries](https://polar.sh/docs/merchant-of-record/supported-countries)
 (Serbia explicitly listed), [Paddle payouts](https://www.paddle.com/help/manage/get-paid/when-and-how-do-i-get-paid)

@@ -36,7 +36,7 @@ async function send() {
     <UButton
       icon="i-lucide-message-square"
       color="neutral"
-      class="fixed bottom-4 right-4 z-50 shadow-lg"
+      class="fixed right-4 bottom-4 z-50 shadow-lg"
       :aria-label="t('feedback.open')"
       @click="open = true"
     >

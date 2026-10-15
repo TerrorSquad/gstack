@@ -1,4 +1,3 @@
-
 // Invite someone to the admin's tenant. inviteUserByEmail emails a link (via
 // GoTrue) and stamps tenant_id into user metadata; handle_new_user reads it and
 // joins them to this tenant as a member. redirectTo is load-bearing — it must

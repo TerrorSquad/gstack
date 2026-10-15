@@ -47,9 +47,19 @@ export interface EmailShellOptions {
  */
 const escapeAttr = (url: string) => url.replaceAll('&', '&amp;')
 
-export function emailBase({ icon, heading, paragraphs, cta, footnote, brand = 'GStack' }: EmailShellOptions): string {
+export function emailBase({
+  icon,
+  heading,
+  paragraphs,
+  cta,
+  footnote,
+  brand = 'GStack',
+}: EmailShellOptions): string {
   const body = paragraphs
-    .map((p) => `                <p style="margin: 0 0 8px; color: ${EMAIL_BRAND.body}; font-size: 14px">\n                  ${p}\n                </p>`)
+    .map(
+      (p) =>
+        `                <p style="margin: 0 0 8px; color: ${EMAIL_BRAND.body}; font-size: 14px">\n                  ${p}\n                </p>`,
+    )
     .join('\n')
 
   return `<!doctype html>

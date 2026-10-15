@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+
 import { shouldAttachCsrf } from './csrf'
 
 const ORIGIN = 'https://app.example.com'

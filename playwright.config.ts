@@ -75,6 +75,11 @@ export default defineConfig({
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
     // Enable feedback so the widget + admin page render in the app project.
-    env: { NUXT_IGNORE_LOCK: '1', PORT: '3010', NITRO_PORT: '3010', NUXT_PUBLIC_FEEDBACK_ENABLED: 'true' },
+    env: {
+      NUXT_IGNORE_LOCK: '1',
+      PORT: '3010',
+      NITRO_PORT: '3010',
+      NUXT_PUBLIC_FEEDBACK_ENABLED: 'true',
+    },
   },
 })

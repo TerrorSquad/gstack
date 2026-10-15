@@ -24,6 +24,7 @@ or radius of its own — reach for the token/utility instead.
 ## Foundations
 
 ### Color
+
 - **Brand** is an amber ramp `--color-brand-50…950` mapped to Nuxt UI's
   `primary` (`app.config.ts`). Use `primary`/`text-primary`/`bg-primary` — never a
   raw brand hex in a component.
@@ -39,9 +40,11 @@ or radius of its own — reach for the token/utility instead.
   `text-highlighted`.
 
 ### The accessibility contract (do not undo this)
+
 Nuxt UI's default `-500` colored text and dimmed/muted neutrals sit **below WCAG
 AA** on white. `main.css` redirects `.text-primary/success/warning/error` to a
 darker step and darkens solid button fills in light mode. Two rules follow:
+
 1. Don't "fix" a color by hardcoding a lighter hex — you'll reintroduce the AA
    failure the overrides exist to prevent.
 2. **The fill step depends on the hue.** Warm mid-tone ramps (amber, teal,
@@ -53,20 +56,23 @@ darker step and darkens solid button fills in light mode. Two rules follow:
    rule is the whole contract.
 
 ### Typography
+
 - Body: **Inter** (`--font-sans`). Headings: **Space Grotesk** (`--font-heading`),
   applied to `h1/h2/h3` and `.font-heading`, with `-0.01em` tracking.
 - Inputs are `≥16px` on mobile (prevents iOS focus-zoom) — don't shrink them below.
 
 ### Shape & depth
+
 - Radius: `--ui-radius` (`0.625rem`). Use `rounded-(--ui-radius)`; don't invent
   per-component radii.
 - Elevation is **one system**: `.surface-border` (1px token border) + `.surface-shadow`
   (crisp low shadow that lifts to a brand-tinted glow on hover). No new shadow
-  scales, no `scale-*` transform hovers — the shadow *is* the hover feedback.
+  scales, no `scale-*` transform hovers — the shadow _is_ the hover feedback.
 
 ## Component conventions (Nuxt UI v4)
 
 Global defaults already set in `app.config.ts` — you get them for free:
+
 - `UCard` → `surface-border surface-shadow`; `variant="outline"` sits on `bg-elevated`.
 - `UButton` (solid) → brand fill, `font-semibold`, lifting shadow.
 - `UAlert` → `subtle` variant by default (tint, no loud solid).
@@ -77,14 +83,17 @@ the work. Override a slot only for a genuinely new pattern, and prefer adding it
 `app.config.ts` if it should be global.
 
 ## Dark mode & i18n are not optional
+
 - **Both themes are first-class.** The `a11y` Playwright project runs axe against
-  light *and* dark — test both, and use tokens (which flip automatically) rather
+  light _and_ dark — test both, and use tokens (which flip automatically) rather
   than fixed colors.
 - Every user-facing string is an i18n key in **both** `i18n/locales/{en,sr}.json`
   (flat dot-keys), then `pnpm lint:i18n`. No hardcoded copy.
 
 ## Rebranding
+
 Everything below is in `layers/ui` — change it once, every app inherits it:
+
 1. Swap the 11 `--color-brand-*` hexes in `layers/ui/app/assets/css/main.css` (use a
    vetted ramp, e.g. Tailwind's) — keep it a dark-ramp hue (see the AA contract) or
    re-tune the overrides.

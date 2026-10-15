@@ -55,12 +55,7 @@ export const useAuthStore = defineStore('auth', () => {
   // which creates a tenant from company_name and makes the registrant its admin.
   // Returns true if a session was issued (email confirmation off → logged in
   // now), false if the user must confirm their email before logging in.
-  async function register(
-    fullName: string,
-    companyName: string,
-    email: string,
-    password: string,
-  ) {
+  async function register(fullName: string, companyName: string, email: string, password: string) {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,

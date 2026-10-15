@@ -25,7 +25,11 @@ const links = computed<NavigationMenuItem[]>(() => {
       { label: t('nav.billing'), icon: 'i-lucide-credit-card', to: '/billing' },
     )
     if (useRuntimeConfig().public.feedbackEnabled) {
-      items.push({ label: t('nav.feedback'), icon: 'i-lucide-message-square', to: '/feedback/admin' })
+      items.push({
+        label: t('nav.feedback'),
+        icon: 'i-lucide-message-square',
+        to: '/feedback/admin',
+      })
     }
   }
   return items
@@ -115,7 +119,10 @@ const pageTitle = computed(() => {
               />
               <div v-if="!collapsed" class="flex min-w-0 flex-col text-left leading-none">
                 <span class="truncate text-sm font-semibold">{{ auth.profile?.fullName }}</span>
-                <ULink to="/changelog" class="mt-1 truncate text-[11px] text-muted hover:text-default">
+                <ULink
+                  to="/changelog"
+                  class="mt-1 truncate text-[11px] text-muted hover:text-default"
+                >
                   v{{ version }}
                 </ULink>
               </div>

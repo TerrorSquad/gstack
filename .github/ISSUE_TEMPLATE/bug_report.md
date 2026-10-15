@@ -11,6 +11,7 @@ A clear, concise description of what's wrong.
 
 **To reproduce**
 Steps to reproduce the behavior:
+
 1. Go to '...'
 2. Click '...'
 3. See error
@@ -19,6 +20,7 @@ Steps to reproduce the behavior:
 What you expected to happen.
 
 **Environment**
+
 - OS / browser:
 - Node / pnpm version:
 - Deployed or local:

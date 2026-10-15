@@ -10,11 +10,17 @@ const SEEN_KEY = 'tour:onboarding:seen'
 const steps: DriveStep[] = [
   {
     element: 'a[href="/dashboard"]',
-    popover: { title: 'Your dashboard', description: 'The home base for everything in your workspace.' },
+    popover: {
+      title: 'Your dashboard',
+      description: 'The home base for everything in your workspace.',
+    },
   },
   {
     element: 'a[href="/notes"]',
-    popover: { title: 'Notes', description: 'Create and manage notes — the reference CRUD in this starter.' },
+    popover: {
+      title: 'Notes',
+      description: 'Create and manage notes — the reference CRUD in this starter.',
+    },
   },
   {
     element: 'a[href="/account"]',

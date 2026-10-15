@@ -31,9 +31,7 @@ describe('verifyStandardWebhook', () => {
 
   it('rejects a tampered body', () => {
     const signature = sign(secret, id, ts, body)
-    expect(
-      verifyStandardWebhook(secret, { id, timestamp: ts, signature }, body + 'x'),
-    ).toBe(false)
+    expect(verifyStandardWebhook(secret, { id, timestamp: ts, signature }, body + 'x')).toBe(false)
   })
 
   it('rejects a wrong secret and missing headers', () => {
@@ -52,7 +50,11 @@ describe('verifyStandardWebhook', () => {
 // network methods (createCheckout/createPortal) hit fetch and are covered by e2e.
 describe('createPolarProvider.parseWebhook', () => {
   const secret = Buffer.from('key').toString('base64')
-  const provider = createPolarProvider({ accessToken: 't', webhookSecret: secret, server: 'sandbox' })
+  const provider = createPolarProvider({
+    accessToken: 't',
+    webhookSecret: secret,
+    server: 'sandbox',
+  })
 
   function signedEvent(payload: object) {
     const body = JSON.stringify(payload)
@@ -75,7 +77,10 @@ describe('createPolarProvider.parseWebhook', () => {
   })
 
   it('returns null for non-subscription events', () => {
-    const { headers, body } = signedEvent({ type: 'order.created', data: { id: 'o1', status: 'x' } })
+    const { headers, body } = signedEvent({
+      type: 'order.created',
+      data: { id: 'o1', status: 'x' },
+    })
     expect(provider.parseWebhook(headers, body)).toBeNull()
   })
 

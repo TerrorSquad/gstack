@@ -1,4 +1,3 @@
-
 // Remove a tenant member. Deleting the auth user cascades their profile + notes.
 export default defineEventHandler(async (event) => {
   const { db, admin } = await requireAdmin(event)

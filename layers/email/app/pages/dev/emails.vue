@@ -13,12 +13,12 @@ const src = computed(() => `/api/dev/email-preview?id=${selected.value}`)
 
 <template>
   <UContainer class="py-8">
-    <h1 class="text-2xl font-bold mb-4">Email preview</h1>
+    <h1 class="mb-4 text-2xl font-bold">Email preview</h1>
     <div v-if="!templates?.length" class="text-muted">
       No templates registered, or this is a production build (preview is dev-only).
     </div>
     <template v-else>
-      <div class="flex gap-2 mb-4">
+      <div class="mb-4 flex gap-2">
         <UButton
           v-for="t in templates"
           :key="t.id"
@@ -28,7 +28,11 @@ const src = computed(() => `/api/dev/email-preview?id=${selected.value}`)
           {{ t.label }}
         </UButton>
       </div>
-      <iframe :src="src" class="w-full h-[720px] rounded-lg border border-default bg-white" title="Email preview" />
+      <iframe
+        :src="src"
+        class="h-[720px] w-full rounded-lg border border-default bg-white"
+        title="Email preview"
+      />
     </template>
   </UContainer>
 </template>

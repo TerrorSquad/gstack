@@ -16,16 +16,18 @@
 - Tests are `*.test.ts`, colocated with source, using `import { describe, expect, it } from 'vitest'`. Pure logic only — no DOM/Supabase/file I/O in the test.
 - Never edit `nuxt.config.ts` `extends[]` and never install packages — subsystems are flag-gated, not extends-gated.
 - Unpicked integrations: set flag `false`, **never touch their keys**.
-- Existing `.env` values are never overwritten — only *missing* keys get stubbed.
+- Existing `.env` values are never overwritten — only _missing_ keys get stubbed.
 
 ---
 
 ### Task 1: Integration manifest
 
 **Files:**
+
 - Create: `scripts/integrations.ts`
 
 **Interfaces:**
+
 - Produces: `interface IntegrationVar { key: string; hint?: string }`; `interface Integration { id: string; label: string; category: 'core' | 'security' | 'growth' | 'billing' | 'observability'; flag?: string; required: IntegrationVar[]; optional?: IntegrationVar[] }`; `export const integrations: Integration[]`.
 
 - [ ] **Step 1: Write the manifest**
@@ -93,10 +95,7 @@ export const integrations: Integration[] = [
     id: 'betterstack',
     label: 'BetterStack log forwarding',
     category: 'observability',
-    required: [
-      { key: 'NUXT_BETTERSTACK_SOURCE_TOKEN' },
-      { key: 'NUXT_BETTERSTACK_INGEST_URL' },
-    ],
+    required: [{ key: 'NUXT_BETTERSTACK_SOURCE_TOKEN' }, { key: 'NUXT_BETTERSTACK_INGEST_URL' }],
   },
   {
     id: 'notifications',
@@ -113,10 +112,7 @@ export const integrations: Integration[] = [
     label: 'Billing (Polar)',
     category: 'billing',
     flag: 'NUXT_PUBLIC_BILLING_ENABLED',
-    required: [
-      { key: 'NUXT_POLAR_ACCESS_TOKEN' },
-      { key: 'NUXT_POLAR_WEBHOOK_SECRET' },
-    ],
+    required: [{ key: 'NUXT_POLAR_ACCESS_TOKEN' }, { key: 'NUXT_POLAR_WEBHOOK_SECRET' }],
     optional: [
       { key: 'NUXT_POLAR_PRICE_PRO', hint: 'price id for the Pro plan' },
       { key: 'NUXT_POLAR_PRICE_ENTERPRISE', hint: 'price id for the Enterprise plan' },
@@ -142,10 +138,12 @@ git commit -m "feat(setup): integration manifest"
 ### Task 2: `rewriteEnv` pure function + test
 
 **Files:**
+
 - Create: `scripts/setup.ts` (only the `rewriteEnv` export + its helpers in this task)
 - Create: `scripts/setup.test.ts`
 
 **Interfaces:**
+
 - Consumes: `Integration`, `integrations` from `./integrations` (Task 1).
 - Produces: `export function rewriteEnv(envText: string, picks: Set<string>): string` — `picks` is the set of enabled integration `id`s. Returns the new `.env` text. Flips every flagged integration's flag to `true`/`false` by pick membership; appends missing required+optional keys (for picked integrations) as `KEY=` stubs under `# --- <category> ---` headers; preserves existing lines (order, comments, blanks, unknown keys, existing values) verbatim.
 
@@ -256,7 +254,9 @@ export function rewriteEnv(envText: string, picks: Set<string>): string {
   }
 
   const body = rewritten.join('\n')
-  return additions.length ? `${body}${body.endsWith('\n') ? '' : '\n'}${additions.join('\n')}\n` : body
+  return additions.length
+    ? `${body}${body.endsWith('\n') ? '' : '\n'}${additions.join('\n')}\n`
+    : body
 }
 ```
 
@@ -277,10 +277,12 @@ git commit -m "feat(setup): pure rewriteEnv function"
 ### Task 3: Wizard CLI shell
 
 **Files:**
+
 - Modify: `scripts/setup.ts` (add the `main()` CLI wrapper below `rewriteEnv`)
 - Modify: `package.json:scripts` (add `setup` line)
 
 **Interfaces:**
+
 - Consumes: `rewriteEnv` (Task 2), `integrations` (Task 1).
 - Produces: a runnable `pnpm setup`. No exported API beyond Task 2.
 
@@ -289,9 +291,8 @@ git commit -m "feat(setup): pure rewriteEnv function"
 Append below the `rewriteEnv` function:
 
 ```ts
-import { existsSync, readFileSync, writeFileSync } from 'node:fs'
-
 import { consola } from 'consola'
+import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 
 const ENV_PATH = '.env'
 
@@ -300,7 +301,9 @@ async function main() {
 
   const flagged = integrations.filter((it) => it.flag)
   const enabled = new Set(
-    flagged.filter((it) => new RegExp(`^${it.flag}\\s*=\\s*true`, 'm').test(envText)).map((it) => it.id),
+    flagged
+      .filter((it) => new RegExp(`^${it.flag}\\s*=\\s*true`, 'm').test(envText))
+      .map((it) => it.id),
   )
 
   consola.info('Pick the subsystems to enable. Supabase core is always on.')
@@ -353,6 +356,7 @@ Expected: PASS (5 tests).
 cp .env /tmp/env.bak 2>/dev/null; true
 pnpm setup
 ```
+
 Expected: a multiselect prompt appears pre-checked to match current flags; after selecting, `.env` is rewritten, flags flipped, missing keys stubbed, existing values untouched. Restore if needed: `git checkout .env 2>/dev/null || true`.
 
 - [ ] **Step 5: Commit**
@@ -367,9 +371,11 @@ git commit -m "feat(setup): pnpm setup wizard CLI"
 ### Task 4: Refactor `doctor.ts` onto the manifest
 
 **Files:**
+
 - Modify: `scripts/doctor.ts`
 
 **Interfaces:**
+
 - Consumes: `integrations` (Task 1).
 
 - [ ] **Step 1: Replace the flag-gated sections with a manifest loop**
@@ -382,7 +388,7 @@ Add near the top, after the `env`/`has`/`on` helpers:
 import { integrations } from './integrations'
 ```
 
-Generic loop for flag-gated integrations (replaces the hand-written notifications + billing *presence* checks; the billing price-id warning stays as a bespoke line after it):
+Generic loop for flag-gated integrations (replaces the hand-written notifications + billing _presence_ checks; the billing price-id warning stays as a bespoke line after it):
 
 ```ts
 for (const it of integrations) {
@@ -416,6 +422,7 @@ Expected: runs without throwing; Core keys reported (fail if unset locally is fi
 ```bash
 NUXT_PUBLIC_BILLING_ENABLED=true pnpm doctor; echo "exit=$?"
 ```
+
 Expected: prints "Billing (Polar)" then fails on missing `NUXT_POLAR_ACCESS_TOKEN` / `NUXT_POLAR_WEBHOOK_SECRET` and warns on the two price ids; non-zero exit.
 
 - [ ] **Step 4: Lint the changed script**
@@ -435,6 +442,7 @@ git commit -m "refactor(doctor): consume integration manifest"
 ### Task 5: Document `pnpm setup`
 
 **Files:**
+
 - Modify: `CLAUDE.md` (the seeding/doctor area)
 - Modify: `README.md` (if a setup/env section exists — otherwise skip)
 
@@ -470,6 +478,6 @@ git commit -m "docs: document pnpm setup wizard"
 ## Self-Review Notes
 
 - **Spec coverage:** manifest (Task 1), wizard flow + prompt + dormant-not-deleted (Tasks 2–3), pure `rewriteEnv` + its 5 assertions (Task 2), doctor refactor incl. bespoke special cases retained (Task 4), package.json + docs (Tasks 3, 5). All spec §Components and §Files-touched map to a task.
-- **No new deps:** consola + dotenv already present; dotenv not actually needed since `rewriteEnv` parses lines itself (kept parsing inline — simpler than pulling dotenv for a flag flip). Spec mentioned dotenv as *available*; not using it is within scope.
+- **No new deps:** consola + dotenv already present; dotenv not actually needed since `rewriteEnv` parses lines itself (kept parsing inline — simpler than pulling dotenv for a flag flip). Spec mentioned dotenv as _available_; not using it is within scope.
 - **Type consistency:** `rewriteEnv(envText: string, picks: Set<string>)` and the `Integration`/`IntegrationVar` shapes are identical across Tasks 1–4.
 - **Ambiguity resolved:** billing price-id double-warning — the generic `optional` loop supersedes the old bespoke price-id warning; Task 4 Step 1 explicitly removes the duplicate.

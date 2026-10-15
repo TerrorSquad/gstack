@@ -21,7 +21,10 @@ async function checkout(planId: string) {
     })
     window.location.assign(url)
   } catch (e) {
-    toast.add({ title: (e as { data?: { message?: string } })?.data?.message ?? t('common.saveError'), color: 'error' })
+    toast.add({
+      title: (e as { data?: { message?: string } })?.data?.message ?? t('common.saveError'),
+      color: 'error',
+    })
     busy.value = ''
   }
 }
@@ -31,7 +34,10 @@ async function manage() {
     const { url } = await $fetch<{ url: string }>('/api/billing/portal', { method: 'POST' })
     window.location.assign(url)
   } catch (e) {
-    toast.add({ title: (e as { data?: { message?: string } })?.data?.message ?? t('common.saveError'), color: 'error' })
+    toast.add({
+      title: (e as { data?: { message?: string } })?.data?.message ?? t('common.saveError'),
+      color: 'error',
+    })
     busy.value = ''
   }
 }

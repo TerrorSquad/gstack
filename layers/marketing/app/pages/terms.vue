@@ -54,7 +54,9 @@ useSeoMeta({
       </section>
       <section>
         <h2 class="text-xl font-semibold">5. Contact</h2>
-        <p class="mt-2 text-sm/relaxed">Questions about these terms? Add your contact address here.</p>
+        <p class="mt-2 text-sm/relaxed">
+          Questions about these terms? Add your contact address here.
+        </p>
       </section>
     </div>
   </article>

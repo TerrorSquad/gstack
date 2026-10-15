@@ -1,7 +1,5 @@
 // Type guards for narrowing Promise.allSettled() results.
-export function isFulfilled<T>(
-  value: PromiseSettledResult<T>,
-): value is PromiseFulfilledResult<T> {
+export function isFulfilled<T>(value: PromiseSettledResult<T>): value is PromiseFulfilledResult<T> {
   return value.status === 'fulfilled'
 }
 

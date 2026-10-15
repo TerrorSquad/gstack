@@ -12,7 +12,7 @@ a **GitHub template repository**, a **`create-gstack` CLI** (scaffolder), or a
 
 Distribute as a **GitHub template repository** ("Use this template").
 
-- Zero build/publish pipeline — the repo *is* the product.
+- Zero build/publish pipeline — the repo _is_ the product.
 - A generated repo starts with clean history (not a fork's), owned by the user.
 - A CLI can come later and consume the same template; the template is the
   primitive, so this doesn't foreclose it.
@@ -37,6 +37,6 @@ Being a template (not just a repo) imposes rules:
 
 ## Notes
 
-- The GitHub "template repository" flag is a repo *setting*, not a file; enable it
+- The GitHub "template repository" flag is a repo _setting_, not a file; enable it
   in repo settings once Phase 1 lands.
 - Keep `README.md` skimmable and setup-first — it's the first thing a user sees.

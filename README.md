@@ -8,8 +8,8 @@ CRUD (`notes`) shows the pattern to copy for your own domain.
 > **Using this as a template?** Click **"Use this template"** on GitHub, then
 > follow [`SETUP.md`](SETUP.md) — one rename command and env setup and it's yours.
 
-|                                                |                                                  |
-| ---------------------------------------------- | ------------------------------------------------ |
+|                                                |                                                   |
+| ---------------------------------------------- | ------------------------------------------------- |
 | ![Landing](docs/screenshots/landing-light.png) | ![Dashboard](docs/screenshots/dashboard-dark.png) |
 | ![Notes](docs/screenshots/notes-light.png)     | ![Admin](docs/screenshots/admin-dark.png)         |
 

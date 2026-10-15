@@ -1,12 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import {
-  mapNote,
-  mapNotification,
-  mapProfile,
-  mapSubscription,
-  mapTenant,
-} from './mappers'
+import { mapNote, mapNotification, mapProfile, mapSubscription, mapTenant } from './mappers'
 
 describe('mappers', () => {
   it('mapTenant', () => {

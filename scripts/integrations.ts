@@ -58,10 +58,7 @@ export const integrations: Integration[] = [
     id: 'betterstack',
     label: 'BetterStack log forwarding',
     category: 'observability',
-    required: [
-      { key: 'NUXT_BETTERSTACK_SOURCE_TOKEN' },
-      { key: 'NUXT_BETTERSTACK_INGEST_URL' },
-    ],
+    required: [{ key: 'NUXT_BETTERSTACK_SOURCE_TOKEN' }, { key: 'NUXT_BETTERSTACK_INGEST_URL' }],
   },
   {
     id: 'notifications',
@@ -105,10 +102,7 @@ export const integrations: Integration[] = [
     label: 'Billing (Polar)',
     category: 'billing',
     flag: 'NUXT_PUBLIC_BILLING_ENABLED',
-    required: [
-      { key: 'NUXT_POLAR_ACCESS_TOKEN' },
-      { key: 'NUXT_POLAR_WEBHOOK_SECRET' },
-    ],
+    required: [{ key: 'NUXT_POLAR_ACCESS_TOKEN' }, { key: 'NUXT_POLAR_WEBHOOK_SECRET' }],
     optional: [
       { key: 'NUXT_POLAR_PRICE_PRO', hint: 'price id for the Pro plan' },
       { key: 'NUXT_POLAR_PRICE_ENTERPRISE', hint: 'price id for the Enterprise plan' },

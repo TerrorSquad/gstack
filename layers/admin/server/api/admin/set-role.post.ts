@@ -1,4 +1,3 @@
-
 // Change a tenant member's role. Guards: same tenant, not yourself (avoid
 // self-lockout), valid role.
 export default defineEventHandler(async (event) => {

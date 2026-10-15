@@ -16,7 +16,9 @@ const actorNames = ref<Record<string, string>>({})
 const noteTitles = ref<Record<string, string>>({})
 
 async function resolveRefs() {
-  const actorIds = [...new Set(store.notifications.map((n) => n.actorId).filter(Boolean))] as string[]
+  const actorIds = [
+    ...new Set(store.notifications.map((n) => n.actorId).filter(Boolean)),
+  ] as string[]
   const noteIds = [...new Set(store.notifications.map((n) => n.noteId).filter(Boolean))] as string[]
   if (actorIds.length) {
     const { data } = await supabase.from('profiles').select('id, full_name').in('id', actorIds)
@@ -48,12 +50,7 @@ async function onOpenChange(open: boolean) {
 
 <template>
   <UPopover @update:open="onOpenChange">
-    <UChip
-      :text="store.unreadCount"
-      :show="store.unreadCount > 0"
-      color="error"
-      size="sm"
-    >
+    <UChip :text="store.unreadCount" :show="store.unreadCount > 0" color="error" size="sm">
       <UTooltip :text="$t('notifications.label')">
         <UButton
           icon="i-lucide-bell"
@@ -82,10 +79,7 @@ async function onOpenChange(open: boolean) {
             <p class="text-xs text-dimmed">{{ relativeTime(n.createdAt) }}</p>
           </div>
         </component>
-        <p
-          v-if="store.notifications.length === 0"
-          class="px-2 py-4 text-center text-sm text-muted"
-        >
+        <p v-if="store.notifications.length === 0" class="px-2 py-4 text-center text-sm text-muted">
           {{ $t('notifications.empty') }}
         </p>
       </div>

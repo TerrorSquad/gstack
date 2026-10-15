@@ -15,6 +15,7 @@ respects RLS on both client and server.
 ## Options
 
 **A. Supabase-native (current).**
+
 - ➕ RLS-first: one place owns schema + policies; the client query path is
   RLS-enforced by construction.
 - ➕ Already type-safe end to end (generated types + `Pick`-based mappers).
@@ -23,14 +24,16 @@ respects RLS on both client and server.
   syntax; deep embeds aren't typed by the generated types.
 
 **B. Adopt Drizzle for everything (schema + migrations + queries).**
+
 - ➕ TS-first schema, ergonomic type-safe queries, great for complex server logic.
 - ➖ Fights Supabase: RLS is clumsy to express in Drizzle, and Drizzle owning
   migrations means **two migration tools** competing with the Supabase CLI
   (which also manages Auth/Storage schema). High friction, weakens the RLS-first
   principle.
 
-**C. Hybrid — Supabase owns schema/RLS, Drizzle as a typed *read* layer** (schema
+**C. Hybrid — Supabase owns schema/RLS, Drizzle as a typed _read_ layer** (schema
 introspected via `drizzle-kit pull`, used only for server-side queries).
+
 - ➕ Drizzle's query ergonomics server-side without dual-migration ownership.
 - ➖ Two representations of the schema to keep in sync; added dependency for a
   benefit we don't yet need.
@@ -39,7 +42,7 @@ introspected via `drizzle-kit pull`, used only for server-side queries).
 
 **Defer Drizzle (stay on Option A).** We already have end-to-end type safety, and
 adding an ORM now buys ergonomics we don't need yet while eroding the RLS-first
-model. Introduce Drizzle as a **hybrid read layer (Option C)** *only when* a real
+model. Introduce Drizzle as a **hybrid read layer (Option C)** _only when_ a real
 feature needs complex, typed server-side queries that PostgREST makes painful —
 Supabase keeps owning DDL + RLS either way.
 

@@ -4,10 +4,10 @@ Marketing images built from the same brand tokens as the app (amber
 `--color-brand-500`, the dot-grid + glow from the auth canvas), so they can't
 drift into looking like a different product.
 
-| File | Size | Where it goes |
-|---|---|---|
-| `gstack-social-preview.png` | 1280×640 | GitHub → Settings → General → Social preview |
-| `gstack-linkedin.png` | 1200×1200 | LinkedIn post attachment (square takes more mobile feed height) |
+| File                        | Size      | Where it goes                                                   |
+| --------------------------- | --------- | --------------------------------------------------------------- |
+| `gstack-social-preview.png` | 1280×640  | GitHub → Settings → General → Social preview                    |
+| `gstack-linkedin.png`       | 1200×1200 | LinkedIn post attachment (square takes more mobile feed height) |
 
 The `.html` files next to them are the sources. To regenerate after a rebrand,
 open one in a browser and screenshot at 2× device scale, or drive it with

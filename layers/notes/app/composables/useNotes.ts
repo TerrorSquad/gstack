@@ -1,6 +1,5 @@
 import type { Note } from '#shared/types'
 
-
 // Notes CRUD, RLS-scoped to the current user by the DB (see the notes_owner_all
 // policy). This is the pattern to copy for your own resources: a composable with
 // useAsyncData for the list + plain async mutators that refresh() it.
@@ -52,5 +51,13 @@ export function useNotes() {
     await refresh()
   }
 
-  return { notes: notes as Ref<Note[]>, pending, refresh, getNote, createNote, updateNote, deleteNote }
+  return {
+    notes: notes as Ref<Note[]>,
+    pending,
+    refresh,
+    getNote,
+    createNote,
+    updateNote,
+    deleteNote,
+  }
 }

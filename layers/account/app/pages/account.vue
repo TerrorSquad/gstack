@@ -121,7 +121,11 @@ async function deleteAccount() {
         <h2 class="font-semibold">{{ $t('account.profileSection') }}</h2>
       </template>
       <div class="flex items-center gap-4">
-        <UAvatar :src="auth.profile?.avatarUrl ?? undefined" :alt="auth.profile?.fullName" size="xl" />
+        <UAvatar
+          :src="auth.profile?.avatarUrl ?? undefined"
+          :alt="auth.profile?.fullName"
+          size="xl"
+        />
         <div>
           <label
             class="surface-border inline-flex cursor-pointer items-center gap-2 rounded-(--ui-radius) px-3 py-1.5 text-sm font-medium hover:bg-muted/40"
@@ -160,7 +164,10 @@ async function deleteAccount() {
           </UButton>
         </div>
       </form>
-      <form class="mt-6 flex flex-col gap-4 border-t border-default pt-6" @submit.prevent="updatePassword">
+      <form
+        class="mt-6 flex flex-col gap-4 border-t border-default pt-6"
+        @submit.prevent="updatePassword"
+      >
         <UFormField :label="$t('account.newPassword')">
           <UInput v-model="password" type="password" autocomplete="new-password" class="w-full" />
         </UFormField>
