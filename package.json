@@ -58,7 +58,7 @@
     "nuxt-security": "^2.6.0",
     "pinia": "^4.1.0",
     "posthog-js": "^1.438.10",
-    "satori": "^0.47.1",
+    "satori": "^0.53.0",
     "vue": "^3.5.44",
     "vue-router": "^5.4.0"
   },
