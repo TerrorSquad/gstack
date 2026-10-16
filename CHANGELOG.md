@@ -1,5 +1,38 @@
 # Changelog
 
+## [1.1.0](https://github.com/TerrorSquad/gstack/compare/gstack-v1.0.0...gstack-v1.1.0) (2026-10-16)
+
+
+### Features
+
+* API keys and a read-only REST API at /api/v1 ([075dcba](https://github.com/TerrorSquad/gstack/commit/075dcba5972ee66366a7f04410060150ce095396))
+* guards, git hooks on install, CSRF length check, Intl/Nuxt UI Serbian Latin, money/date helpers ([88d5c02](https://github.com/TerrorSquad/gstack/commit/88d5c02c219ef0d30f636ea6e43b1d55ee5ba4f5))
+* one-click demo logins on the login page (off by default) ([2ca177c](https://github.com/TerrorSquad/gstack/commit/2ca177c302c6f7f686a9c476e2a747782c8e5c7b))
+* password field with reveal and Caps Lock hint; date field that takes dates as people type them ([7ac4b55](https://github.com/TerrorSquad/gstack/commit/7ac4b5584ff7e6b3e2731d24597063f661eadde1))
+* preferences, two-factor login, sessions, idle sign-out; close a role/tenant escalation ([50fc9f8](https://github.com/TerrorSquad/gstack/commit/50fc9f870f676513002ca5cbc4a1b3ae33e499f9))
+* production smoke test, deploy script, Vercel key sync, layout checks ([99fc5a9](https://github.com/TerrorSquad/gstack/commit/99fc5a9a6eb0a7c7941f5440e54c06c8e833180e))
+* **site:** add /compare, including where GStack loses ([bb10943](https://github.com/TerrorSquad/gstack/commit/bb109431df1e17a5392ed30e3cd48fb9b71c13b1))
+* **site:** add screenshot tooling, and fix what it immediately found ([81ad12c](https://github.com/TerrorSquad/gstack/commit/81ad12c2964f8f7bf10e707679e434b05dbcd49f))
+* **site:** make the designed pages searchable, canonical and shareable ([d390466](https://github.com/TerrorSquad/gstack/commit/d39046625b4ca7122f3eba692ed7f17d3388ebef))
+* **site:** show the product, and close the gaps a reader would hit ([264b65b](https://github.com/TerrorSquad/gstack/commit/264b65b27dd8f352f42c1d8b9de04ce01a237e1c))
+* **ui:** rebrand from violet to amber ([34e5855](https://github.com/TerrorSquad/gstack/commit/34e58556c129f3839b0404afebdb37b18b15094b))
+* what Simple learned, made generic ([108c2bf](https://github.com/TerrorSquad/gstack/commit/108c2bfff0dc89ee3428d455d917ff3120906f28))
+
+
+### Bug Fixes
+
+* amber favicon, and give the docs site one at all ([9682bf0](https://github.com/TerrorSquad/gstack/commit/9682bf040746d7344172177f97c822af81ee2e48))
+* **ci:** unbreak lint on main ([b7084b4](https://github.com/TerrorSquad/gstack/commit/b7084b4b75a1332ddee0ff8143bc23b493847e4a))
+* CSRF token on every POST again (Nuxt 4.6); label in name; no locale-file imports in client code ([dfc7fa5](https://github.com/TerrorSquad/gstack/commit/dfc7fa5a169485a295abf6299e46da0e90ae29b6))
+* **hooks:** never commit another project's database types ([53fe429](https://github.com/TerrorSquad/gstack/commit/53fe429af39a09e76ff67cf445222a9da007014a))
+* **security:** a signup could join any tenant by naming it in its metadata ([9bed7b7](https://github.com/TerrorSquad/gstack/commit/9bed7b79e7af35adcdcb5c618b8f8ea7507be5db))
+* **site:** build the docs from a checkout where only site/ is installed ([e6d4501](https://github.com/TerrorSquad/gstack/commit/e6d45015cb8a7992790eb10430e0d254c8709b9d))
+* **site:** footer attribution, single GitHub link, readable feature cards ([f1ea5ea](https://github.com/TerrorSquad/gstack/commit/f1ea5eaffd1f839c8a922914efc3fae78f6c07b5))
+* **site:** give the landing page an OG card at all ([4f95fa0](https://github.com/TerrorSquad/gstack/commit/4f95fa0423f407cf737b3de1bae64f48bd3e4085))
+* **site:** pin every rendered icon into the client bundle ([44d24a6](https://github.com/TerrorSquad/gstack/commit/44d24a6e0cfda911f3f8160226277acae9b2aec5))
+* **site:** pin the Nitro preset so the output directory is stable ([af4f9ea](https://github.com/TerrorSquad/gstack/commit/af4f9eac29000a300eb5a77d153a581e928f703c))
+* **site:** stop the client requesting an icon API that cannot exist ([9bd7aa8](https://github.com/TerrorSquad/gstack/commit/9bd7aa88dd7acc90a18c1cdf714b54670191da4d))
+
 ## [1.0.0](https://github.com/TerrorSquad/gstack/compare/gstack-v0.1.0...gstack-v1.0.0) (2026-08-04)
 
 
