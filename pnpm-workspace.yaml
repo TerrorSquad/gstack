@@ -6,8 +6,11 @@ allowBuilds:
   vue-demi: true
 
 # axe-playwright's peer dep ("playwright: >1.0.0") is loose enough that pnpm
-# otherwise resolves it to a version independent of @playwright/test's pinned
-# 1.61.1 — producing a second playwright/playwright-core pair that breaks every
-# spec at runtime ("did not expect test() to be called here"). Pin it to match.
+# otherwise resolves it to a version independent of @playwright/test's — producing
+# a second playwright/playwright-core pair that breaks every spec at runtime ("did
+# not expect test() to be called here"). Both come from the catalog, so they move together.
+catalog:
+  '@playwright/test': 1.64.1
+  playwright: 1.64.1
 overrides:
-  axe-playwright>playwright: $@playwright/test
+  axe-playwright>playwright: 'catalog:'

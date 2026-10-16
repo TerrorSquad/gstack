@@ -48,6 +48,17 @@ else
   warn(
     'NUXT_CSURF_ENCRYPT_SECRET unset — fine locally, but in prod tokens reset every deploy (openssl rand -base64 24)',
   )
+// nuxt-og-image derives its URL-signing key from it: unset or short in production, OG images return 500.
+const appSecret = env.NUXT_APP_SECRET?.trim() ?? ''
+if (appSecret.length >= 32) ok('App secret set (OG image URLs are signed)')
+else if (appSecret)
+  fail(
+    `NUXT_APP_SECRET must be at least 32 characters (got ${appSecret.length}): openssl rand -base64 32`,
+  )
+else
+  warn(
+    'NUXT_APP_SECRET unset — fine in dev, but production OG images return 500 (openssl rand -base64 32)',
+  )
 if (has('UPSTASH_REDIS_REST_URL') && has('UPSTASH_REDIS_REST_TOKEN'))
   ok('Rate limiting: Upstash (distributed)')
 else info('Rate limiting: in-memory fallback — set Upstash for serverless/multi-instance')
