@@ -41,7 +41,18 @@ Everything below is off until configured (see `.env.example` and the README):
 - **Notifications email** — `NUXT_PUBLIC_NOTIFICATIONS_ENABLED` + Resend + webhook.
 - **Sentry / BetterStack / Vercel Analytics** — set the respective env vars.
 
-## 4. Make it a template (maintainers only)
+## 4. Deploy (Supabase + Vercel)
+
+Put the Vercel functions in the same region as the database (`nitro.vercel.functions.regions` in
+`nuxt.config.ts`; Vercel defaults to Washington), link both CLIs (`supabase link`, `vercel link`), then:
+
+- `pnpm vercel:keys <project-ref>` copies the hosted Supabase keys into Vercel without printing them.
+- Set `NUXT_CSURF_ENCRYPT_SECRET` (exactly 32 characters: `openssl rand -base64 24`) and `NUXT_APP_SECRET`
+  (32+: `openssl rand -base64 32`; OG images 500 without it) on Vercel. `pnpm doctor` checks both.
+- `pnpm deploy:prod` pushes migrations, deploys, and runs `pnpm smoke:prod` against `SMOKE_URL`: health, the
+  public pages without console errors or raw i18n keys, the OG image, and a round trip to hosted auth.
+
+## 5. Make it a template (maintainers only)
 
 In GitHub repo **Settings → General → Template repository**, tick the box so
 others can "Use this template".

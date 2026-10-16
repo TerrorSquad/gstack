@@ -63,7 +63,14 @@ const vercelIgnore = existsSync('.vercelignore') ? read('.vercelignore') : ''
 for (const must of ['.env*'])
   if (!vercelIgnore.split('\n').includes(must)) fail(`.vercelignore must list ${must}`)
 
-// 5. A migration dated before one already applied is refused by `supabase db push` (production stalls until
+// 5. `supabase projects api-keys` masks secret keys unless --reveal: Vercel got a placeholder and every DB call failed.
+for (const p of files('scripts', ['.ts', '.mjs'])) {
+  const s = read(p)
+  if (s.includes("'api-keys'") && !s.includes("'--reveal'"))
+    fail(`${p}: supabase projects api-keys needs --reveal (secret keys come back masked)`)
+}
+
+// 6. A migration dated before one already applied is refused by `supabase db push` (production stalls until
 //    --include-all): a new migration must sort after every committed one.
 {
   const committed = execFileSync(
@@ -86,7 +93,7 @@ for (const must of ['.env*'])
     if (m < latest) fail(`${m}: dated before ${latest}; rename it to a later timestamp`)
 }
 
-// 6. The formatter (semi: false) rewrote `@click="a; b"` onto two lines without the `;`. Vue only treats a handler
+// 7. The formatter (semi: false) rewrote `@click="a; b"` onto two lines without the `;`. Vue only treats a handler
 //     as statements when it contains one, so a layout stopped compiling and every page 500'd in dev.
 for (const p of files('.', ['.vue']))
   for (const e of parse(read(p), { filename: p }).errors)
@@ -94,7 +101,7 @@ for (const p of files('.', ['.vue']))
       `${p}:${'loc' in e ? e.loc?.start.line : ''}: ${e.message} (two statements in a handler: \`() => { a; b }\`)`,
     )
 
-// 7. The formatter assumes HTML whitespace and moved `</span> <span>` onto two lines; Vue drops a whitespace-only gap
+// 8. The formatter assumes HTML whitespace and moved `</span> <span>` onto two lines; Vue drops a whitespace-only gap
 //     between elements once it holds a newline, so "0.00 RSD" read "0.00RSD". A staged .vue file that trades a
 //     same-line gap for a line-break gap gets flagged: keep the space with a margin class (ms-1) or {{ ' ' }}.
 {

@@ -7,6 +7,7 @@
     "build": "nuxt build",
     "db:reset": "supabase db reset && pnpm seed",
     "db:types": "supabase gen types typescript --local --schema public > shared/types/database.types.ts",
+    "deploy:prod": "supabase db push --yes && pnpm dlx vercel deploy --prod --yes && pnpm smoke:prod",
     "dev": "nuxt dev",
     "doctor": "tsx --env-file-if-exists=.env scripts/doctor.ts",
     "fmt": "oxfmt",
@@ -25,11 +26,13 @@
     "screenshots": "pnpm build && SCREENSHOTS=1 playwright test --project=screenshots",
     "seed": "tsx --env-file=.env scripts/seed/seed.ts",
     "setup": "tsx --env-file-if-exists=.env scripts/setup.ts",
+    "smoke:prod": "playwright test -c playwright.prod.config.ts",
     "supabase": "supabase",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
-    "typecheck": "nuxt typecheck"
+    "typecheck": "nuxt typecheck",
+    "vercel:keys": "node scripts/vercel-keys.mjs"
   },
   "dependencies": {
     "@formkit/auto-animate": "^0.10.0",
