@@ -80,6 +80,7 @@ export default defineConfig({
       PORT: '3010',
       NITRO_PORT: '3010',
       NUXT_PUBLIC_FEEDBACK_ENABLED: 'true',
+      NUXT_PUBLIC_SHOW_DEMO_ACCOUNTS: 'true',
     },
   },
 })

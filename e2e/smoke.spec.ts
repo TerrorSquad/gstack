@@ -19,3 +19,17 @@ test('same-origin POSTs carry the CSRF token', async ({ page }) => {
   )
   expect(body).not.toContain('CSRF')
 })
+
+// One-click demo logins (NUXT_PUBLIC_SHOW_DEMO_ACCOUNTS, on for e2e): every button signs that user in.
+test('demo account buttons sign in', async ({ page }) => {
+  for (const name of ['Ada Admin', 'Milo Member']) {
+    await page.context().clearCookies()
+    await page.goto('/login')
+    await page.waitForLoadState('networkidle')
+    await page
+      .getByTestId('demo-accounts')
+      .getByRole('button', { name: new RegExp(name) })
+      .click()
+    await expect(page).toHaveURL(/\/dashboard/)
+  }
+})

@@ -35,6 +35,7 @@ export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
         'Only people an admin invites can join a company: a sign-up could name a company to join.',
       ),
       feature('Password fields can show what you typed, and warn when Caps Lock is on.'),
+      feature('Demo deployments can offer one-click sign-in as the demo admin or member.'),
       fix('The language you pick now stays picked after a reload.'),
       fix('Calendars and date pickers speak Serbian on a Serbian page.'),
     ],

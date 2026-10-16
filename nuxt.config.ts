@@ -140,6 +140,8 @@ export default defineNuxtConfig({
       priceEnterprise: '',
     },
     public: {
+      // One-click demo logins on /login (the seeded demo tenant; NUXT_PUBLIC_SHOW_DEMO_ACCOUNTS=true). Off by default.
+      showDemoAccounts: false,
       version,
       // Show billing UI + wire pricing CTAs to checkout. Off until Polar is set.
       billingEnabled: false,
