@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { formatDate, formatDateRange, formatDateTime, parseDateInput } from './formatDate'
+import { formatDate, formatDateRange, formatDateTime, parseDateInput, todayIso } from './formatDate'
 
 // formatDate is the single mandated way to show dates (ADR-006), so its edge
 // cases - nulls, zero-padding, malformed input - matter everywhere.
@@ -55,5 +55,15 @@ describe('parseDateInput', () => {
     expect(parseDateInput('31.02.2026')).toBeNull()
     expect(parseDateInput('abc')).toBeNull()
     expect(parseDateInput('')).toBeNull()
+  })
+})
+
+describe('formatDateTime edge cases and todayIso', () => {
+  it('passes an unparseable timestamp through and shows a dash for none', () => {
+    expect(formatDateTime('not a date')).toBe('not a date')
+    expect(formatDateTime(null)).toBe('—')
+  })
+  it('todayIso is YYYY-MM-DD', () => {
+    expect(todayIso()).toMatch(/^\d{4}-\d{2}-\d{2}$/)
   })
 })

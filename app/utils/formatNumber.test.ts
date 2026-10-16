@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import {
   formatMoney,
+  intlLocale,
   formatNumber,
   formatPrice,
   formatSignedNumber,
@@ -39,5 +40,19 @@ describe('percentChange', () => {
   it('is null without a basis', () => {
     expect(percentChange(10, 0)).toBeNull()
     expect(percentChange(10, null)).toBeNull()
+  })
+})
+
+describe('intlLocale', () => {
+  it("hands Intl Serbian Latin for 'sr' and leaves other codes alone", () => {
+    expect(intlLocale('sr')).toBe('sr-Latn')
+    expect(intlLocale('en')).toBe('en')
+  })
+})
+
+describe('percentChange with missing values', () => {
+  it('treats a missing current value as zero and a missing base as nothing to compare', () => {
+    expect(percentChange(null, 100)).toBe(-100)
+    expect(percentChange(5, undefined)).toBeNull()
   })
 })

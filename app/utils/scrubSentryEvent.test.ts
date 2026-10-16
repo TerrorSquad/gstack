@@ -16,4 +16,11 @@ describe('scrubSentryEvent', () => {
     })
     expect(e.request).toEqual({ url: '/api/x', headers: { 'user-agent': 'ua' } })
   })
+  it('leaves events without a request, or a request without headers, alone', () => {
+    expect(scrubSentryEvent({ type: undefined })).toEqual({ type: undefined })
+    expect(scrubSentryEvent({ type: undefined, request: { url: '/x', data: 'b' } })).toEqual({
+      type: undefined,
+      request: { url: '/x' },
+    })
+  })
 })
