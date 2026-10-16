@@ -31,6 +31,9 @@ export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
       feature(
         'After 30 minutes without activity you are signed out, unless you choose to stay signed in.',
       ),
+      fix(
+        'Only people an admin invites can join a company: a sign-up could name a company to join.',
+      ),
       fix('The language you pick now stays picked after a reload.'),
       fix('Calendars and date pickers speak Serbian on a Serbian page.'),
     ],

@@ -163,6 +163,26 @@ isOneToOne: true
       referencedColumns: ["id"]
     }
                   ]
+                },"tenant_invites": {
+                  Row: {
+                    "created_at": string,"email": string,"invited_to": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"email": string,"invited_to": string
+                  }
+                  Update: {
+                    "created_at"?: string,"email"?: string,"invited_to"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "tenant_invites_invited_to_fkey"
+      columns: ["invited_to"]
+isOneToOne: false
+      referencedRelation: "tenants"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"tenants": {
                   Row: {
                     "created_at": string,"id": string,"name": string
