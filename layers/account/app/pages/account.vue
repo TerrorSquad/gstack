@@ -187,6 +187,10 @@ async function deleteAccount() {
       </form>
     </UCard>
 
+    <PreferencesSection />
+    <TwoFactorSection />
+    <SessionsSection />
+
     <!-- Danger zone -->
     <UCard :ui="{ root: 'ring-1 ring-error/40' }">
       <template #header>

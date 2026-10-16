@@ -1,5 +1,8 @@
 <script setup lang="ts">
 const { locale } = useI18n()
+const { accent } = useAccent()
+const { font } = useFont()
+const display = useDisplay()
 
 // Canonical URL for every page (SEO): origin + path, no query/hash.
 const requestUrl = useRequestURL()
@@ -9,7 +12,14 @@ const canonical = computed(() => `${requestUrl.origin}${requestUrl.pathname}`)
 // (document-title). titleTemplate applies the app name to every page, and
 // pages that set their own title get " · GStack" appended.
 useHead({
-  htmlAttrs: { lang: () => (locale.value === 'en' ? 'en' : 'sr-Latn') },
+  htmlAttrs: {
+    lang: () => (locale.value === 'en' ? 'en' : 'sr-Latn'),
+    'data-accent': () => accent.value,
+    'data-font': () => font.value,
+    'data-text-size': () => display.textSize.value.value,
+    'data-motion': () => display.motion.value.value,
+    'data-contrast': () => display.contrast.value.value,
+  },
   title: 'GStack',
   titleTemplate: (title) => (title && title !== 'GStack' ? `${title} · GStack` : 'GStack'),
   link: [

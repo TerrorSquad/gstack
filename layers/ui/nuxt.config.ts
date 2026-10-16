@@ -19,9 +19,20 @@ export default defineNuxtConfig({
   // public Iconify API: the CSP blocks that host, so the fallback only ever produced console errors.
   icon: { clientBundle: { scan: true }, fallbackToApi: false },
   fonts: {
+    // every pickable typeface (ui_prefs.font); browsers download only the one in use
     families: [
-      { name: 'Inter', provider: 'google' },
-      { name: 'Space Grotesk', provider: 'google' },
-    ],
+      'Inter',
+      'Space Grotesk',
+      'IBM Plex Sans',
+      'Geist',
+      'Source Sans 3',
+      'Manrope',
+      'Nunito Sans',
+    ].map((name) => ({
+      name,
+      provider: 'google',
+      weights: [400, 500, 600, 700],
+      subsets: ['latin', 'latin-ext'],
+    })),
   },
 })

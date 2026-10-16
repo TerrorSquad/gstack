@@ -64,6 +64,10 @@ export default defineNuxtConfig({
           'wss://*.supabase.co',
           'http://127.0.0.1:54321',
           'ws://127.0.0.1:54321',
+          // Whatever Supabase this server talks to (another port, or http://192.168.x.y:54321 from another device).
+          ...(process.env.SUPABASE_URL
+            ? [process.env.SUPABASE_URL, process.env.SUPABASE_URL.replace(/^http/, 'ws')]
+            : []),
           'https://vitals.vercel-insights.com',
           // PostHog ingest + assets (analytics layer). Harmless when disabled.
           'https://*.posthog.com',

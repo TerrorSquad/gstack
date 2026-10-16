@@ -2,9 +2,39 @@
 @import '@nuxt/ui';
 
 @theme {
-  /* Body in Inter, headings in the geometric Space Grotesk for contrast. */
+  /* Body in Inter, headings in the geometric Space Grotesk for contrast (the 'classic' set); users may pick another
+     (html[data-font], below). Every set has full Serbian Latin (č ć đ š ž) and tabular figures. */
   --font-sans: 'Inter', sans-serif;
   --font-heading: 'Space Grotesk', sans-serif;
+}
+
+/* Typefaces a user can pick (ui_prefs.font → <html data-font>; any element works, so a sample previews itself). */
+[data-font='plex'] {
+  --font-sans: 'IBM Plex Sans', sans-serif;
+  --font-heading: 'IBM Plex Sans', sans-serif;
+}
+[data-font='geist'] {
+  --font-sans: 'Geist', sans-serif;
+  --font-heading: 'Geist', sans-serif;
+}
+[data-font='source'] {
+  --font-sans: 'Source Sans 3', sans-serif;
+  --font-heading: 'Source Sans 3', sans-serif;
+}
+[data-font='manrope'] {
+  --font-sans: 'Manrope', sans-serif;
+  --font-heading: 'Manrope', sans-serif;
+}
+[data-font='nunito'] {
+  --font-sans: 'Nunito Sans', sans-serif;
+  --font-heading: 'Nunito Sans', sans-serif;
+}
+[data-font='classic'] {
+  --font-sans: 'Inter', sans-serif;
+  --font-heading: 'Space Grotesk', sans-serif;
+}
+[data-font] {
+  font-family: var(--font-sans);
 }
 
 /* Brand palette — amber. 500 is the action color; darker steps carry text/fills
@@ -16,6 +46,88 @@
    fills use -700 (4.9:1). That is the single difference from the old violet
    ramp — see the light-mode block below. */
 @theme static {
+  --color-brand-50: #fffbeb;
+  --color-brand-100: #fef3c7;
+  --color-brand-200: #fde68a;
+  --color-brand-300: #fcd34d;
+  --color-brand-400: #fbbf24;
+  --color-brand-500: #f59e0b;
+  --color-brand-600: #d97706;
+  --color-brand-700: #b45309;
+  --color-brand-800: #92400e;
+  --color-brand-900: #78350f;
+  --color-brand-950: #451a03;
+}
+
+/* Accent palettes a user can pick (ui_prefs.accent → <html data-accent>; any element works, so a swatch can preview its own ramp). Each re-points the brand ramp, so
+   everything built on `primary` follows. Light mode fills and colored text use -700, which passes AA on white
+   for every ramp here. */
+[data-accent='blue'] {
+  --color-brand-50: #eff6ff;
+  --color-brand-100: #dbeafe;
+  --color-brand-200: #bfdbfe;
+  --color-brand-300: #93c5fd;
+  --color-brand-400: #60a5fa;
+  --color-brand-500: #3b82f6;
+  --color-brand-600: #2563eb;
+  --color-brand-700: #1d4ed8;
+  --color-brand-800: #1e40af;
+  --color-brand-900: #1e3a8a;
+  --color-brand-950: #172554;
+}
+[data-accent='indigo'] {
+  --color-brand-50: #eef2ff;
+  --color-brand-100: #e0e7ff;
+  --color-brand-200: #c7d2fe;
+  --color-brand-300: #a5b4fc;
+  --color-brand-400: #818cf8;
+  --color-brand-500: #6366f1;
+  --color-brand-600: #4f46e5;
+  --color-brand-700: #4338ca;
+  --color-brand-800: #3730a3;
+  --color-brand-900: #312e81;
+  --color-brand-950: #1e1b4b;
+}
+[data-accent='violet'] {
+  --color-brand-50: #f5f3ff;
+  --color-brand-100: #ede9fe;
+  --color-brand-200: #ddd6fe;
+  --color-brand-300: #c4b5fd;
+  --color-brand-400: #a78bfa;
+  --color-brand-500: #8b5cf6;
+  --color-brand-600: #7c3aed;
+  --color-brand-700: #6d28d9;
+  --color-brand-800: #5b21b6;
+  --color-brand-900: #4c1d95;
+  --color-brand-950: #2e1065;
+}
+[data-accent='teal'] {
+  --color-brand-50: #f0fdfa;
+  --color-brand-100: #ccfbf1;
+  --color-brand-200: #99f6e4;
+  --color-brand-300: #5eead4;
+  --color-brand-400: #2dd4bf;
+  --color-brand-500: #14b8a6;
+  --color-brand-600: #0d9488;
+  --color-brand-700: #0f766e;
+  --color-brand-800: #115e59;
+  --color-brand-900: #134e4a;
+  --color-brand-950: #042f2e;
+}
+[data-accent='emerald'] {
+  --color-brand-50: #ecfdf5;
+  --color-brand-100: #d1fae5;
+  --color-brand-200: #a7f3d0;
+  --color-brand-300: #6ee7b7;
+  --color-brand-400: #34d399;
+  --color-brand-500: #10b981;
+  --color-brand-600: #059669;
+  --color-brand-700: #047857;
+  --color-brand-800: #065f46;
+  --color-brand-900: #064e3b;
+  --color-brand-950: #022c22;
+}
+[data-accent='amber'] {
   --color-brand-50: #fffbeb;
   --color-brand-100: #fef3c7;
   --color-brand-200: #fde68a;
@@ -60,6 +172,10 @@ h3,
 
   .text-primary {
     color: var(--ui-color-primary-700);
+  }
+  /* On its own tint (soft badges, subtle alerts: bg-primary/10) -700 is 4.47:1 over the slate page; -800 passes. */
+  .text-primary:is([class*='bg-primary/']) {
+    color: var(--ui-color-primary-800);
   }
   .text-success {
     color: var(--ui-color-success-800);
@@ -138,4 +254,58 @@ textarea {
   textarea {
     font-size: 16px;
   }
+}
+
+/* Text size (ui_prefs.textSize → <html data-text-size>): the root font-size, so everything sized in rem follows. */
+html[data-text-size='90'] {
+  font-size: 90%;
+}
+html[data-text-size='110'] {
+  font-size: 110%;
+}
+html[data-text-size='125'] {
+  font-size: 125%;
+}
+
+/* Reduce motion (ui_prefs.motion → <html data-motion>): 'reduce' always, 'system' when the device asks for it.
+   Near-zero durations rather than none, so code waiting for transitionend/animationend still hears it. */
+html[data-motion='reduce'] *,
+html[data-motion='reduce'] *::before,
+html[data-motion='reduce'] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-motion='system'] *,
+  html[data-motion='system'] *::before,
+  html[data-motion='system'] *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* High contrast (ui_prefs.contrast → <html data-contrast>): darker (light) / brighter (dark) text and borders. */
+html[data-contrast='high']:not(.dark) {
+  --ui-text-dimmed: var(--ui-color-neutral-700);
+  --ui-text-muted: var(--ui-color-neutral-700);
+  --ui-text-toned: var(--ui-color-neutral-800);
+  --ui-text: var(--ui-color-neutral-900);
+  --ui-text-highlighted: var(--ui-color-neutral-950);
+  --ui-border: var(--ui-color-neutral-500);
+  --ui-border-muted: var(--ui-color-neutral-400);
+  --ui-border-accented: var(--ui-color-neutral-600);
+}
+html.dark[data-contrast='high'] {
+  --ui-text-dimmed: var(--ui-color-neutral-200);
+  --ui-text-muted: var(--ui-color-neutral-200);
+  --ui-text-toned: var(--ui-color-neutral-100);
+  --ui-text: var(--ui-color-neutral-50);
+  --ui-text-highlighted: #fff;
+  --ui-border: var(--ui-color-neutral-400);
+  --ui-border-muted: var(--ui-color-neutral-500);
+  --ui-border-accented: var(--ui-color-neutral-300);
 }

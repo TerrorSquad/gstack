@@ -8,6 +8,8 @@ const email = ref('')
 const password = ref('')
 const loading = ref(false)
 const error = ref('')
+// signed out by the idle timer: say so, or it looks like a bug
+const idle = useRoute().query.idle === '1'
 
 async function submit() {
   loading.value = true
@@ -72,6 +74,15 @@ async function oauth(provider: 'github' | 'google') {
       <span class="h-px flex-1 bg-default" />
     </div>
 
+    <UAlert
+      v-if="idle"
+      class="mb-4"
+      color="info"
+      icon="i-lucide-timer"
+      :title="$t('login.idleTitle')"
+      :description="$t('login.idleBody')"
+      data-testid="idle-notice"
+    />
     <form class="flex flex-col gap-4" @submit.prevent="submit">
       <UFormField :label="$t('login.email')">
         <UInput v-model="email" type="email" autocomplete="email" class="w-full" required />

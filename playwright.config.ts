@@ -29,7 +29,7 @@ export default defineConfig({
     {
       // Authenticated feature flows using the saved admin (Acme) session.
       name: 'app',
-      testMatch: /(feedback|notes)\.spec\.ts/,
+      testMatch: /(feedback|notes|mfa|sessions|prefs)\.spec\.ts/,
       use: { ...devices['Desktop Chrome'], storageState: 'e2e/.auth.json' },
       dependencies: ['setup'],
     },

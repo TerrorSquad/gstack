@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const auth = useAuthStore()
-const { t, locale, setLocale } = useI18n()
+const { t, locale } = useI18n()
+const lang = useLang()
 const { version } = useRuntimeConfig().public
 
 const colorMode = useColorMode()
@@ -53,8 +54,8 @@ const legalLinks = [
             size="xs"
             variant="ghost"
             color="neutral"
-            :aria-label="t('theme.label')"
-            @click="setLocale(locale === 'sr' ? 'en' : 'sr')"
+            :aria-label="locale === 'sr' ? 'English' : 'Srpski'"
+            @click="lang.set(lang.other.value)"
           />
           <template v-if="auth.isAuthenticated">
             <UButton to="/dashboard" size="sm" trailing-icon="i-lucide-arrow-right">

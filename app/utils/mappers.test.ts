@@ -44,6 +44,7 @@ describe('mappers', () => {
       role: 'admin',
       avatarUrl: null,
       createdAt: '2026-01-01',
+      uiPrefs: {},
     })
   })
 

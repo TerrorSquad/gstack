@@ -15,6 +15,8 @@ export interface Profile {
   role: Role
   avatarUrl: string | null
   createdAt: string
+  /** Synced UI preferences (`set_ui_prefs`), raw jsonb; read through normalizePrefs. */
+  uiPrefs: Record<string, unknown>
 }
 
 export interface Note {
