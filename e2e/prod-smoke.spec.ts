@@ -33,6 +33,17 @@ test('the social preview image renders', async ({ page, request }) => {
   expect(r.headers()['content-type']).toMatch(/^image\//)
 })
 
+// The page must put the CSRF token on its own POSTs (Nuxt 4.6 stopped routing $fetch through the global the plugin
+// replaced, and every POST to the API got 403 "CSRF Token not found").
+test('same-origin POSTs carry the CSRF token', async ({ page }) => {
+  await page.goto(BASE + '/login', { waitUntil: 'networkidle' })
+  const res = await page.evaluate(async () => {
+    const r = await fetch('/api/health', { method: 'POST', redirect: 'manual' })
+    return { status: r.status, body: (await r.text()).slice(0, 200) }
+  })
+  expect(res.body).not.toContain('CSRF')
+})
+
 test('login reaches hosted auth', async ({ page }) => {
   await page.goto(BASE + '/login', { waitUntil: 'networkidle' })
   const auth = page.waitForResponse((r) => r.url().includes('/auth/v1/token'))

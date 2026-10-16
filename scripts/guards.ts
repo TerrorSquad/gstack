@@ -146,6 +146,13 @@ for (const p of files('.', ['.vue']))
   }
 }
 
+// 9. @nuxtjs/i18n rewrites every import of a locale file (?raw too) into compiled message ASTs: JSON.parse got an
+//    object and pages 500'd. Client code reads translations through i18n (t(key, {}, { locale }), loadLocaleMessages).
+//    (Server code is bundled by Nitro, which leaves the JSON alone.)
+for (const p of source.filter((f) => !f.includes('/server/')))
+  if (/from ['"][^'"]*i18n\/locales\/[^'"]+\.json/.test(read(p)))
+    fail(`${p}: imports a locale file; use useI18n() (t(key, {}, { locale })) instead`)
+
 if (fails.length) {
   console.error(`✗ ${fails.length} guard(s) failed:\n  ${fails.join('\n  ')}`)
   process.exit(1)

@@ -9,7 +9,7 @@ const { locale, set, other } = useLang()
       variant="ghost"
       color="neutral"
       size="xs"
-      :aria-label="other === 'en' ? 'English' : 'Srpski'"
+      :aria-label="other === 'en' ? 'EN – English' : 'SR – Srpski'"
       icon="i-lucide-languages"
       data-testid="locale-switch"
       @click="set(other)"
