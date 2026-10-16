@@ -88,13 +88,7 @@ async function oauth(provider: 'github' | 'google') {
         <UInput v-model="email" type="email" autocomplete="email" class="w-full" required />
       </UFormField>
       <UFormField :label="$t('login.password')">
-        <UInput
-          v-model="password"
-          type="password"
-          autocomplete="current-password"
-          class="w-full"
-          required
-        />
+        <PasswordInput v-model="password" autocomplete="current-password" required />
       </UFormField>
       <div class="text-right">
         <ULink to="/auth/forgot-password" class="text-sm font-medium text-primary">

@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "@formkit/auto-animate": "^0.10.0",
+    "@internationalized/date": "^3.12.4",
     "@nuxt/ui": "^4.11.3",
     "@nuxtjs/i18n": "^10.6.0",
     "@nuxtjs/sitemap": "^9.1.0",
