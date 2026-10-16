@@ -51,8 +51,26 @@ Roles: `member`, `admin`. RLS is the real security layer; page-meta roles are UX
 
 Single-DB / shared-schema. Every table has `tenant_id`; RLS scopes rows via the
 `current_tenant_id()` security-definer helper (reads the caller's profile). Signup
-(`handle_new_user`) creates a tenant and makes the registrant its admin.
+(`handle_new_user`) creates a tenant and makes the registrant its admin — unless the
+e-mail has a `tenant_invites` row (written only by `/api/admin/invite`), then it joins
+that tenant as a member. Never trust signup metadata for tenant membership.
 Performance upgrade path is noted in the migration (move tenant_id to a JWT claim).
+
+**Every new tenant table** also needs: RLS with helpers called once per query
+(`tenant_id = (select public.current_tenant_id())`), explicit grants (hosted Supabase
+grants every new table to anon/authenticated by default — revoke what clients must not
+do), and the restrictive `mfa_required` policy (`supabase/tests/mfa.test.sql` fails
+without it). Users update only `full_name`/`avatar_url` on `profiles` (column grants).
+
+## Account security
+
+Two-factor login (TOTP) with recovery codes (`TwoFactorSection`, `/auth/mfa`); once a
+user has a factor, `mfa_ok()` hides every tenant table from an aal1 session. Sessions
+list/end (`SessionsSection`). Idle sign-out after 30 minutes unless `ui_prefs.staySignedIn`.
+Preferences (`app/utils/uiPrefs.ts`, `set_ui_prefs`): language, theme, accent, typeface,
+text size, contrast, motion — cookies carry the look into SSR (`<html data-*>`).
+API keys (`create_api_key`, `server/utils/apiKey.ts`): `/api/v1/*` handlers use the
+service role and MUST filter by the tenant `requireApiKey()` returns.
 
 ## Example CRUD (notes)
 
@@ -100,6 +118,18 @@ Migrations in `supabase/migrations/`. Run `pnpm supabase <cmd>` (CLI isn't globa
 After changing a table/function, run `pnpm db:types` to regenerate
 `shared/types/database.types.ts` (hand-written until you do) or typecheck fails.
 Never edit migrations retroactively once applied to a real DB — add a new one.
+A staged migration regenerates the types on commit (refused if the local DB looks like
+another project's: two local stacks on the same port).
+
+## Guards and production checks
+
+`scripts/guards.ts` (pre-commit, `pnpm lint:guards`) fails on mistakes already made
+once: Intl given plain 'sr' (Cyrillic), HTML-looking i18n messages, an ignored
+.env.example, .vercelignore without `.env*`, `api-keys` without `--reveal`, a migration
+dated before a committed one, a .vue file that doesn't parse (the formatter split
+`@click="a; b"`), a space between elements moved onto its own line (Vue drops it), and
+client code importing locale JSON. Add a check whenever a new class of bug slips through.
+`pnpm smoke:prod` (SMOKE_URL) checks a deployment; `pnpm deploy:prod` runs it last.
 
 ## Seeding
 

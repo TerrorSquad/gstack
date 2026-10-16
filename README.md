@@ -30,7 +30,10 @@ CRUD (`notes`) shows the pattern to copy for your own domain.
 - **Billing** — Polar checkout + customer portal + webhook, plan gating via
   `useSubscription()` (`layers/billing`). Off until keys are set.
 - **Account & admin** — self-serve account deletion; admin user list with
-  invite / set-role / ban / delete / impersonate (`layers/{account,admin}`).
+  invite / set-role / ban / delete / impersonate (`layers/{account,admin}`); two-factor
+  login with recovery codes (enforced by RLS), signed-in sessions, idle sign-out,
+  synced preferences (language, theme, accent, typeface, text size, contrast, motion),
+  API keys for a read-only `/api/v1`.
 - **Transactional email** — Resend + a typed template layer with a dev preview
   route at `/dev/emails` (`layers/email`).
 - **Feedback** — self-hosted in-app widget, RLS-scoped, no third-party script
