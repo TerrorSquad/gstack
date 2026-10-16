@@ -18,6 +18,32 @@ const fix = (text: string): ChangelogHighlight => ({ kind: 'fix', text })
 // user language, not commit-speak. See the `changelog` skill.
 export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
   {
+    date: '2026-10-16',
+    title: 'Your account, your way — and safer',
+    highlights: [
+      feature(
+        'Account › Appearance and language: pick the colour, the typeface, the text size, high contrast and reduced motion. Your choices follow you to every device.',
+      ),
+      feature(
+        'Two-factor login with an authenticator app, with one-time recovery codes for a lost phone.',
+      ),
+      feature('See where you are signed in and sign other devices out.'),
+      feature(
+        'After 30 minutes without activity you are signed out, unless you choose to stay signed in.',
+      ),
+      fix(
+        'Only people an admin invites can join a company: a sign-up could name a company to join.',
+      ),
+      feature('Password fields can show what you typed, and warn when Caps Lock is on.'),
+      feature('Demo deployments can offer one-click sign-in as the demo admin or member.'),
+      feature(
+        'Admins can create API keys for other software: a read-only REST API at /api/v1, keys shown once and revocable.',
+      ),
+      fix('The language you pick now stays picked after a reload.'),
+      fix('Calendars and date pickers speak Serbian on a Serbian page.'),
+    ],
+  },
+  {
     date: '2026-08-05',
     title: 'A warmer look',
     highlights: [

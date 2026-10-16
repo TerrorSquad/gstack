@@ -71,22 +71,10 @@ async function submit() {
   >
     <form class="flex flex-col gap-4" @submit.prevent="submit">
       <UFormField :label="$t('setPassword.password')">
-        <UInput
-          v-model="password"
-          type="password"
-          autocomplete="new-password"
-          class="w-full"
-          required
-        />
+        <PasswordInput v-model="password" autocomplete="new-password" required />
       </UFormField>
       <UFormField :label="$t('setPassword.confirm')">
-        <UInput
-          v-model="confirm"
-          type="password"
-          autocomplete="new-password"
-          class="w-full"
-          required
-        />
+        <PasswordInput v-model="confirm" autocomplete="new-password" required />
       </UFormField>
       <UAlert v-if="error" color="error" :title="error" />
       <UButton type="submit" block size="lg" :loading="loading">

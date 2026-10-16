@@ -1,6 +1,7 @@
-// Invite someone to the admin's tenant. inviteUserByEmail emails a link (via
-// GoTrue) and stamps tenant_id into user metadata; handle_new_user reads it and
-// joins them to this tenant as a member. redirectTo is load-bearing — it must
+// Invite someone to the admin's tenant. The invite is a tenant_invites row (only the
+// service role writes it; signup metadata is client-controlled and never trusted);
+// inviteUserByEmail emails a link via GoTrue, and handle_new_user joins the new
+// account to the tenant its e-mail was invited to, as a member. redirectTo is load-bearing — it must
 // point at the set-password page or the invitee lands on "/" ("link expired").
 export default defineEventHandler(async (event) => {
   const { db, admin } = await requireAdmin(event)
@@ -10,11 +11,16 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, message: 'a valid email is required' })
 
   const origin = useRuntimeConfig(event).siteUrl || getRequestURL(event).origin
+  const invite = { email: email.toLowerCase(), invited_to: admin.tenant_id }
+  const { error: e } = await db.from('tenant_invites').upsert(invite)
+  if (e) throw createError({ statusCode: 500, message: e.message })
   const { error } = await db.auth.admin.inviteUserByEmail(email, {
-    data: { tenant_id: admin.tenant_id },
     redirectTo: `${origin}/auth/set-password`,
   })
   // Most common failure: the email already has an account.
-  if (error) throw createError({ statusCode: 422, message: error.message })
+  if (error) {
+    await db.from('tenant_invites').delete().eq('email', invite.email)
+    throw createError({ statusCode: 422, message: error.message })
+  }
   return { ok: true }
 })

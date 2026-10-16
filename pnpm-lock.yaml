@@ -4,6 +4,12 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+catalogs:
+  default:
+    '@playwright/test':
+      specifier: 1.64.1
+      version: 1.64.1
+
 overrides:
   axe-playwright>playwright: 1.64.1
 
@@ -14,6 +20,9 @@ importers:
       '@formkit/auto-animate':
         specifier: ^0.10.0
         version: 0.10.0
+      '@internationalized/date':
+        specifier: ^3.12.4
+        version: 3.12.4
       '@nuxt/ui':
         specifier: ^4.11.3
         version: 4.11.3(625345ff14fae08d5e388683ffd208e9)
@@ -97,7 +106,7 @@ importers:
         specifier: ^1.2.100
         version: 1.2.100
       '@playwright/test':
-        specifier: 1.64.1
+        specifier: 'catalog:'
         version: 1.64.1
       '@supabase/supabase-js':
         specifier: ^2.117.3

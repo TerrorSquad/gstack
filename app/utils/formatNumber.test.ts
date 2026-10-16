@@ -1,6 +1,13 @@
 import { describe, expect, it } from 'vitest'
 
-import { formatNumber, formatPrice, formatSignedNumber } from './formatNumber'
+import {
+  formatMoney,
+  intlLocale,
+  formatNumber,
+  formatPrice,
+  formatSignedNumber,
+  percentChange,
+} from './formatNumber'
 
 describe('formatNumber', () => {
   it('applies fixed fraction digits', () => {
@@ -13,5 +20,39 @@ describe('formatNumber', () => {
   })
   it('formats currency', () => {
     expect(formatPrice(9.9, 'USD', 'en-US')).toBe('$9.90')
+  })
+})
+
+describe('formatMoney', () => {
+  it('two decimals with locale grouping, optional currency code', () => {
+    expect(formatMoney(5596, 'sr')).toBe('5.596,00')
+    expect(formatMoney('1234.5', 'en', 'RSD')).toBe('1,234.50 RSD')
+    expect(formatMoney(null, 'en')).toBe('0.00')
+  })
+})
+
+describe('percentChange', () => {
+  it('is relative to the previous value, one decimal', () => {
+    expect(percentChange(110, 100)).toBe(10)
+    expect(percentChange('50', '200')).toBe(-75)
+    expect(percentChange(-50, -100)).toBe(50) // a smaller loss is an improvement
+  })
+  it('is null without a basis', () => {
+    expect(percentChange(10, 0)).toBeNull()
+    expect(percentChange(10, null)).toBeNull()
+  })
+})
+
+describe('intlLocale', () => {
+  it("hands Intl Serbian Latin for 'sr' and leaves other codes alone", () => {
+    expect(intlLocale('sr')).toBe('sr-Latn')
+    expect(intlLocale('en')).toBe('en')
+  })
+})
+
+describe('percentChange with missing values', () => {
+  it('treats a missing current value as zero and a missing base as nothing to compare', () => {
+    expect(percentChange(null, 100)).toBe(-100)
+    expect(percentChange(5, undefined)).toBeNull()
   })
 })

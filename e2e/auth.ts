@@ -15,3 +15,6 @@ export async function login(page: Page, email: string, password = PASSWORD) {
   await page.getByRole('button', { name: /Prijavi se|Log in/ }).click()
   await expect(page).toHaveURL(/\/dashboard/)
 }
+
+/** A fresh, signed-out browser state (for specs that log in as a user of their own). */
+export const SIGNED_OUT = { cookies: [], origins: [] }

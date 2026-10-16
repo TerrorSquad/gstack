@@ -3,7 +3,8 @@ import type { NavigationMenuItem } from '@nuxt/ui'
 
 const auth = useAuthStore()
 const role = computed(() => auth.role)
-const { t, locale, setLocale } = useI18n()
+const { t, locale } = useI18n()
+const lang = useLang()
 const route = useRoute()
 const { version, notificationsEnabled } = useRuntimeConfig().public
 
@@ -52,7 +53,7 @@ const localeItem = computed<NavigationMenuItem[]>(() => [
   {
     label: locale.value === 'sr' ? 'English' : 'Srpski',
     icon: 'i-lucide-languages',
-    onSelect: () => setLocale(locale.value === 'sr' ? 'en' : 'sr'),
+    onSelect: () => lang.set(lang.other.value),
   },
 ])
 

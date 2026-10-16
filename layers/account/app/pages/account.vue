@@ -169,15 +169,10 @@ async function deleteAccount() {
         @submit.prevent="updatePassword"
       >
         <UFormField :label="$t('account.newPassword')">
-          <UInput v-model="password" type="password" autocomplete="new-password" class="w-full" />
+          <PasswordInput v-model="password" autocomplete="new-password" />
         </UFormField>
         <UFormField :label="$t('account.confirmPassword')">
-          <UInput
-            v-model="confirmPassword"
-            type="password"
-            autocomplete="new-password"
-            class="w-full"
-          />
+          <PasswordInput v-model="confirmPassword" autocomplete="new-password" />
         </UFormField>
         <div>
           <UButton type="submit" variant="outline" color="neutral" :loading="savingPassword">
@@ -186,6 +181,10 @@ async function deleteAccount() {
         </div>
       </form>
     </UCard>
+
+    <PreferencesSection />
+    <TwoFactorSection />
+    <SessionsSection />
 
     <!-- Danger zone -->
     <UCard :ui="{ root: 'ring-1 ring-error/40' }">

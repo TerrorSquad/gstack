@@ -23,6 +23,8 @@ export default defineConfig({
         'server/utils/rateLimit.ts', // getRedis/getLimiter/rateLimit need H3+Upstash; pure hit() is tested
         'layers/email/server/utils/emails.ts', // renders .vue templates
         'layers/billing/server/utils/billing.ts', // fetch/runtimeConfig methods; pure webhook logic is tested
+        'app/utils/uiLocale.ts', // Nuxt UI locale objects (extendLocale)
+        'server/utils/apiKey.ts', // H3 + Supabase service role; covered by e2e/api-keys.spec.ts
       ],
       thresholds: { lines: 100, functions: 100, branches: 100, statements: 100 },
     },

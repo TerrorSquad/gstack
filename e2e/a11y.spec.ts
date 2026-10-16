@@ -13,6 +13,9 @@ const PAGES = ['/', '/pricing', '/terms', '/privacy', '/dashboard', '/notes', '/
 // Everything the app controls (contrast, names, titles, lang, headings) stays on.
 const DISABLED_RULES = ['region', 'landmark-unique']
 
+// Nuxt DevTools floats its own panel over every page in dev; it is not the app, so axe skips it.
+const DEVTOOLS = 'nuxt-devtools-frame'
+
 // Passed as checkA11y's `axeOptions` option (the axe-core run config).
 const axeRunOptions = {
   rules: Object.fromEntries(DISABLED_RULES.map((id) => [id, { enabled: false }])),
@@ -27,11 +30,15 @@ for (const theme of ['light', 'dark'] as const) {
         await page.goto(path)
         await page.waitForLoadState('networkidle')
         await injectAxe(page)
-        await checkA11y(page, undefined, {
-          detailedReport: true,
-          detailedReportOptions: { html: true },
-          axeOptions: axeRunOptions,
-        })
+        await checkA11y(
+          page,
+          { exclude: [DEVTOOLS] },
+          {
+            detailedReport: true,
+            detailedReportOptions: { html: true },
+            axeOptions: axeRunOptions,
+          },
+        )
       })
     }
   })
@@ -55,11 +62,15 @@ for (const theme of ['light', 'dark'] as const) {
       await page.goto(path)
       await page.waitForLoadState('networkidle')
       await injectAxe(page)
-      await checkA11y(page, undefined, {
-        detailedReport: true,
-        detailedReportOptions: { html: true },
-        axeOptions: axeRunOptions,
-      })
+      await checkA11y(
+        page,
+        { exclude: [DEVTOOLS] },
+        {
+          detailedReport: true,
+          detailedReportOptions: { html: true },
+          axeOptions: axeRunOptions,
+        },
+      )
       await ctx.close()
     })
   }

@@ -7,6 +7,14 @@ export const TENANT_NAME = 'Acme Inc'
 export const ADMIN = { email: 'admin@example.com', fullName: 'Ada Admin' }
 export const MEMBER = { email: 'member@example.com', fullName: 'Milo Member' }
 
+// One-click demo logins on /login (NUXT_PUBLIC_SHOW_DEMO_ACCOUNTS=true, off by default). Hardcoded here, never
+// queried (that would expose profiles to anon). The password ships in the client bundle on purpose: turn the flag on
+// only for a deployment whose demo tenant is all there is to see.
+export const DEMO_ACCOUNTS = [
+  { ...ADMIN, role: 'admin' },
+  { ...MEMBER, role: 'member' },
+] as const
+
 // A second, fully separate tenant. Exists so e2e can prove RLS isolation: a
 // user here must never see Acme's rows. Kept minimal and always seeded (not
 // gated behind SEED_FAST) since isolation is a core guarantee to test.

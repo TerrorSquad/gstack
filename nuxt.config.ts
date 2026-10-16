@@ -2,6 +2,14 @@
 import { readFileSync } from 'node:fs'
 const { version } = JSON.parse(readFileSync('./package.json', 'utf-8'))
 
+// nuxt-csurf uses this string as the AES-256 key as-is: any length but 32 fails every request at runtime with
+// "Invalid key length" (it took a production app down once). Fail the build instead.
+const csrfSecret = process.env.NUXT_CSURF_ENCRYPT_SECRET
+if (csrfSecret && csrfSecret.length !== 32)
+  throw new Error(
+    `NUXT_CSURF_ENCRYPT_SECRET must be exactly 32 characters (got ${csrfSecret.length}); openssl rand -base64 24`,
+  )
+
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
@@ -56,6 +64,10 @@ export default defineNuxtConfig({
           'wss://*.supabase.co',
           'http://127.0.0.1:54321',
           'ws://127.0.0.1:54321',
+          // Whatever Supabase this server talks to (another port, or http://192.168.x.y:54321 from another device).
+          ...(process.env.SUPABASE_URL
+            ? [process.env.SUPABASE_URL, process.env.SUPABASE_URL.replace(/^http/, 'ws')]
+            : []),
           'https://vitals.vercel-insights.com',
           // PostHog ingest + assets (analytics layer). Harmless when disabled.
           'https://*.posthog.com',
@@ -128,6 +140,8 @@ export default defineNuxtConfig({
       priceEnterprise: '',
     },
     public: {
+      // One-click demo logins on /login (the seeded demo tenant; NUXT_PUBLIC_SHOW_DEMO_ACCOUNTS=true). Off by default.
+      showDemoAccounts: false,
       version,
       // Show billing UI + wire pricing CTAs to checkout. Off until Polar is set.
       billingEnabled: false,

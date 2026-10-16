@@ -32,6 +32,20 @@ args = ["--experimental-strip-types", "--no-warnings", "scripts/check-i18n.ts"]
 type = "system"
 group = "lint"
 
+[hooks.pre-commit.tools.guards]
+command = "node"
+args = ["--experimental-strip-types", "--no-warnings", "scripts/guards.ts"]
+type = "system"
+group = "lint"
+
+# a staged migration regenerates shared/types/database.types.ts from the local DB (warns, never blocks)
+[hooks.pre-commit.tools.db-types]
+command = "node"
+args = ["scripts/regen-db-types.mjs"]
+type = "system"
+include_patterns = ["supabase/migrations/**"]
+group = "lint"
+
 [hooks.commit-msg]
 enabled = true
 

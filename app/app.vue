@@ -1,5 +1,8 @@
 <script setup lang="ts">
 const { locale } = useI18n()
+const { accent } = useAccent()
+const { font } = useFont()
+const display = useDisplay()
 
 // Canonical URL for every page (SEO): origin + path, no query/hash.
 const requestUrl = useRequestURL()
@@ -9,7 +12,14 @@ const canonical = computed(() => `${requestUrl.origin}${requestUrl.pathname}`)
 // (document-title). titleTemplate applies the app name to every page, and
 // pages that set their own title get " · GStack" appended.
 useHead({
-  htmlAttrs: { lang: () => (locale.value === 'en' ? 'en' : 'sr-Latn') },
+  htmlAttrs: {
+    lang: () => (locale.value === 'en' ? 'en' : 'sr-Latn'),
+    'data-accent': () => accent.value,
+    'data-font': () => font.value,
+    'data-text-size': () => display.textSize.value.value,
+    'data-motion': () => display.motion.value.value,
+    'data-contrast': () => display.contrast.value.value,
+  },
   title: 'GStack',
   titleTemplate: (title) => (title && title !== 'GStack' ? `${title} · GStack` : 'GStack'),
   link: [
@@ -22,14 +32,14 @@ useHead({
 // + site.name, so social/link previews work with zero art. Uses the ejected
 // template at app/components/OgImage/NuxtSeo.satori.vue (community templates must
 // be ejected to render in production). Override per page with
-// defineOgImageComponent('NuxtSeoSatori', { title, description }), or point at a
+// defineOgImage('NuxtSeoSatori', { title, description }), or point at a
 // static (e.g. AI-generated) image via defineOgImage({ url: '/og/home.png' }) —
 // drop the file in public/og/.
-defineOgImageComponent('NuxtSeoSatori')
+defineOgImage('NuxtSeoSatori')
 </script>
 
 <template>
-  <UApp>
+  <UApp :locale="UI_LOCALES[locale as 'en' | 'sr']">
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>

@@ -126,22 +126,10 @@ async function resend() {
           <UInput v-model="email" type="email" autocomplete="email" class="w-full" required />
         </UFormField>
         <UFormField :label="$t('register.password')">
-          <UInput
-            v-model="password"
-            type="password"
-            autocomplete="new-password"
-            class="w-full"
-            required
-          />
+          <PasswordInput v-model="password" autocomplete="new-password" required />
         </UFormField>
         <UFormField :label="$t('register.confirmPassword')">
-          <UInput
-            v-model="confirmPassword"
-            type="password"
-            autocomplete="new-password"
-            class="w-full"
-            required
-          />
+          <PasswordInput v-model="confirmPassword" autocomplete="new-password" required />
         </UFormField>
         <UAlert v-if="error" color="error" :title="error" />
         <UButton type="submit" block size="lg">{{ $t('register.next') }}</UButton>
