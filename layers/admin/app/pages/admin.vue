@@ -165,5 +165,6 @@ function actionsFor(u: AdminUser): DropdownMenuItem[] {
         </div>
       </div>
     </div>
+    <ApiKeysSection class="mt-6" />
   </UContainer>
 </template>

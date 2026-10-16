@@ -17,7 +17,7 @@ export default defineConfig({
     {
       // Public smoke — no saved session.
       name: 'chromium',
-      testMatch: /smoke\.spec\.ts/,
+      testMatch: /\/smoke\.spec\.ts$/, // not prod-smoke: that one checks production
       use: { ...devices['Desktop Chrome'] },
     },
     {
@@ -29,7 +29,7 @@ export default defineConfig({
     {
       // Authenticated feature flows using the saved admin (Acme) session.
       name: 'app',
-      testMatch: /(feedback|notes|mfa|sessions|prefs|layout)\.spec\.ts/,
+      testMatch: /(feedback|notes|mfa|sessions|prefs|layout|api-keys)\.spec\.ts/,
       use: { ...devices['Desktop Chrome'], storageState: 'e2e/.auth.json' },
       dependencies: ['setup'],
     },

@@ -5,7 +5,27 @@ export type Database = {
   
   "public": {
           Tables: {
-            "feedback": {
+            "api_key": {
+                  Row: {
+                    "created_at": string,"created_by": string | null,"id": string,"key_hash": string,"last_used_at": string | null,"name": string,"prefix": string,"revoked_at": string | null,"tenant_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"created_by"?: string | null,"id"?: string,"key_hash": string,"last_used_at"?: string | null,"name": string,"prefix": string,"revoked_at"?: string | null,"tenant_id"?: string
+                  }
+                  Update: {
+                    "created_at"?: string,"created_by"?: string | null,"id"?: string,"key_hash"?: string,"last_used_at"?: string | null,"name"?: string,"prefix"?: string,"revoked_at"?: string | null,"tenant_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "api_key_tenant_id_fkey"
+      columns: ["tenant_id"]
+isOneToOne: false
+      referencedRelation: "tenants"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"feedback": {
                   Row: {
                     "created_at": string,"id": string,"message": string,"page": string,"tenant_id": string,"user_id": string
                   }
@@ -203,7 +223,13 @@ isOneToOne: false
             [_ in never]: never
           }
           Functions: {
-            "current_role":
+            "api_key_tenant":
+{ Args: { "p_key": string }; Returns: string
+                           },
+"create_api_key":
+{ Args: { "p_name": string }; Returns: string
+                           },
+"current_role":
 { Args: Record<PropertyKey, never>; Returns: Database["public"]['Enums']["user_role"]
                            },
 "current_tenant_id":
@@ -225,6 +251,9 @@ isOneToOne: false
                            },
 "recovery_codes_left":
 { Args: Record<PropertyKey, never>; Returns: number
+                           },
+"revoke_api_key":
+{ Args: { "p_id": string }; Returns: undefined
                            },
 "set_ui_prefs":
 { Args: { "p_prefs": Json }; Returns: Json
