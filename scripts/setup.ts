@@ -1,6 +1,5 @@
-import { existsSync, readFileSync, writeFileSync } from 'node:fs'
-
 import { consola } from 'consola'
+import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 
 import { integrations } from './integrations'
 
@@ -49,7 +48,9 @@ export function rewriteEnv(envText: string, picks: Set<string>): string {
   }
 
   const body = rewritten.join('\n')
-  return additions.length ? `${body}${body.endsWith('\n') ? '' : '\n'}${additions.join('\n')}\n` : body
+  return additions.length
+    ? `${body}${body.endsWith('\n') ? '' : '\n'}${additions.join('\n')}\n`
+    : body
 }
 
 const ENV_PATH = '.env'
@@ -59,7 +60,9 @@ async function main() {
 
   const flagged = integrations.filter((it) => it.flag)
   const enabled = new Set(
-    flagged.filter((it) => new RegExp(`^${it.flag}\\s*=\\s*true`, 'm').test(envText)).map((it) => it.id),
+    flagged
+      .filter((it) => new RegExp(`^${it.flag}\\s*=\\s*true`, 'm').test(envText))
+      .map((it) => it.id),
   )
 
   consola.info('Pick the subsystems to enable. Supabase core is always on.')

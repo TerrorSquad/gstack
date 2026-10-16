@@ -117,7 +117,6 @@ async function resend() {
     </div>
 
     <template v-else>
-
       <!-- Step 1: personal account -->
       <form v-if="step === 1" class="mt-6 flex flex-col gap-4" @submit.prevent="goNext">
         <UFormField :label="$t('register.fullName')">

@@ -20,7 +20,10 @@ export interface NotificationProps {
 
 // Copy variants per notification type — data, not markup. One variant today;
 // the map keeps room for more notification types.
-const notificationVariants: Record<NotificationType, { subject: string; heading: string; intro: (d: NotificationData) => string }> = {
+const notificationVariants: Record<
+  NotificationType,
+  { subject: string; heading: string; intro: (d: NotificationData) => string }
+> = {
   note_created: {
     subject: 'New note created',
     heading: 'New note created',
@@ -35,6 +38,11 @@ export function buildNotification(
   const v = notificationVariants[type]
   return {
     subject: v.subject,
-    props: { heading: v.heading, intro: v.intro(data), noteTitle: data.noteTitle, actionUrl: data.actionUrl },
+    props: {
+      heading: v.heading,
+      intro: v.intro(data),
+      noteTitle: data.noteTitle,
+      actionUrl: data.actionUrl,
+    },
   }
 }

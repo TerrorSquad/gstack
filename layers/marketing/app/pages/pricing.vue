@@ -82,11 +82,7 @@ function price(p: (typeof PLANS)[number]) {
         </UButton>
 
         <ul class="mt-6 flex flex-col gap-3">
-          <li
-            v-for="key in plan.featureKeys"
-            :key="key"
-            class="flex items-start gap-2 text-sm"
-          >
+          <li v-for="key in plan.featureKeys" :key="key" class="flex items-start gap-2 text-sm">
             <UIcon name="i-lucide-check" class="mt-0.5 size-4 shrink-0 text-primary" />
             <span>{{ $t(`pricing.feature.${key}`) }}</span>
           </li>

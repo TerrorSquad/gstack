@@ -27,9 +27,7 @@ const features = [
   <div>
     <!-- Hero -->
     <section class="relative overflow-hidden">
-      <div
-        class="dot-grid pointer-events-none absolute inset-0 -z-10 opacity-60 dark:opacity-40"
-      />
+      <div class="dot-grid pointer-events-none absolute inset-0 -z-10 opacity-60 dark:opacity-40" />
       <div class="mx-auto max-w-4xl px-4 py-24 text-center sm:px-6 sm:py-32">
         <p class="text-sm font-semibold tracking-wide text-primary uppercase">
           {{ $t('landing.heroEyebrow') }}

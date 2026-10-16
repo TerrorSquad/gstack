@@ -70,12 +70,12 @@ always on), `github-oauth`, `google-oauth`, `sentry`, `betterstack`,
 
 - OAuth "half-configured" — both `CLIENT_ID` and `SECRET` required together; a
   single one set is a `fail`, not a `warn`. Model as two `required` vars; the
-  half-configured *message* stays doctor-side.
+  half-configured _message_ stays doctor-side.
 - BetterStack both-or-neither pairing — same shape (two `required` vars).
 - Billing "at least one price id" — `optional` vars; the "nothing to sell"
   warning stays doctor-side.
 
-The manifest carries the *keys and flags*; doctor keeps any bespoke *messaging*.
+The manifest carries the _keys and flags_; doctor keeps any bespoke _messaging_.
 
 ### 2. Wizard — `scripts/setup.ts` (new, `pnpm setup`)
 
@@ -141,7 +141,7 @@ integrations.ts (manifest)
   verbatim, never crash.
 - Existing values are never overwritten with stubs — only missing keys get
   stubbed; a key already present (even if valued) is left alone.
-- The wizard does not validate key *contents* — that's doctor's job on the next
+- The wizard does not validate key _contents_ — that's doctor's job on the next
   run.
 
 ## Testing

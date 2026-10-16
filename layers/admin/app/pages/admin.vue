@@ -33,7 +33,10 @@ async function invite() {
     toast.add({ title: t('admin.inviteSent'), color: 'success' })
     inviteEmail.value = ''
   } catch (e) {
-    toast.add({ title: (e as { data?: { message?: string } })?.data?.message ?? t('admin.inviteError'), color: 'error' })
+    toast.add({
+      title: (e as { data?: { message?: string } })?.data?.message ?? t('admin.inviteError'),
+      color: 'error',
+    })
   } finally {
     inviting.value = false
   }
@@ -46,7 +49,10 @@ async function act(url: string, body: Record<string, unknown>, successMsg?: stri
     if (successMsg) toast.add({ title: successMsg, color: 'success' })
     await refresh()
   } catch (e) {
-    toast.add({ title: (e as { data?: { message?: string } })?.data?.message ?? t('common.saveError'), color: 'error' })
+    toast.add({
+      title: (e as { data?: { message?: string } })?.data?.message ?? t('common.saveError'),
+      color: 'error',
+    })
   }
 }
 
@@ -59,13 +65,38 @@ function actionsFor(u: AdminUser): DropdownMenuItem[] {
   if (u.isSelf) return []
   return [
     u.role === 'admin'
-      ? { label: t('admin.makeMember'), icon: 'i-lucide-user', onSelect: () => act('/api/admin/set-role', { userId: u.id, role: 'member' }) }
-      : { label: t('admin.makeAdmin'), icon: 'i-lucide-shield', onSelect: () => act('/api/admin/set-role', { userId: u.id, role: 'admin' }) },
+      ? {
+          label: t('admin.makeMember'),
+          icon: 'i-lucide-user',
+          onSelect: () => act('/api/admin/set-role', { userId: u.id, role: 'member' }),
+        }
+      : {
+          label: t('admin.makeAdmin'),
+          icon: 'i-lucide-shield',
+          onSelect: () => act('/api/admin/set-role', { userId: u.id, role: 'admin' }),
+        },
     u.banned
-      ? { label: t('admin.unban'), icon: 'i-lucide-circle-check', onSelect: () => act('/api/admin/ban', { userId: u.id, banned: false }) }
-      : { label: t('admin.ban'), icon: 'i-lucide-ban', onSelect: () => act('/api/admin/ban', { userId: u.id, banned: true }) },
-    { label: t('admin.impersonate'), icon: 'i-lucide-venetian-mask', onSelect: () => act('/api/admin/impersonate', { userId: u.id }) },
-    { label: t('admin.delete'), icon: 'i-lucide-trash-2', color: 'error' as const, onSelect: () => remove(u) },
+      ? {
+          label: t('admin.unban'),
+          icon: 'i-lucide-circle-check',
+          onSelect: () => act('/api/admin/ban', { userId: u.id, banned: false }),
+        }
+      : {
+          label: t('admin.ban'),
+          icon: 'i-lucide-ban',
+          onSelect: () => act('/api/admin/ban', { userId: u.id, banned: true }),
+        },
+    {
+      label: t('admin.impersonate'),
+      icon: 'i-lucide-venetian-mask',
+      onSelect: () => act('/api/admin/impersonate', { userId: u.id }),
+    },
+    {
+      label: t('admin.delete'),
+      icon: 'i-lucide-trash-2',
+      color: 'error' as const,
+      onSelect: () => remove(u),
+    },
   ]
 }
 </script>
@@ -78,7 +109,12 @@ function actionsFor(u: AdminUser): DropdownMenuItem[] {
     <!-- Invite -->
     <form class="mt-6 flex flex-col gap-3 sm:flex-row sm:items-end" @submit.prevent="invite">
       <UFormField :label="$t('admin.inviteEmail')" class="flex-1">
-        <UInput v-model="inviteEmail" type="email" class="w-full" :placeholder="'name@example.com'" />
+        <UInput
+          v-model="inviteEmail"
+          type="email"
+          class="w-full"
+          :placeholder="'name@example.com'"
+        />
       </UFormField>
       <UButton type="submit" icon="i-lucide-mail-plus" :loading="inviting">
         {{ $t('admin.invite') }}

@@ -1,5 +1,4 @@
 import { readFileSync } from 'node:fs'
-
 import { describe, expect, it } from 'vitest'
 
 import { AUTH_TEMPLATE_SPECS, renderAuthTemplate } from '../../../../scripts/gen-auth-templates'

@@ -1,8 +1,7 @@
-import type { Database } from '#shared/types/database.types'
 import type { NotificationType } from '#shared/types'
+import type { Database } from '#shared/types/database.types'
 
 import { serverSupabaseServiceRole } from '#supabase/server'
-
 
 // Called by a Supabase DB webhook on every notifications INSERT. Mirrors the
 // in-app notification to a transactional email via Resend. Configure the webhook
@@ -19,7 +18,12 @@ export default defineEventHandler(async (event) => {
   }
 
   const body = await readBody<{
-    record?: { recipient_id: string; actor_id: string | null; type: NotificationType; note_id: string | null }
+    record?: {
+      recipient_id: string
+      actor_id: string | null
+      type: NotificationType
+      note_id: string | null
+    }
   }>(event)
   const rec = body?.record
   if (!rec) throw createError({ statusCode: 400, message: 'no record' })

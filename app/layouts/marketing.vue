@@ -31,10 +31,7 @@ const legalLinks = [
         </NuxtLink>
 
         <nav class="hidden items-center gap-6 md:flex">
-          <NuxtLink
-            to="/#features"
-            class="text-sm font-medium text-muted hover:text-default"
-          >
+          <NuxtLink to="/#features" class="text-sm font-medium text-muted hover:text-default">
             {{ $t('nav.features') }}
           </NuxtLink>
           <NuxtLink to="/pricing" class="text-sm font-medium text-muted hover:text-default">
@@ -65,7 +62,13 @@ const legalLinks = [
             </UButton>
           </template>
           <template v-else>
-            <UButton to="/login" size="sm" variant="ghost" color="neutral" class="hidden sm:inline-flex">
+            <UButton
+              to="/login"
+              size="sm"
+              variant="ghost"
+              color="neutral"
+              class="hidden sm:inline-flex"
+            >
               {{ $t('nav.signIn') }}
             </UButton>
             <UButton to="/register" size="sm">{{ $t('nav.getStarted') }}</UButton>

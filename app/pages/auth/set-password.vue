@@ -25,8 +25,7 @@ onMounted(async () => {
   const token_hash = query.get('token_hash')
   if (token_hash) {
     const { error: e } = await supabase.auth.verifyOtp({ token_hash, type: 'recovery' })
-    if (e)
-      error.value = e.message // surface the real cause instead of a generic "expired" on submit
+    if (e) error.value = e.message // surface the real cause instead of a generic "expired" on submit
     else window.history.replaceState(null, '', window.location.pathname)
     return
   }

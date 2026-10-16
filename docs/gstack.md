@@ -24,23 +24,23 @@ choices are recorded as [ADRs](./adr/).
 
 ## The stack
 
-| Layer | Choice | Notes |
-|---|---|---|
-| Framework | **Nuxt 4** (SSR, Nitro) | Vue 3, file-based routing, server routes |
-| UI | **Nuxt UI v4** + Tailwind v4 | themed once globally via `app.config.ts` |
-| Data / Auth | **Supabase** | Postgres + Auth + RLS + Storage + Realtime |
-| Types | **generated from schema** (`supabase gen types`) | end-to-end, no ORM required |
-| State | **Pinia** (cross-page) + composables (`useAsyncData`) | store only for shared mutable state |
-| i18n | **@nuxtjs/i18n** | `en` default + `sr`, key-parity enforced in CI |
-| Payments | **Polar** (Merchant of Record) behind an adapter | Serbia-compatible; see [ADR-0001](./adr/0001-payments-provider.md) |
-| Edge KV / rate-limit | **Upstash Redis** | distributed limits + cache; see [ADR-0003](./adr/0003-upstash-redis.md) |
-| Email | **Resend** (transactional) + Supabase auth emails | inline-styled HTML templates |
-| Observability | **Sentry** + **BetterStack** + **Vercel Analytics** | errors, logs, web vitals |
-| Testing | **Vitest** (logic) + **Playwright** (e2e) + **axe** (a11y) | a11y enforced in light + dark |
-| Release | **release-please** + hand-curated `/changelog` | dev changelog vs user changelog |
-| Tooling | **oxlint** + **oxfmt** + **forge** hooks + **pnpm** | fast, auto-fixing pre-commit |
-| Deploy | **Vercel** (portable Nitro) | any Nitro target works |
-| Distribution | **GitHub template repository** | see [ADR-0004](./adr/0004-distribution-github-template.md) |
+| Layer                | Choice                                                     | Notes                                                                   |
+| -------------------- | ---------------------------------------------------------- | ----------------------------------------------------------------------- |
+| Framework            | **Nuxt 4** (SSR, Nitro)                                    | Vue 3, file-based routing, server routes                                |
+| UI                   | **Nuxt UI v4** + Tailwind v4                               | themed once globally via `app.config.ts`                                |
+| Data / Auth          | **Supabase**                                               | Postgres + Auth + RLS + Storage + Realtime                              |
+| Types                | **generated from schema** (`supabase gen types`)           | end-to-end, no ORM required                                             |
+| State                | **Pinia** (cross-page) + composables (`useAsyncData`)      | store only for shared mutable state                                     |
+| i18n                 | **@nuxtjs/i18n**                                           | `en` default + `sr`, key-parity enforced in CI                          |
+| Payments             | **Polar** (Merchant of Record) behind an adapter           | Serbia-compatible; see [ADR-0001](./adr/0001-payments-provider.md)      |
+| Edge KV / rate-limit | **Upstash Redis**                                          | distributed limits + cache; see [ADR-0003](./adr/0003-upstash-redis.md) |
+| Email                | **Resend** (transactional) + Supabase auth emails          | inline-styled HTML templates                                            |
+| Observability        | **Sentry** + **BetterStack** + **Vercel Analytics**        | errors, logs, web vitals                                                |
+| Testing              | **Vitest** (logic) + **Playwright** (e2e) + **axe** (a11y) | a11y enforced in light + dark                                           |
+| Release              | **release-please** + hand-curated `/changelog`             | dev changelog vs user changelog                                         |
+| Tooling              | **oxlint** + **oxfmt** + **forge** hooks + **pnpm**        | fast, auto-fixing pre-commit                                            |
+| Deploy               | **Vercel** (portable Nitro)                                | any Nitro target works                                                  |
+| Distribution         | **GitHub template repository**                             | see [ADR-0004](./adr/0004-distribution-github-template.md)              |
 
 ### Deliberately deferred
 

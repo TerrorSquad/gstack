@@ -11,9 +11,11 @@
   },
   "ignorePatterns": ["designs/**"],
   "rules": {
-    "no-console": "warn",
+    "no-console": ["warn", { "allow": ["warn", "error"] }],
     "typescript/no-explicit-any": "warn",
-    "unicorn/prefer-node-protocol": "error"
+    "unicorn/prefer-node-protocol": "error",
+    // A small helper reads best next to its one use; hoisting it only moves it away.
+    "unicorn/consistent-function-scoping": "off"
   },
   "overrides": [
     {

@@ -1,4 +1,3 @@
-
 // Support impersonation: returns a one-time magic link that signs the caller in
 // AS the target member. Opening it replaces the current session, so open it in a
 // private/incognito window. Restricted to same-tenant members; never self.

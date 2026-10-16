@@ -1,12 +1,19 @@
 import * as Sentry from '@sentry/nuxt'
 
+import { scrubSentryEvent } from './app/utils/scrubSentryEvent'
+
 Sentry.init({
   dsn: useRuntimeConfig().public.sentryDsn,
   environment: import.meta.dev ? 'development' : 'production',
   tracesSampleRate: 0.1,
   enabled: !import.meta.dev,
-  debug: import.meta.dev,
-  // Default 10KB truncates larger error envelopes before they're captured.
-  integrations: [Sentry.httpIntegration({ maxIncomingRequestBodySize: 'always' })],
-  enableLogs: true,
+  // Sentry 11 collects IPs, cookies, query strings and bodies unless told otherwise.
+  dataCollection: {
+    userInfo: false,
+    cookies: false,
+    urlQueryParams: false,
+    httpBodies: [],
+    stackFrameVariables: false,
+  },
+  beforeSend: scrubSentryEvent,
 })

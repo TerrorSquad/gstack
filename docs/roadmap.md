@@ -25,8 +25,8 @@ Make the repo a clean GitHub template (see [ADR-0004](./adr/0004-distribution-gi
 - [x] Verify a from-template bootstrap: `pnpm i && supabase start && db:reset && dev`.
 - [x] Reset version (`0.1.0`) + manifest and reduce the user changelog to a
       single "Initial release" entry.
-- [x] Document "Use this template" (README + `SETUP.md`). *Flip the GitHub
-      "Template repository" setting on the pushed repo.*
+- [x] Document "Use this template" (README + `SETUP.md`). _Flip the GitHub
+      "Template repository" setting on the pushed repo._
 
 **Acceptance:** a new repo from the template runs locally with only env setup. ✅
 
@@ -41,8 +41,8 @@ landing page instead of a redirect.
 - [x] Legal: `/terms`, `/privacy` (static placeholders, clearly marked to replace).
 - [x] SEO: per-page `useSeoMeta` (title/description/OG/Twitter), `@nuxtjs/sitemap`
       at `/sitemap.xml` (explicit public URLs), global canonical, `site.url` config.
-      a11y covers the marketing pages in both themes. *(Follow-up: an `og:image` —
-      needs a static asset or `nuxt-og-image`.)*
+      a11y covers the marketing pages in both themes. _(Follow-up: an `og:image` —
+      needs a static asset or `nuxt-og-image`.)_
 
 **Acceptance:** unauthenticated visitors get a real marketing site. ✅ (Run
 Lighthouse in CI to confirm SEO ≥ 95 on your deploy URL.)

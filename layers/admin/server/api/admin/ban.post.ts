@@ -1,4 +1,3 @@
-
 // Ban or unban a tenant member via Supabase's native ban (blocks login).
 // ban_duration 'none' lifts it; a long duration is an effective permanent ban.
 export default defineEventHandler(async (event) => {
@@ -7,8 +6,7 @@ export default defineEventHandler(async (event) => {
 
   if (!userId || typeof banned !== 'boolean')
     throw createError({ statusCode: 400, message: 'userId and banned (boolean) required' })
-  if (userId === admin.id)
-    throw createError({ statusCode: 400, message: "you can't ban yourself" })
+  if (userId === admin.id) throw createError({ statusCode: 400, message: "you can't ban yourself" })
 
   await assertSameTenant(db, admin.tenant_id, userId)
   const { error } = await db.auth.admin.updateUserById(userId, {

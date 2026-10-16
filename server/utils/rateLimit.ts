@@ -1,6 +1,7 @@
+import type { H3Event } from 'h3'
+
 import { Ratelimit } from '@upstash/ratelimit'
 import { Redis } from '@upstash/redis'
-import type { H3Event } from 'h3'
 
 // Rate limiter for unauthenticated/public routes. Uses Upstash Redis when
 // UPSTASH_REDIS_REST_URL/_TOKEN are set (limits hold across serverless

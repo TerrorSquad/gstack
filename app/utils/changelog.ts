@@ -21,7 +21,9 @@ export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
     date: '2026-08-05',
     title: 'A warmer look',
     highlights: [
-      feature('A new amber accent colour across the app, our emails and the buttons you press every day.'),
+      feature(
+        'A new amber accent colour across the app, our emails and the buttons you press every day.',
+      ),
     ],
   },
   {
@@ -33,7 +35,9 @@ export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
         'Signing in and creating an account got a cleaner, single-column layout that works the same on a phone as on a desktop.',
       ),
       feature('Creating an account now shows how many steps are left.'),
-      fix('Our emails now all look the same — confirmation and password-reset messages had drifted to different colours.'),
+      fix(
+        'Our emails now all look the same — confirmation and password-reset messages had drifted to different colours.',
+      ),
     ],
   },
   {

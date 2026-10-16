@@ -9,3 +9,8 @@ allowBuilds:
   sharp: true
   unrs-resolver: true
   vue-demi: true
+
+# Hoist docus's dependencies into site/node_modules. Nuxt loads modules by name; one that isn't hoisted here is
+# looked up in the parent directory and resolves to the starter's copy (a different major: nuxt-og-image 7,
+# @nuxtjs/sitemap 9), which breaks generate.
+shamefullyHoist: true

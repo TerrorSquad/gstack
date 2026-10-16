@@ -14,11 +14,7 @@ export default defineEventHandler(async (event) => {
   if (!user) throw createError({ statusCode: 401, message: 'unauthorized' })
 
   const db = serverSupabaseServiceRole<Database>(event)
-  const { data: profile } = await db
-    .from('profiles')
-    .select('tenant_id')
-    .eq('id', user.id)
-    .single()
+  const { data: profile } = await db.from('profiles').select('tenant_id').eq('id', user.id).single()
   if (!profile) throw createError({ statusCode: 404, message: 'profile not found' })
 
   const { data: sub } = await db

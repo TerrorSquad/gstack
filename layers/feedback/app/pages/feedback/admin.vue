@@ -37,11 +37,7 @@ const { data: items, pending } = await useAsyncData<Feedback[]>('admin-feedback'
       <p>{{ t('feedback.adminEmpty') }}</p>
     </div>
     <div v-else v-auto-animate class="mt-8 flex flex-col gap-3">
-      <div
-        v-for="f in items"
-        :key="f.id"
-        class="surface-border rounded-(--ui-radius) p-4"
-      >
+      <div v-for="f in items" :key="f.id" class="surface-border rounded-(--ui-radius) p-4">
         <p class="whitespace-pre-line">{{ f.message }}</p>
         <p class="mt-2 flex gap-2 text-xs text-muted">
           <span>{{ formatDate(f.createdAt.slice(0, 10)) }}</span>

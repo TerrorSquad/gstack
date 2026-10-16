@@ -2,7 +2,14 @@
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
   "semi": false,
   "singleQuote": true,
-  "ignorePatterns": [".agents/**", ".claude/**", "site/**", "supabase/templates/**", "shared/types/database.types.ts"],
+  "ignorePatterns": [
+    ".agents/**",
+    ".claude/**",
+    "site/**",
+    "supabase/templates/**",
+    "shared/types/database.types.ts",
+    "CHANGELOG.md"
+  ],
   "sortImports": {
     "groups": [
       "type-import",

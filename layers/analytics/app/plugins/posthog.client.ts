@@ -1,4 +1,4 @@
-import posthog from 'posthog-js'
+import { posthog, type PostHog } from 'posthog-js'
 
 // Initializes PostHog in the browser when the analytics subsystem is enabled and
 // a key is set. No-ops otherwise (zero-config template still runs). Client-only —
@@ -29,3 +29,10 @@ export default defineNuxtPlugin(() => {
 
   return { provide: { posthog: posthog as typeof posthog | null } }
 })
+
+// Nuxt 4.6 no longer infers a layer plugin's `provide` for useNuxtApp(); declare it.
+declare module '#app' {
+  interface NuxtApp {
+    $posthog: PostHog | null
+  }
+}

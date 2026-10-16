@@ -19,10 +19,10 @@ function bucket(entry: ChangelogEntry, kind: 'feature' | 'fix') {
       <p class="mt-3 text-lg text-muted">{{ $t('changelog.subtitle') }}</p>
     </header>
 
-    <ol class="relative mt-12 ms-3 space-y-14 border-s border-default sm:ms-4">
+    <ol class="relative ms-3 mt-12 space-y-14 border-s border-default sm:ms-4">
       <li v-for="entry in CHANGELOG_ENTRIES" :key="entry.date" class="relative ps-8 sm:ps-10">
         <span
-          class="absolute top-1.5 -start-[7px] size-3.5 rounded-full bg-primary ring-4 ring-(--ui-bg)"
+          class="absolute -start-[7px] top-1.5 size-3.5 rounded-full bg-primary ring-4 ring-(--ui-bg)"
           aria-hidden="true"
         />
         <time class="text-sm font-medium text-muted">{{ formatDate(entry.date) }}</time>

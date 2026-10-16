@@ -92,7 +92,8 @@ export function createPolarProvider(config: {
   webhookSecret: string
   server: string
 }): BillingProvider {
-  const base = config.server === 'production' ? 'https://api.polar.sh' : 'https://sandbox-api.polar.sh'
+  const base =
+    config.server === 'production' ? 'https://api.polar.sh' : 'https://sandbox-api.polar.sh'
   const authHeaders = {
     Authorization: `Bearer ${config.accessToken}`,
     'Content-Type': 'application/json',
@@ -127,11 +128,15 @@ export function createPolarProvider(config: {
     },
 
     parseWebhook(headers, rawBody) {
-      const ok = verifyStandardWebhook(config.webhookSecret, {
-        id: headers['webhook-id'],
-        timestamp: headers['webhook-timestamp'],
-        signature: headers['webhook-signature'],
-      }, rawBody)
+      const ok = verifyStandardWebhook(
+        config.webhookSecret,
+        {
+          id: headers['webhook-id'],
+          timestamp: headers['webhook-timestamp'],
+          signature: headers['webhook-signature'],
+        },
+        rawBody,
+      )
       if (!ok) throw createError({ statusCode: 401, message: 'invalid signature' })
 
       const event = JSON.parse(rawBody) as {

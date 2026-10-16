@@ -1,3 +1,4 @@
+import { consola } from 'consola'
 // `pnpm doctor` — config sanity + pre-deploy preflight. Reports which subsystems
 // are on/off and flags anything half-wired (a subsystem enabled but missing the
 // keys it needs to work). Pure env inspection, no network calls. Loads .env if
@@ -6,8 +7,6 @@
 // a deploy step. The npm script passes --env-file-if-exists=.env so it loads
 // local env without erroring in CI/prod where there's no .env file.
 import process from 'node:process'
-
-import { consola } from 'consola'
 
 import { integrations } from './integrations'
 
@@ -26,7 +25,12 @@ const fail = (m: string) => {
 
 consola.log('')
 consola.info('Core (required)')
-for (const k of ['SUPABASE_URL', 'SUPABASE_KEY', 'SUPABASE_SERVICE_ROLE_KEY', 'NUXT_SUPABASE_SECRET_KEY']) {
+for (const k of [
+  'SUPABASE_URL',
+  'SUPABASE_KEY',
+  'SUPABASE_SERVICE_ROLE_KEY',
+  'NUXT_SUPABASE_SECRET_KEY',
+]) {
   if (has(k)) ok(k)
   else fail(`${k} is not set`)
 }
@@ -34,8 +38,12 @@ for (const k of ['SUPABASE_URL', 'SUPABASE_KEY', 'SUPABASE_SERVICE_ROLE_KEY', 'N
 consola.log('')
 consola.info('Security')
 if (has('NUXT_CSURF_ENCRYPT_SECRET')) ok('CSRF secret pinned')
-else warn('NUXT_CSURF_ENCRYPT_SECRET unset — fine locally, but in prod tokens reset every deploy (openssl rand -hex 32)')
-if (has('UPSTASH_REDIS_REST_URL') && has('UPSTASH_REDIS_REST_TOKEN')) ok('Rate limiting: Upstash (distributed)')
+else
+  warn(
+    'NUXT_CSURF_ENCRYPT_SECRET unset — fine locally, but in prod tokens reset every deploy (openssl rand -hex 32)',
+  )
+if (has('UPSTASH_REDIS_REST_URL') && has('UPSTASH_REDIS_REST_TOKEN'))
+  ok('Rate limiting: Upstash (distributed)')
 else info('Rate limiting: in-memory fallback — set Upstash for serverless/multi-instance')
 
 consola.log('')
@@ -56,7 +64,8 @@ else warn('Sentry: DSN set but SENTRY_AUTH_TOKEN missing — no source maps uplo
 const bsToken = has('NUXT_BETTERSTACK_SOURCE_TOKEN')
 const bsUrl = has('NUXT_BETTERSTACK_INGEST_URL')
 if (bsToken && bsUrl) ok('BetterStack log forwarding on')
-else if (bsToken || bsUrl) fail('BetterStack half-configured — set both SOURCE_TOKEN and INGEST_URL')
+else if (bsToken || bsUrl)
+  fail('BetterStack half-configured — set both SOURCE_TOKEN and INGEST_URL')
 else info('BetterStack off')
 
 // Flag-gated subsystems, checked generically from the shared manifest so this

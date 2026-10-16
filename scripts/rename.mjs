@@ -16,7 +16,9 @@ const OLD_SITE = 'https://example.com'
 const args = process.argv.slice(2)
 const name = args.find((a) => !a.startsWith('--'))
 if (!name) {
-  console.error('Usage: node scripts/rename.mjs "My App" [--package my-app] [--site https://myapp.com]')
+  console.error(
+    'Usage: node scripts/rename.mjs "My App" [--package my-app] [--site https://myapp.com]',
+  )
   process.exit(1)
 }
 const flag = (f) => {
@@ -24,7 +26,11 @@ const flag = (f) => {
   return i >= 0 ? args[i + 1] : undefined
 }
 const pkgName =
-  flag('--package') ?? name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
+  flag('--package') ??
+  name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
 const site = flag('--site')
 
 // Files that carry the display name. Docs (README, docs/) are intentionally left
